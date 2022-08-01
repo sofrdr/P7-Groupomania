@@ -28,9 +28,11 @@ function createUser(email, password) {
 
 
 const newUserStmt = db.prepare('SELECT id, email FROM users WHERE email= ?');
+const userStmt = db.prepare('SELECT * FROM users WHERE email = ?');
 
 
 module.exports = {
   createUser,
-  newUserStmt
+  newUserStmt,
+  userStmt
 }
