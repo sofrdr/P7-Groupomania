@@ -1,0 +1,20 @@
+createPost : POST
+req: userID, req.body.message, req.file
+res: status 201, post
+
+readPost : GET
+req : select * from posts
+res: posts, status 200
+
+updatePost : PUT
+req: req.body.message, req.file ?
+res: status 200, message "post modifié"
+
+deletePost : DELETE
+req: delete from posts where id = req.params.id
+res: status 200, message "post supprimé"
+
+likePost : POST ou PATCH ?
+req: req.body.like = 1? userID
+res: status 200, message "like ajouté"
+
