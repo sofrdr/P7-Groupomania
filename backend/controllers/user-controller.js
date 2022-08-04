@@ -1,12 +1,31 @@
 require('dotenv').config({path: '../config/.env'});
+const {db} = require('../models/database')
 const SECRET_KEY = process.env.SECRET_KEY;
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
-const { createUser, newUserStmt, userStmt } = require('../models/user-model');
+const { v4: uuidv4} = require('uuid'); 
+
+
+
 
 
 exports.signup = async (req, res) => {
+
+    function createUser(email, password) {
+
+        const uuid = uuidv4();
+        const stmt = db.prepare('INSERT INTO users (email, password, uuid) VALUES (@email, @password, @uuid)');
+        stmt.run({
+          email: email,
+          password: password, 
+          uuid: uuid
+        });
+      
+      }
+
+      const newUserStmt = db.prepare('SELECT uuid, email FROM users WHERE email= ?');
+
 
     const { email, password } = req.body;
     try {
@@ -31,7 +50,7 @@ exports.signup = async (req, res) => {
             // On récupère l'id et l'email de l'utilisateur
             const newUser = newUserStmt.get(email);
             res.status(201).json({
-                userId : newUser.id,
+                userId : newUser.uuid,
                 email: newUser.email
             });
         }
@@ -47,18 +66,27 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
 
     const {email, password} = req.body;
-    const user = userStmt.get(email);
+
+    const userStmt = db.prepare('SELECT * FROM users WHERE email = ?');
+    const user = userStmt.get(email)
+    
     
     try{
+        console.log(user.email)
+        if(!user){
+            throw new Error({message : 'Utilisateur non trouvé', status: 401});
+        }
+
+        
         const validPassword = await bcrypt.compare(password, user.password);
-        if(!user || !validPassword){
+        if(!validPassword){
             return res.status(401).json({error: 'Adresse mail ou mot de passe incorrect'})
         }
         
         return res.status(200).json({
-            userId : user.id,
+            userId : user.uuid,
             token : jwt.sign(
-                { userId : user.id},
+                { userId : user.uuid},
                 SECRET_KEY, 
                 {expiresIn: '1h'}
             )
