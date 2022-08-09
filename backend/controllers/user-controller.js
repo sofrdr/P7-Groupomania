@@ -14,12 +14,12 @@ exports.signup = async (req, res) => {
 
     function createUser(email, password) {
 
-        const id = idv4();
-        const stmt = db.prepare('INSERT INTO users (email, password, id) VALUES (@email, @password, @id)');
+        const uuid = uuidv4();
+        const stmt = db.prepare('INSERT INTO users (email, password, uuid) VALUES (@email, @password, @uuid)');
         stmt.run({
           email: email,
           password: password, 
-          id: id
+          uuid: uuid
         });
       
       }
