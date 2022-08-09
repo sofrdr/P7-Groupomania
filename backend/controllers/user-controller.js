@@ -72,8 +72,8 @@ exports.login = async (req, res) => {
     
     
     try{
-        console.log(user.email)
-        if(!user){
+        console.log(email)
+        if(email !== user.email){
             throw new Error({message : 'Utilisateur non trouvé', status: 401});
         }
 
