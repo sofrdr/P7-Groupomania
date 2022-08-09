@@ -14,17 +14,17 @@ exports.signup = async (req, res) => {
 
     function createUser(email, password) {
 
-        const uuid = uuidv4();
-        const stmt = db.prepare('INSERT INTO users (email, password, uuid) VALUES (@email, @password, @uuid)');
+        const id = idv4();
+        const stmt = db.prepare('INSERT INTO users (email, password, id) VALUES (@email, @password, @id)');
         stmt.run({
           email: email,
           password: password, 
-          uuid: uuid
+          id: id
         });
       
       }
 
-      const newUserStmt = db.prepare('SELECT uuid, email FROM users WHERE email= ?');
+      
 
 
     const { email, password } = req.body;
@@ -48,10 +48,12 @@ exports.signup = async (req, res) => {
             // Ajout de l'utilisateur en BDD       
             createUser(email, hash);
             // On récupère l'id et l'email de l'utilisateur
+            const newUserStmt = db.prepare('SELECT id, email FROM users WHERE email= ?');
             const newUser = newUserStmt.get(email);
             res.status(201).json({
-                userId : newUser.uuid,
-                email: newUser.email
+                userId : newUser.id,
+                email: newUser.email,
+
             });
         }
 
@@ -84,9 +86,9 @@ exports.login = async (req, res) => {
         }
         
         return res.status(200).json({
-            userId : user.uuid,
+            userId : user.id,
             token : jwt.sign(
-                { userId : user.uuid},
+                { userId : user.id},
                 SECRET_KEY, 
                 {expiresIn: '1h'}
             )
