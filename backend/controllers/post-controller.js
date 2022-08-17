@@ -1,27 +1,17 @@
 const { db } = require('../models/database');
-const {getUser} = require('../models/user-model');
+const { getUser } = require('../models/user-model');
+const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost } = require('../models/post-model')
 const fs = require('fs');
 
 // Ajouter un post
 exports.addPost = (req, res) => {
 
-    function createPost(userId, author, message, picture) {
-        newPostStmt = db.prepare(`INSERT INTO posts (user_id, author,  message, date, picture) VALUES (@userId, @author, @message, datetime('now', 'localtime'), @picture)`);
-        newPostStmt.run({
-            userId: userId,
-            author: author,
-            message: message,
-            picture: picture
-        })
-    }
-
     try {
-        const userId = req.auth.userId;
-        
-        const user = getUser(userId);
+        const userId = req.auth.userId;      // On récupère le userID du token 
+        const user = getUser(userId);   // On récupère l'utilisateur dans la BDD 
         const author = user.email;
         console.log(author)
-        const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename
+        const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
 
         createPost(userId, author, req.body.message || "", picture);
         res.status(201).json('Le post a bien été créé')
@@ -34,13 +24,6 @@ exports.addPost = (req, res) => {
 
 // Afficher tous les posts
 exports.getPosts = (req, res) => {
-
-    function getAllPosts() {
-        const postStmt = db.prepare(`SELECT * FROM posts ORDER BY date DESC`)
-        const posts = postStmt.all();
-        return posts;
-    }
-
     try {
         const posts = getAllPosts();
         res.status(200).json(posts);
@@ -54,27 +37,14 @@ exports.getPosts = (req, res) => {
 exports.modifyPost = (req, res) => {
 
     const id = req.params.id;
-
-    function updatePostMessage(message, id) {
-        db.prepare(`UPDATE posts SET message = @message WHERE id = @id`)
-            .run({
-                message: message,
-                id: id
-            })
-
-    }
-
-    function updatePostPicture(picture, id) {
-        db.prepare(`UPDATE posts SET picture = @picture WHERE id = @id`).run({
-            picture: picture,
-            id: id
-        })
-    }
-
+    const userId = req.auth.userId
 
     try {
-        const post = db.prepare(`SELECT * FROM posts WHERE id = @id`).get({ id: id });
-        const currentUser = db.prepare(`SELECT * FROM users WHERE id = @id`).get({ id: req.auth.userId });
+        // On récupère le bon post dans la BDD avec l'id des params
+        const post = getPost(id)
+        const currentUser = getUser(userId)
+        /* Si l'uilisateur qui a créé le post est différent de l'utilisateur authentifié ET qu'il n'est pas admin alors la modification
+        n'est pas autorisée */
         if (post.user_id !== req.auth.userId && currentUser.role !== 1) {
             res.status(403).json({ message: "Modification non autorisée" })
         } else {
@@ -98,7 +68,7 @@ exports.modifyPost = (req, res) => {
     }
     catch (err) {
         res.status(404).json({ err })
-        
+
     }
 
 
@@ -109,10 +79,11 @@ exports.modifyPost = (req, res) => {
 
 exports.deletePost = (req, res) => {
     const id = req.params.id;
+    const userId = req.auth.userId
 
     try {
-        const post = db.prepare(`SELECT * FROM posts WHERE id = @id`).get({ id: id });
-        const currentUser = db.prepare(`SELECT * FROM users WHERE id = @id`).get({ id: req.auth.userId });
+        const post = getPost(id)
+        const currentUser = getUser(userId)
         if (post.user_id !== req.auth.userId && currentUser.role !== 1) {
             res.status(403).json({ message: "Suppression non autorisée" })
         } else {
@@ -120,7 +91,7 @@ exports.deletePost = (req, res) => {
             console.log(filename)
             fs.unlink('images/' + filename, (err) => {
                 if (err) throw err;
-                db.prepare(`DELETE FROM posts WHERE id = @id`).run({ id: id })
+                deletePost(id);
                 res.status(200).json({ message: "Le post a bien été supprimé" })
             })
 
@@ -131,5 +102,53 @@ exports.deletePost = (req, res) => {
     catch (err) {
         res.status(404).json({ err })
     }
+
+}
+
+
+// Ajouter un like à un post
+
+exports.likePost = (req, res) => {
+    const userId = req.auth.userId;
+    const id = req.params.id;
+    let like = req.body.like
+
+    const user = getUser(userId);
+    const userMail = user.email; //email de l'utilisateur authentifié
+    let usersLiked = [] // tableau des utilisateurs qui aiment le post
+
+    const post = getPost(id)
+
+
+    try {
+        if (like = 1) {
+            //if (post.usersLiked.includes(userMail)) {
+              //  res.status(401).json({ message: "Vous aimez déjà le post" })
+           // } else {
+                db.prepare(`UPDATE posts SET likes = likes + 1 WHERE id = @id`)
+                    .run({ id: id });
+
+                usersLiked.push(userMail);
+                db.prepare(`UPDATE posts SET usersLiked = @usersLiked WHERE id = @id`)
+                    .run({ usersLiked: JSON.stringify(usersLiked), id: id })
+                res.status(201).json({ message: "Like pris en compte" })
+           // }
+
+
+        }
+
+        /* if(like = 0) {
+            if (post.usersLiked.includes(userMail)){
+                db.prepare(`UPDATE posts SET likes = likes - 1 WHERE id = @id`)
+                    .run({ id: id });
+               
+        } */
+    }
+    catch (err) {
+        console.log(err)
+        res.status(400).json({ err })
+    }
+
+
 
 }
