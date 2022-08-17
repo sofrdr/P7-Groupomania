@@ -69,14 +69,14 @@ exports.login = async (req, res) => {
 
     const {email, password} = req.body;
 
-    const userStmt = db.prepare('SELECT * FROM users WHERE email = ?');
-    const user = userStmt.get(email)
+    const userStmt = db.prepare(`SELECT * FROM users WHERE email = @email`);
+    const user = userStmt.get({email: email})
     
     
     try{
-        console.log(email)
-        if(email !== user.email){
-            throw new Error({message : 'Utilisateur non trouvé', status: 401});
+        //console.log(user.email)
+        if(user === undefined){
+            throw {message : 'Utilisateur non trouvé'};
         }
 
         
@@ -95,7 +95,8 @@ exports.login = async (req, res) => {
         })
     }
     catch(err){
-        res.status(500).json({err});
+        console.log(err)
+        res.status(err.status || 500).json({err});
     }
 }
 

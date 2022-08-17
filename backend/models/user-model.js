@@ -1,4 +1,5 @@
 const {createTable } = require('./database');
+const {db} = require('./database');
 
 const structureUser = /*sql*/`
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,6 +19,12 @@ catch (err) {
 }
 
 
+function getUser(id){
+  const user = db.prepare(`SELECT * FROM users WHERE id = @id`).get({id:id});
+  return user;
+}
+
+module.exports = {getUser}
 
 
 

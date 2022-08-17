@@ -3,6 +3,7 @@ const { db, createTable, joinTable } = require('./database');
 const structurePost = /*sql*/`
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 user_id INTEGER NOT NULL,
+author TEXT,
 message TEXT NOT NULL, 
 picture VARCHAR(150), 
 date TEXT,
