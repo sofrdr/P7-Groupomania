@@ -8,15 +8,15 @@ message TEXT NOT NULL,
 picture VARCHAR(150), 
 date TEXT,
 likes INTEGER DEFAULT 0,
-usersLiked TEXT, 
-comments TEXT,
-FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+usersLiked TEXT DEFAULT '[]', 
+comments TEXT
 `
 createTable('posts', structurePost);
 joinTable('posts','users', 'user_id', 'id');
 
 function getPost(id){
     const post = db.prepare(`SELECT * FROM posts WHERE id = @id`).get({ id: id });
+    post.usersLiked = JSON.parse(post.usersLiked);
     return post;
 }
 
