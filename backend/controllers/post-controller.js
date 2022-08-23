@@ -1,7 +1,7 @@
 const { db } = require('../models/database');
 const { getUser } = require('../models/user-model');
 const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost } = require('../models/post-model');
-const { createComment, getComments, getLastComment} = require('../models/comment-model')
+const { createComment, getComments, getLastComment } = require('../models/comment-model')
 const fs = require('fs');
 
 // Ajouter un post
@@ -177,7 +177,13 @@ exports.commentPost = (req, res) => {
     const id = req.params.id;
 
     createComment(author, message, id)
-    
+    const comments = getComments(id)
+    db.prepare(`UPDATE posts SET comments = @comments WHERE id = @id`)
+      .run({
+        comments: JSON.stringify(comments),
+        id: id
+      })
+
     res.status(201).json({ message: "Le commentaire a bien été ajouté" })
   }
   catch (err) {
@@ -192,15 +198,15 @@ exports.commentPost = (req, res) => {
 
 exports.getComments = (req, res) => {
 
-    try{
-      const id = req.params.id;
+  try {
+    const id = req.params.id;
 
-      const comments = getComments(id);
-      res.status(200).json(comments)
+    const comments = getComments(id);
+    res.status(200).json(comments)
 
-    }
-    catch(err){
-      res.status(500).json({err})
-    }
+  }
+  catch (err) {
+    res.status(500).json({ err })
+  }
 
 }
