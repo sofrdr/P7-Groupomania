@@ -19,6 +19,12 @@ function getComments(id){
     return comments
 }
 
+function getLastComment(id){
+    const comment = db.prepare(`SELECT * FROM comments WHERE post_id = ?`)
+    .get(id);
+    return comment
+}
+
 function createComment(author, message, post_id) {
     newComment = db.prepare(`INSERT INTO comments (author, message, date, post_id) VALUES (@author, @message, datetime('now', 'localtime'), @post_id)`)
     .run({        
@@ -26,6 +32,6 @@ function createComment(author, message, post_id) {
         message: message, 
         post_id: post_id      
     })
-}
+    }
 
-module.exports = {getComments, createComment};
+module.exports = {getComments, createComment, getLastComment};

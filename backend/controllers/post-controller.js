@@ -1,6 +1,7 @@
 const { db } = require('../models/database');
 const { getUser } = require('../models/user-model');
-const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost } = require('../models/post-model')
+const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost } = require('../models/post-model');
+const { createComment, getComments, getLastComment} = require('../models/comment-model')
 const fs = require('fs');
 
 // Ajouter un post
@@ -138,26 +139,68 @@ exports.likePost = (req, res) => {
 
     }
 
-     if(like === 0) {
-        if (usersLiked.includes(userMail)){
-            db.prepare(`UPDATE posts SET likes = likes - 1 WHERE id = @id`)
-                .run({ id: id });
-        for(let i = 0; i < usersLiked.length; i++){
-          if(usersLiked[i] === userMail){
+    if (like === 0) {
+      if (usersLiked.includes(userMail)) {
+        db.prepare(`UPDATE posts SET likes = likes - 1 WHERE id = @id`)
+          .run({ id: id });
+        for (let i = 0; i < usersLiked.length; i++) {
+          if (usersLiked[i] === userMail) {
             usersLiked.splice(i, 1)
           }
-        } 
+        }
         db.prepare(`UPDATE posts SET usersLiked = @usersLiked WHERE id = @id`)
           .run({ usersLiked: JSON.stringify(usersLiked), id: id })
         res.status(201).json({ message: "Retrait du like pris en compte" })
-           
-    } 
-  }}
+
+      } else {
+        res.status(401).json({ message: "Retrait du like impossible" })
+      }
+    }
+  }
   catch (err) {
     console.log(err)
     res.status(400).json({ err })
   }
 
 
+
+}
+
+
+exports.commentPost = (req, res) => {
+
+  try {
+    const message = req.body.message;
+    const userId = req.auth.userId;
+    const user = getUser(userId);
+    const author = user.email;
+    const id = req.params.id;
+
+    createComment(author, message, id)
+    
+    res.status(201).json({ message: "Le commentaire a bien été ajouté" })
+  }
+  catch (err) {
+    console.log(err)
+    res.status(400).json({ err })
+  }
+
+
+
+}
+
+
+exports.getComments = (req, res) => {
+
+    try{
+      const id = req.params.id;
+
+      const comments = getComments(id);
+      res.status(200).json(comments)
+
+    }
+    catch(err){
+      res.status(500).json({err})
+    }
 
 }
