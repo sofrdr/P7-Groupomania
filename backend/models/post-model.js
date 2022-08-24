@@ -12,9 +12,9 @@ usersLiked TEXT DEFAULT '[]',
 comments TEXT
 `
 createTable('posts', structurePost);
-joinTable('posts','users', 'user_id', 'id');
+joinTable('posts', 'users', 'user_id', 'id');
 
-function getPost(id){
+function getPost(id) {
     const post = db.prepare(`SELECT * FROM posts WHERE id = @id`).get({ id: id });
     post.usersLiked = JSON.parse(post.usersLiked);
     return post;
@@ -52,26 +52,46 @@ function updatePostPicture(picture, id) {
     })
 }
 
-function deletePost(id){
+function deletePost(id) {
     db.prepare(`DELETE FROM posts WHERE id = @id`).run({ id: id })
 }
 
 
-function updatePostComments(comments, id){
+function addLike(id) {
+    db.prepare(`UPDATE posts SET likes = likes + 1 WHERE id = @id`)
+        .run({ id: id });
+  
+}
+
+function removeLike(id){
+    db.prepare(`UPDATE posts SET likes = likes - 1 WHERE id = @id`)
+          .run({ id: id });
+}
+
+function updateLikers(usersLiked, id){
+    db.prepare(`UPDATE posts SET usersLiked = @usersLiked WHERE id = @id`)
+          .run({ usersLiked: JSON.stringify(usersLiked), id: id })
+}
+
+
+function updatePostComments(comments, id) {
     db.prepare(`UPDATE posts SET comments = @comments WHERE id = @id`)
-    .run({
-      comments: JSON.stringify(comments),
-      id: id
-    })
+        .run({
+            comments: JSON.stringify(comments),
+            id: id
+        })
 }
 
 module.exports = {
-    getPost, 
+    getPost,
     getAllPosts,
     createPost,
     updatePostMessage,
     updatePostPicture,
     deletePost,
-    updatePostComments
+    updatePostComments,
+    addLike, 
+    removeLike,
+    updateLikers
 }
 

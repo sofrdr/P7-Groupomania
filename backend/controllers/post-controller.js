@@ -1,6 +1,6 @@
 const { db } = require('../models/database');
 const { getUser } = require('../models/user-model');
-const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost, updatePostComments } = require('../models/post-model');
+const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost, updatePostComments, addLike, removeLike, updateLikers } = require('../models/post-model');
 const { createComment, getComments, getOneComment, editComment, deleteComment } = require('../models/comment-model')
 const fs = require('fs');
 
@@ -107,7 +107,7 @@ exports.deletePost = (req, res) => {
 }
 
 
-// Ajouter un like à un post
+// Ajouter ou retirer un like à un post
 
 exports.likePost = (req, res) => {
   const userId = req.auth.userId;
@@ -127,12 +127,10 @@ exports.likePost = (req, res) => {
       if (usersLiked.includes(userMail)) {
         res.status(401).json({ message: "Vous aimez déjà le post" })
       } else {
-        db.prepare(`UPDATE posts SET likes = likes + 1 WHERE id = @id`)
-          .run({ id: id });
+        addLike(id)
 
         usersLiked.push(userMail);
-        db.prepare(`UPDATE posts SET usersLiked = @usersLiked WHERE id = @id`)
-          .run({ usersLiked: JSON.stringify(usersLiked), id: id })
+        updateLikers(usersLiked, id)
         res.status(201).json({ message: "Like pris en compte" })
       }
 
@@ -141,15 +139,13 @@ exports.likePost = (req, res) => {
 
     if (like === 0) {
       if (usersLiked.includes(userMail)) {
-        db.prepare(`UPDATE posts SET likes = likes - 1 WHERE id = @id`)
-          .run({ id: id });
+        removeLike(id)
         for (let i = 0; i < usersLiked.length; i++) {
           if (usersLiked[i] === userMail) {
             usersLiked.splice(i, 1)
           }
         }
-        db.prepare(`UPDATE posts SET usersLiked = @usersLiked WHERE id = @id`)
-          .run({ usersLiked: JSON.stringify(usersLiked), id: id })
+        updateLikers(usersLiked, id)
         res.status(201).json({ message: "Retrait du like pris en compte" })
 
       } else {
