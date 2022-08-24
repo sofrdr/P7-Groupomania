@@ -43,5 +43,9 @@ function editComment(id, message) {
         })
 }
 
+function deleteComment(id){
+    db.prepare(`DELETE FROM comments WHERE id = @id`)
+    .run({id: id})
+}
 
-module.exports = { getComments, createComment, getOneComment, editComment };
+module.exports = { getComments, createComment, getOneComment, editComment, deleteComment };

@@ -1,7 +1,7 @@
 const { db } = require('../models/database');
 const { getUser } = require('../models/user-model');
 const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost, updatePostComments } = require('../models/post-model');
-const { createComment, getComments, getOneComment, editComment } = require('../models/comment-model')
+const { createComment, getComments, getOneComment, editComment, deleteComment } = require('../models/comment-model')
 const fs = require('fs');
 
 // Ajouter un post
@@ -178,7 +178,7 @@ exports.commentPost = (req, res) => {
 
     createComment(author, message, id)
     const comments = getComments(id)
-   
+
     updatePostComments(comments, id)
 
     res.status(201).json({ message: "Le commentaire a bien été ajouté" })
@@ -230,6 +230,38 @@ exports.editComment = (req, res) => {
       updatePostComments(comments, postId)
       res.status(200).json({ message: "Le commentaire a bien été modifié" })
     }
+  }
+  catch (err) {
+    res.status(404).json({ err })
+  }
+
+}
+
+
+// Supprimer un commentaire
+
+exports.deleteComment = (req, res) => {
+
+  const id = req.params.id;
+  const userId = req.auth.userId;
+
+  try {
+
+    const comment = getOneComment(id);
+    const currentUser = getUser(userId);
+    const postId = comment.post_id;
+
+
+    if (comment.author !== currentUser.email && currentUser.role !== 1) {
+      res.status(403).json({ message: "Suppression du commentaire non autorisée" });
+    } else {
+      deleteComment(id);
+      const comments = getComments(postId)
+      updatePostComments(comments, postId)
+      res.status(200).json({ message: "Le commentaire a bien été supprimé" })
+    }
+
+
   }
   catch (err) {
     res.status(404).json({ err })
