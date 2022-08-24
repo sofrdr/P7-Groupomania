@@ -9,7 +9,10 @@ router.get('/', auth, postCtrl.getPosts);
 router.put('/:id', auth, multer, postCtrl.modifyPost);
 router.delete('/:id', auth, postCtrl.deletePost)
 router.post('/:id/like', auth, postCtrl.likePost)
+
+//comments
 router.post('/:id/comment', auth, postCtrl.commentPost)
 router.get('/:id/comment', auth, postCtrl.getComments)
+router.put('/comment/:id', auth, postCtrl.editComment)
 
 module.exports = router;

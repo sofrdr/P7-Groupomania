@@ -56,12 +56,22 @@ function deletePost(id){
     db.prepare(`DELETE FROM posts WHERE id = @id`).run({ id: id })
 }
 
+
+function updatePostComments(comments, id){
+    db.prepare(`UPDATE posts SET comments = @comments WHERE id = @id`)
+    .run({
+      comments: JSON.stringify(comments),
+      id: id
+    })
+}
+
 module.exports = {
     getPost, 
     getAllPosts,
     createPost,
     updatePostMessage,
     updatePostPicture,
-    deletePost
+    deletePost,
+    updatePostComments
 }
 

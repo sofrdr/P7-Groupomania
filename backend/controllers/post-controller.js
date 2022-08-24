@@ -1,7 +1,7 @@
 const { db } = require('../models/database');
 const { getUser } = require('../models/user-model');
-const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost } = require('../models/post-model');
-const { createComment, getComments, getLastComment } = require('../models/comment-model')
+const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost, updatePostComments } = require('../models/post-model');
+const { createComment, getComments, getOneComment, editComment } = require('../models/comment-model')
 const fs = require('fs');
 
 // Ajouter un post
@@ -166,7 +166,7 @@ exports.likePost = (req, res) => {
 
 }
 
-
+// Ajouter un commentaire à un post
 exports.commentPost = (req, res) => {
 
   try {
@@ -178,11 +178,8 @@ exports.commentPost = (req, res) => {
 
     createComment(author, message, id)
     const comments = getComments(id)
-    db.prepare(`UPDATE posts SET comments = @comments WHERE id = @id`)
-      .run({
-        comments: JSON.stringify(comments),
-        id: id
-      })
+   
+    updatePostComments(comments, id)
 
     res.status(201).json({ message: "Le commentaire a bien été ajouté" })
   }
@@ -195,7 +192,7 @@ exports.commentPost = (req, res) => {
 
 }
 
-
+// Afficher tous les commentaires d'un post
 exports.getComments = (req, res) => {
 
   try {
@@ -207,6 +204,35 @@ exports.getComments = (req, res) => {
   }
   catch (err) {
     res.status(500).json({ err })
+  }
+
+}
+
+// Modifier un commentaire
+
+exports.editComment = (req, res) => {
+
+  const id = req.params.id;
+  const userId = req.auth.userId;
+
+  try {
+
+    const comment = getOneComment(id);
+    const postId = comment.post_id;
+    const currentUser = getUser(userId);
+    const message = req.body.message;
+
+    if (comment.author !== currentUser.email && currentUser.role !== 1) {
+      res.status(403).json({ message: "Modification du commentaire non autorisée" });
+    } else {
+      editComment(id, message);
+      const comments = getComments(postId)
+      updatePostComments(comments, postId)
+      res.status(200).json({ message: "Le commentaire a bien été modifié" })
+    }
+  }
+  catch (err) {
+    res.status(404).json({ err })
   }
 
 }
