@@ -19,12 +19,30 @@ catch (err) {
 }
 
 
+function createUser(email, password) {
+
+  //const uuid = uuidv4();
+  const stmt = db.prepare('INSERT INTO users (email, password) VALUES (@email, @password)');
+  stmt.run({
+    email: email,
+    password: password, 
+    
+  });
+
+}
+
 function getUser(id){
   const user = db.prepare(`SELECT * FROM users WHERE id = @id`).get({id:id});
   return user;
 }
 
-module.exports = {getUser}
+function getUserByEmail(email){
+  const user = db.prepare('SELECT * FROM users WHERE email= @email')
+  .get({email : email});
+  return user;
+}
+
+module.exports = {getUser, createUser, getUserByEmail}
 
 
 

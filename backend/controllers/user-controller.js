@@ -1,31 +1,16 @@
 require('dotenv').config({path: '../config/.env'});
-const {db} = require('../models/database')
 const SECRET_KEY = process.env.SECRET_KEY;
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
-const { v4: uuidv4} = require('uuid'); 
+const {createUser, getUserByEmail} = require('../models/user-model')
+//const { v4: uuidv4} = require('uuid'); 
 
 
 
 
 
 exports.signup = async (req, res) => {
-
-    function createUser(email, password) {
-
-        const uuid = uuidv4();
-        const stmt = db.prepare('INSERT INTO users (email, password, uuid) VALUES (@email, @password, @uuid)');
-        stmt.run({
-          email: email,
-          password: password, 
-          uuid: uuid
-        });
-      
-      }
-
-      
-
 
     const { email, password } = req.body;
     try {
@@ -48,8 +33,7 @@ exports.signup = async (req, res) => {
             // Ajout de l'utilisateur en BDD       
             createUser(email, hash);
             // On récupère l'id et l'email de l'utilisateur
-            const newUserStmt = db.prepare('SELECT id, email FROM users WHERE email= ?');
-            const newUser = newUserStmt.get(email);
+            const newUser = getUserByEmail(email)
             res.status(201).json({
                 userId : newUser.id,
                 email: newUser.email,
@@ -69,22 +53,22 @@ exports.login = async (req, res) => {
 
     const {email, password} = req.body;
 
-    const userStmt = db.prepare(`SELECT * FROM users WHERE email = @email`);
-    const user = userStmt.get({email: email})
-    
-    
+    // On récupère l'utilisateur dans la BDD
+    const user = getUserByEmail(email)
+      
     try{
-        //console.log(user.email)
+        // Si aucun utilisateur ne correspond à l'adresse mail de la requête on renvoie une erreur
         if(user === undefined){
-            throw {message : 'Utilisateur non trouvé'};
+            return res.status(401).json({error: "Adresse mail ou mot de passe incorrect"})
         }
 
-        
+        // Si le mot de passe ne correspond pas à l'email en BDD alors on renvoie une erreur
         const validPassword = await bcrypt.compare(password, user.password);
         if(!validPassword){
             return res.status(401).json({error: 'Adresse mail ou mot de passe incorrect'})
         }
         
+        // Sinon création d'un token d'authentification valable 1h
         return res.status(200).json({
             userId : user.id,
             token : jwt.sign(

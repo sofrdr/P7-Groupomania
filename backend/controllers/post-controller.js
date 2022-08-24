@@ -8,10 +8,12 @@ const fs = require('fs');
 exports.addPost = (req, res) => {
 
   try {
-    const userId = req.auth.userId;      // On récupère le userID du token 
-    const user = getUser(userId);   // On récupère l'utilisateur dans la BDD 
+
+    // On récupère le userID du token 
+    const userId = req.auth.userId;
+    // On récupère l'utilisateur dans la BDD       
+    const user = getUser(userId);   
     const author = user.email;
-    console.log(author)
     const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
 
     createPost(userId, author, req.body.message || "", picture);
@@ -52,6 +54,7 @@ exports.modifyPost = (req, res) => {
 
       const message = req.body.message;
 
+      /* Si la requête contient une image alors on supprime l'image existante du dossier et on actualise l'image du post */
       if (req.file) {
         const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename
         const filename = post.picture.split('/images/')[1];
@@ -115,20 +118,24 @@ exports.likePost = (req, res) => {
   let like = req.body.like
 
   const user = getUser(userId);
-  const userMail = user.email; //email de l'utilisateur authentifié
+  //email de l'utilisateur authentifié
+  const userMail = user.email; 
 
   const post = getPost(id);
   console.log(">>", id, post)
-  const usersLiked = post.usersLiked // tableau des utilisateurs qui aiment le post
+  // tableau des utilisateurs qui aiment le post
+  const usersLiked = post.usersLiked 
 
 
   try {
+    // L'utilisateur veut ajouter un like
     if (like === 1) {
+      // On vérifie que l'utilisateur n'a pas déjà un like sur ce post
       if (usersLiked.includes(userMail)) {
         res.status(401).json({ message: "Vous aimez déjà le post" })
       } else {
+        // Si non le nombre de like est incrémenté de 1 et l'adresse mail de l'utilisateur est ajoutée au tableau des likers
         addLike(id)
-
         usersLiked.push(userMail);
         updateLikers(usersLiked, id)
         res.status(201).json({ message: "Like pris en compte" })
@@ -137,8 +144,11 @@ exports.likePost = (req, res) => {
 
     }
 
+    // L'utilisateur veut retirer son like
     if (like === 0) {
+      // On vérifie qu'il fait bien partie des likers
       if (usersLiked.includes(userMail)) {
+        // si oui, on on décrémente le nombre de likes de 1 et son adresse mail est retirée du tableau des likers
         removeLike(id)
         for (let i = 0; i < usersLiked.length; i++) {
           if (usersLiked[i] === userMail) {
@@ -172,9 +182,11 @@ exports.commentPost = (req, res) => {
     const author = user.email;
     const id = req.params.id;
 
+    // Un commentaire est ajouté à la table comments
     createComment(author, message, id)
     const comments = getComments(id)
 
+    // On actualise la ligne comments de la table posts
     updatePostComments(comments, id)
 
     res.status(201).json({ message: "Le commentaire a bien été ajouté" })
@@ -218,11 +230,14 @@ exports.editComment = (req, res) => {
     const currentUser = getUser(userId);
     const message = req.body.message;
 
+
+    // On vérifie si l'utilisateur est l'auteur du commentaire ou a le rôle administrateur
     if (comment.author !== currentUser.email && currentUser.role !== 1) {
       res.status(403).json({ message: "Modification du commentaire non autorisée" });
     } else {
       editComment(id, message);
       const comments = getComments(postId)
+      // On actualise la ligne comments de la table posts
       updatePostComments(comments, postId)
       res.status(200).json({ message: "Le commentaire a bien été modifié" })
     }
@@ -247,12 +262,13 @@ exports.deleteComment = (req, res) => {
     const currentUser = getUser(userId);
     const postId = comment.post_id;
 
-
+    // On vérifie si l'utilisateur est l'auteur du commentaire ou a le rôle administrateur
     if (comment.author !== currentUser.email && currentUser.role !== 1) {
       res.status(403).json({ message: "Suppression du commentaire non autorisée" });
     } else {
       deleteComment(id);
       const comments = getComments(postId)
+      // On actualise la ligne comments de la table posts
       updatePostComments(comments, postId)
       res.status(200).json({ message: "Le commentaire a bien été supprimé" })
     }
