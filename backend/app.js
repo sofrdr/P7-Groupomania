@@ -9,6 +9,9 @@ const app = express();
 
 app.use(express.json());
 
+
+// Configuration des en-têtes
+
 app.use(
     helmet({
         crossOriginResourcePolicy: { policy: "cross-origin" },
@@ -22,7 +25,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// routes
+// Routes
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes);
