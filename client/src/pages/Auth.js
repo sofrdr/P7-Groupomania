@@ -1,5 +1,5 @@
 import React from "react";
-import Log from "../components/connection/Log";
+import Log from "../components/Connection/Log";
 
 
 const Auth = () => {

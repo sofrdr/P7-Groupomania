@@ -12,7 +12,7 @@ const {createUser, getUserByEmail} = require('../models/user-model')
 
 exports.signup = async (req, res) => {
 
-    const { email, password } = req.body;
+    const { email, password, pseudo } = req.body;
     try {
         // Vérification de la validité de l'adresse mail
         if (validator.isEmail(email) === false) {
@@ -31,7 +31,7 @@ exports.signup = async (req, res) => {
             // Cryptage du mot de passe
             const hash = await bcrypt.hash(password, 12);
             // Ajout de l'utilisateur en BDD       
-            createUser(email, hash);
+            createUser(email, hash, pseudo);
             // On récupère l'id et l'email de l'utilisateur
             const newUser = getUserByEmail(email)
             res.status(201).json({
@@ -44,6 +44,7 @@ exports.signup = async (req, res) => {
     }
     catch (err) {
         res.status(400).json({ err });
+        console.log(err)
     }
 
 }

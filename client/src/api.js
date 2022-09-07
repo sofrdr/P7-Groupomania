@@ -28,4 +28,12 @@ async function signUp(dataSignUp) {
 
 }
 
-module.exports = {signIn, signUp}
+async function getPosts(){
+    const response = await fetch("http://localhost:3000/api/posts")
+    const posts = await response.json()
+    console.log(posts)
+}
+
+getPosts()
+
+module.exports = {signIn, signUp, getPosts}

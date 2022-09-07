@@ -6,6 +6,7 @@ const structureUser = /*sql*/`
   uuid TEXT,
   email VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(50) NOT NULL,
+  pseudo VARCHAR(50) NOT NULL UNIQUE,
   role INTEGER DEFAULT 0
 `;
 
@@ -19,14 +20,14 @@ catch (err) {
 }
 
 
-function createUser(email, password) {
+function createUser(email, password, pseudo) {
 
   //const uuid = uuidv4();
-  const stmt = db.prepare('INSERT INTO users (email, password) VALUES (@email, @password)');
+  const stmt = db.prepare('INSERT INTO users (email, password, pseudo) VALUES (@email, @password, @pseudo)');
   stmt.run({
     email: email,
     password: password, 
-    
+    pseudo: pseudo
   });
 
 }

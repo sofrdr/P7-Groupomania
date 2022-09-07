@@ -13,7 +13,7 @@ exports.addPost = (req, res) => {
     const userId = req.auth.userId;
     // On récupère l'utilisateur dans la BDD       
     const user = getUser(userId);   
-    const author = user.email;
+    const author = user.pseudo;
     const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
 
     createPost(userId, author, req.body.message || "", picture);
@@ -179,7 +179,7 @@ exports.commentPost = (req, res) => {
     const message = req.body.message;
     const userId = req.auth.userId;
     const user = getUser(userId);
-    const author = user.email;
+    const author = user.pseudo;
     const id = req.params.id;
 
     // Un commentaire est ajouté à la table comments
@@ -232,7 +232,7 @@ exports.editComment = (req, res) => {
 
 
     // On vérifie si l'utilisateur est l'auteur du commentaire ou a le rôle administrateur
-    if (comment.author !== currentUser.email && currentUser.role !== 1) {
+    if (comment.author !== currentUser.pseudo && currentUser.role !== 1) {
       res.status(403).json({ message: "Modification du commentaire non autorisée" });
     } else {
       editComment(id, message);
@@ -263,7 +263,7 @@ exports.deleteComment = (req, res) => {
     const postId = comment.post_id;
 
     // On vérifie si l'utilisateur est l'auteur du commentaire ou a le rôle administrateur
-    if (comment.author !== currentUser.email && currentUser.role !== 1) {
+    if (comment.author !== currentUser.pseudo && currentUser.role !== 1) {
       res.status(403).json({ message: "Suppression du commentaire non autorisée" });
     } else {
       deleteComment(id);
