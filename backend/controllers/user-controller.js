@@ -26,7 +26,7 @@ exports.signup = async (req, res) => {
         - 1 caractère spécial
         */
         } else if (validator.matches(password, /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$/gm) === false) {
-            return res.status(401).send({ error: 'Le mot de passe doit contenir au moins 8 caratères, un chiffre, une majuscule et un caractère spécial' });
+            return res.status(401).send({ error: 'Le mot de passe doit contenir au moins 8 caractères, un chiffre, une majuscule et un caractère spécial' });
         } else {
             // Cryptage du mot de passe
             const hash = await bcrypt.hash(password, 12);

@@ -1,38 +1,63 @@
 import React, { useState } from "react"
+import {signUp} from "../../api";
+import SignIn from "./SignIn";
+
 
 const SignUp = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
+    const [isFormSend, setIsFormSend] = useState(false)
 
+    // Data à envoyer au back
     const dataSignUp = {
         email,
         password
     }
 
-    const handleSignUp = (e) => {
+    
+
+    
+
+    // Fonction pour envoyer les données au back à la validation du formulaire
+    async function handleSignUp(e)  {
         
         e.preventDefault();
-        fetch("http://localhost:3000/api/auth/signup", {
-            method: 'POST',
-            body: JSON.stringify(dataSignUp),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+        try {
+            const data = await signUp(dataSignUp)
+            console.log(data)
+
+            if (data.error) {
+                setErrorMsg(data.error)
+            }else{
+                setIsFormSend(true)
             }
-        })
-        .then(res => res.json())
-        .catch(err => console.error(err)) 
+        }
+        catch (err) {
+            console.error(err)
+        }
+       
+        
     }
+
+  
 
     return(
         <div className="signup-form-container">
-            <form id="signup-form" onSubmit={handleSignUp}>
+            {isFormSend ? (
+                <div>
+                    <SignIn/>
+                    <p>Le compte a bien été créé, veuillez vous connecter</p>
+                </div>
+            )
+        : (<form id="signup-form" onSubmit={handleSignUp}>
                 <label htmlFor="email">Email</label>
                 <input 
                 type="email" 
                 id="email" 
                 name="email"
+                // On enregistre la nouvelle valeur de la variable email à chaque modification du champ
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 />
@@ -42,11 +67,14 @@ const SignUp = () => {
                 type="password" 
                 id="password" 
                 name="password"
+                // On enregistre la nouvelle valeur de la variable password à chaque modification du champ
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 />
                 <input type="submit" value="Créer un compte"/>
-            </form>
+                <div className="signup-error-msg">{errorMsg}</div>
+            </form>)}
+            
         </div>
     )
 }
