@@ -5,19 +5,14 @@ import SignIn from "./SignIn";
 
 const SignUp = () => {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [pseudo, setPseudo] = useState("");
+
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        pseudo: ""
+    })
     const [errorMsg, setErrorMsg] = useState("");
     const [isFormSend, setIsFormSend] = useState(false)
-
-    // Data à envoyer au back
-    const dataSignUp = {
-        email,
-        password, 
-        pseudo
-    }
-
 
 
 
@@ -27,7 +22,7 @@ const SignUp = () => {
 
         e.preventDefault();
         try {
-            const data = await signUp(dataSignUp)
+            const data = await signUp(formData)
             console.log(data)
 
             if (data.error) {
@@ -43,7 +38,15 @@ const SignUp = () => {
 
     }
 
-
+    function handleChange(e) {
+        const {name, value} = e.target
+        setFormData(prevFormData => {
+            return {
+                ...prevFormData,
+                [name]: value
+            }
+        })
+    }
 
     return (
         <div className="signup-form-container">
@@ -55,34 +58,43 @@ const SignUp = () => {
             )
                 : (<form id="signup-form" onSubmit={handleSignUp}>
                     <label htmlFor="email">Email</label>
+                    <br />
                     <input
                         type="email"
                         id="email"
                         name="email"
                         // On enregistre la nouvelle valeur de la variable email à chaque modification du champ
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
+                        onChange={handleChange}
+                        value={formData.email}
                     />
 
+                    <br />
+                    <br />
                     <label htmlFor="pseudo">Pseudo</label>
+                    <br />
+
                     <input
                         type="text"
                         id="pseudo"
                         name="pseudo"
                         // On enregistre la nouvelle valeur de la variable email à chaque modification du champ
-                        onChange={(e) => setPseudo(e.target.value)}
-                        value={pseudo}
+                        onChange={handleChange}
+                        value={formData.pseudo}
                     />
-
+                    <br />
+                    <br />
                     <label htmlFor="password">Mot de passe</label>
+                    <br />
                     <input
                         type="password"
                         id="password"
                         name="password"
                         // On enregistre la nouvelle valeur de la variable password à chaque modification du champ
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
+                        onChange={handleChange}
+                        value={formData.password}
                     />
+                    <br />
+                    <br />
                     <input type="submit" value="Créer un compte" />
                     <div className="signup-error-msg">{errorMsg}</div>
                 </form>)}
