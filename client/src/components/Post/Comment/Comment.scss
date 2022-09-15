@@ -1,0 +1,15 @@
+.comment{
+&-container{
+    background-color: #F2F2F2;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+&-content{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+}
+

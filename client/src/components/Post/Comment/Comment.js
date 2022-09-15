@@ -1,13 +1,14 @@
 import React from "react";
+import "./Comment.scss"
 
 const Comment = (props) => {
 
     return(
-        <div>
-            <div>
+        <div className="comment-container">
+            
               <p>{props.author}</p>  
-            </div>
-            <div>
+            
+            <div className="comment-content">
                 <p>{props.message}</p>
                 <p>{props.date}</p>
             </div>

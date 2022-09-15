@@ -1,0 +1,53 @@
+.card {
+    font-family: 'Lato', sans-serif;
+    background-color: white;
+    margin: auto;
+    width: 45%;
+    border-radius: 20px;
+    padding: 20px 0;
+    margin-top: 30px;
+    display: flex;
+        flex-direction: column;
+        align-items: center;
+    
+
+    &-content{
+        
+        &--message{
+            font-size: 20px;
+        }
+
+        &--header{
+            margin-bottom: 40px;
+        }
+
+        &--image{
+            width: 100%;
+            object-fit: cover;
+            
+        }
+
+        &--indicators{
+            display: flex;
+            
+
+            &-elt{
+                margin-right: 20px;
+            }
+        }
+    }
+
+    &-comments{
+
+        margin-top: 30px;
+
+        &--onclick{
+            cursor: pointer;
+            text-decoration: underline;
+
+            &:hover{
+                color: #FD2D01;
+            }
+        }
+    }
+}
