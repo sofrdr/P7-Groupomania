@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card"
-import { getPosts } from "../../api";
+import { getPosts } from "../../services/api";
 import Comment from "./Comment";
 
 

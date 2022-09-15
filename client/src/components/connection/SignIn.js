@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { signIn } from "../../api";
+import { signIn } from "../../services/api";
 
 
 const SignIn = () => {
@@ -12,15 +12,7 @@ const SignIn = () => {
 
     })
 
-    const [token, setToken] = useState("")
-
-    function setHeaders(){
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `bearer ${token}`
-        }
-    }
-
+   
     // Fonction pour envoyer les données au back à la validation du formulaire
 
     
@@ -31,7 +23,7 @@ const SignIn = () => {
 
         try {
             const data = await signIn(formData)
-            setToken(data.token)
+            
             console.log(data)
             
 
@@ -42,7 +34,7 @@ const SignIn = () => {
             }
         }
         catch (err) {
-            console.error(err)
+            console.log(err)
         }
     }
 

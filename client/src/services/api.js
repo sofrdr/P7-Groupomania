@@ -1,6 +1,7 @@
 
  const headers = {
-    
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY2MzA3NjE4OSwiZXhwIjoxNjYzMDc5Nzg5fQ.j-KIdIf6cAoHekodyCh7U7CvbdMdXZnoSK8qEzXuL_w'
  }
  

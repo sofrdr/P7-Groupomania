@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { signUp } from "../../api";
+import { signUp } from "../../services/api";
 import SignIn from "./SignIn";
 
 
@@ -15,7 +15,7 @@ const SignUp = () => {
     const [isFormSend, setIsFormSend] = useState(false)
 
 
-
+    
 
     // Fonction pour envoyer les données au back à la validation du formulaire
     async function handleSignUp(e) {
@@ -32,7 +32,7 @@ const SignUp = () => {
             }
         }
         catch (err) {
-            console.error(err)
+            console.log(err)
         }
 
 
