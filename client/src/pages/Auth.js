@@ -1,11 +1,17 @@
 import React from "react";
 import Log from "../components/Connection/Log";
 
+import "./Auth.scss"
+
 
 const Auth = () => {
-    return(
-        <div>
-            <Log/>
+    return (
+        <div className="auth-container">
+            <div>
+                
+                <Log />
+            </div>
+
         </div>
     )
 }

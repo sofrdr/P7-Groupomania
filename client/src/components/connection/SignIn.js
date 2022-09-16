@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import {Navigate} from "react-router-dom";
 import { signIn } from "../../services/api";
 
 
@@ -11,6 +12,8 @@ const SignIn = () => {
         password: ""
 
     })
+
+    const [loggedIn, setLoggedIn] = useState(false);
 
    
     // Fonction pour envoyer les données au back à la validation du formulaire
@@ -30,7 +33,7 @@ const SignIn = () => {
             if (data.error) {
                 setErrorMsg(data.error)
             } else {
-                window.location.assign("/home")
+                setLoggedIn(true)
             }
         }
         catch (err) {
@@ -49,6 +52,8 @@ const SignIn = () => {
             }
         })
     }
+
+    if (loggedIn) return <Navigate to='/home' />
 
     return (
         <div>

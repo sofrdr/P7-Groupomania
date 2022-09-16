@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import SignIn from "./SignIn"
 import SignUp from "./SignUp"
+import "./Log.scss"
+import logo from "../../assets/icon-left-font.png"
 
 const Log = () => {
 
@@ -23,10 +25,11 @@ const handleConnection = (e) => {
 
     return (
         <div className="log-container">
-            <div className="form-container">
-                <ul>
-                    <li id="register" onClick={handleConnection}>S'inscrire</li>
-                    <li id="login" onClick={handleConnection}>Se connecter</li>
+            <img src={logo} alt="logo groupomania" className="log-container--image" />
+            <div className="form">
+                <ul className="form-selectors">
+                    <li id="register" className="form-selectors-items" onClick={handleConnection}>S'inscrire</li>
+                    <li id="login"  className="form-selectors-items" onClick={handleConnection}>Se connecter</li>
                 </ul>
                 
                 {signInModal && <SignIn/>} 

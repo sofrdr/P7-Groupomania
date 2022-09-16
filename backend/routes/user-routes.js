@@ -22,7 +22,7 @@ const limiterSignup = rateLimit({
 })
 
 router.post('/signup', limiterSignup, userCtrl.signup);
-router.post('/login', limiterLogin, userCtrl.login);
+router.post('/login',  userCtrl.login);
 router.get('/logout', userCtrl.logout)
 
 module.exports = router;
