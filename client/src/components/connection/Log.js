@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import SignIn from "./SignIn"
 import SignUp from "./SignUp"
 import "./Log.scss"
-import logo from "../../assets/icon-left-font.png"
+import logo from "../../assets/icon-left-font.svg"
 
 const Log = () => {
 
@@ -25,11 +25,11 @@ const handleConnection = (e) => {
 
     return (
         <div className="log-container">
-            <img src={logo} alt="logo groupomania" className="log-container--image" />
+            <img src={logo} alt="logo groupomania" />
             <div className="form">
                 <ul className="form-selectors">
-                    <li id="register" className="form-selectors-items" onClick={handleConnection}>S'inscrire</li>
-                    <li id="login"  className="form-selectors-items" onClick={handleConnection}>Se connecter</li>
+                    <li id="register" className={ signUpModal ? "form-selectors-items_focus" : "form-selectors-items"} onClick={handleConnection}>S'inscrire</li>
+                    <li id="login"  className={ signInModal ? "form-selectors-items_focus" : "form-selectors-items"} onClick={handleConnection}>Se connecter</li>
                 </ul>
                 
                 {signInModal && <SignIn/>} 

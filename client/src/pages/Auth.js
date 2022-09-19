@@ -7,10 +7,10 @@ import "./Auth.scss"
 const Auth = () => {
     return (
         <div className="auth-container">
-            <div>
+            
                 
                 <Log />
-            </div>
+            
 
         </div>
     )
