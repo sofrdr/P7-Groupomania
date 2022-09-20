@@ -14,12 +14,22 @@ exports.addPost = (req, res) => {
     // On récupère l'utilisateur dans la BDD       
     const user = getUser(userId);   
     const author = user.pseudo;
-    const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
+     
 
-    createPost(userId, author, req.body.message || "", picture);
+    if(req.file){
+      const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
+      console.log(req) 
+      createPost(userId, author, req.body.message || "", picture);
+    }else{ 
+      console.log(req)      
+      createPost(userId, author, req.body.message)
+    }
+     
     res.status(201).json('Le post a bien été créé')
+    
   }
   catch (err) {
+    
     console.log(err)
     res.status(400).json({ err });
   }

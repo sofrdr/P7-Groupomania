@@ -1,8 +1,10 @@
 
  const headers = {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    'Accept': 'application/json'
  }
+
+ 
 
  let user; 
 
@@ -33,7 +35,8 @@ async function signUp(dataSignUp) {
     const response = await fetch("http://localhost:3000/api/auth/signup", {
         method: 'POST',
         body: JSON.stringify(dataSignUp),
-        headers
+        headers,
+        
     })
     const data = response.json();
     return data;
@@ -48,5 +51,19 @@ async function getPosts(){
 }
 
 
+async function addPost(postData){
+    const response = await fetch("http://localhost:3000/api/posts", {
+        method: 'POST',
+        body: postData,       
+        headers : {
+            'Accept': '*/*',
+            'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+            'Authorization': headers.Authorization
+        }       
+})
+const data = await response.json()
+return data
+}
 
-module.exports = {signIn, signUp, getPosts}
+
+module.exports = {signIn, signUp, getPosts, addPost}
