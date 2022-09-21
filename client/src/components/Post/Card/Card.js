@@ -1,5 +1,9 @@
 import React from "react";
-import "./Card.scss"
+import "./Card.scss";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faComment } from '@fortawesome/free-regular-svg-icons';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
 
 const Card = (props) => {
@@ -11,8 +15,12 @@ const Card = (props) => {
 
             <div className="card-content">
 
-                <div className="card-content--header">
-                    <p>{props.author}</p>
+                <div >
+                    <div className="card-content--header-author">
+                        <p>{props.author} </p>
+                        <FontAwesomeIcon icon={faEllipsis}/>
+                    </div>
+
                     <p>{props.date}</p>
                 </div>
                 <p className="card-content--message">{props.message}</p>
@@ -21,13 +29,20 @@ const Card = (props) => {
                 </div>
 
                 <div className="card-content--indicators">
-                    <div className="card-content--indicators-elt">{props.likes}</div>
-                    <div className="card-content--indicators-elt">{props.numberOfComments}</div>
+                    <div className="card-content--indicators-elt">
+                        <FontAwesomeIcon icon={faHeart} />
+                        {props.likes}
+                    </div>
+                    <div className="card-content--indicators-elt">
+                        <FontAwesomeIcon icon={faComment} />
+                        {props.numberOfComments}
+                    </div>
                 </div>
 
                 <div className="card-comments">
                     {props.comments}
-                    <p onClick={props.handleComments} className="card-comments--onclick">{props.showAllComments ? "Voir moins de commentaires" : "Voir tous les commentaires"}</p>
+                    <p onClick={props.handleComments} className="card-comments--onclick">
+                        {props.showAllComments ? "Voir moins de commentaires" : "Voir tous les commentaires"}</p>
                 </div>
             </div>
 
