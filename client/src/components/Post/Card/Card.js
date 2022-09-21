@@ -1,10 +1,15 @@
 import React, {  useState } from "react";
+
+
 import { likePost } from "../../../services/api";
 import "./Card.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis, faIls } from '@fortawesome/free-solid-svg-icons';
+import dayjs from 'dayjs';
+const relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime)
 
 
 
@@ -14,7 +19,7 @@ const Card = (props) => {
     
     const [showModal, setShowModal] = useState(false)
     
-    
+    const date = props.date
     
 
     const postId = props.id
@@ -55,7 +60,7 @@ const Card = (props) => {
                         <FontAwesomeIcon icon={faEllipsis} className="icon"/>
                     </div>
 
-                    <p>{props.date}</p>
+                    <p>{dayjs(date).fromNow()}</p>
                 </div>
                 <p className="card-content--message">{props.message}</p>
                 <div className="card-content--image-container">
