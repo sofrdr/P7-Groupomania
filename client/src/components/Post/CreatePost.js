@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { addPost } from "../../services/api";
 import "./CreatePost.scss"
 
-const CreatePost = () => {
+const CreatePost = (props) => {
 
     const [message, setMessage] = useState("");
     const [img, setImg] = useState("")
@@ -38,7 +38,7 @@ const CreatePost = () => {
                     type="text"
                     name="message"
                     id="message"
-                    placeholder="Quoi de neuf aujourd'hui ?"
+                    placeholder={`Quoi de neuf aujourd'hui ${props.user} ?`}
                     onChange={(e) => setMessage(e.target.value)}
                     value={message}
                 />

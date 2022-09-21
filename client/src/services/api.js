@@ -1,7 +1,8 @@
 
  const headers = {
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + localStorage.getItem('token')
  }
 
  
@@ -10,6 +11,7 @@
 
  function setToken(token){
   headers.Authorization= 'Bearer '+token;
+  localStorage.setItem('token', token)
   alert('ok')
  }
 
@@ -26,6 +28,7 @@
     const data = await response.json();
     setToken(data.token);
     user = data.user;
+    
     return data;
 
 }
@@ -66,4 +69,15 @@ return data
 }
 
 
-module.exports = {signIn, signUp, getPosts, addPost}
+async function likePost({like}, id){
+    const response = await fetch(`http://localhost:3000/api/posts/${id}/like`, {
+        method: 'POST',
+        body: JSON.stringify({like}),
+        headers
+    })
+    const data = await response.json();
+    console.log(data)
+}
+
+
+module.exports = {signIn, signUp, getPosts, addPost, likePost, getUserInfos}

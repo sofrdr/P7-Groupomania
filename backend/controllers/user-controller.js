@@ -71,7 +71,11 @@ exports.login = async (req, res) => {
         
         // Sinon création d'un token d'authentification valable 1h
         return res.status(200).json({
-            userId : user.id,
+            user : {
+                id: user.id,
+                email: user.email,
+                pseudo: user.pseudo
+            },
             token : jwt.sign(
                 { userId : user.id},
                 SECRET_KEY, 

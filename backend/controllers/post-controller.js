@@ -141,12 +141,12 @@ exports.likePost = (req, res) => {
     // L'utilisateur veut ajouter un like
     if (like === 1) {
       // On vérifie que l'utilisateur n'a pas déjà un like sur ce post
-      if (usersLiked.includes(userMail)) {
+      if (usersLiked.includes(userId)) {
         res.status(401).json({ message: "Vous aimez déjà le post" })
       } else {
         // Si non le nombre de like est incrémenté de 1 et l'adresse mail de l'utilisateur est ajoutée au tableau des likers
         addLike(id)
-        usersLiked.push(userMail);
+        usersLiked.push(userId);
         updateLikers(usersLiked, id)
         res.status(201).json({ message: "Like pris en compte" })
       }
@@ -157,11 +157,11 @@ exports.likePost = (req, res) => {
     // L'utilisateur veut retirer son like
     if (like === 0) {
       // On vérifie qu'il fait bien partie des likers
-      if (usersLiked.includes(userMail)) {
+      if (usersLiked.includes(userId)) {
         // si oui, on on décrémente le nombre de likes de 1 et son adresse mail est retirée du tableau des likers
         removeLike(id)
         for (let i = 0; i < usersLiked.length; i++) {
-          if (usersLiked[i] === userMail) {
+          if (usersLiked[i] === userId) {
             usersLiked.splice(i, 1)
           }
         }
