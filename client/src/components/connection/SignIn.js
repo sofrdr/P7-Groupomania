@@ -57,7 +57,7 @@ const SignIn = () => {
 
     return (
         <div>
-            <form onSubmit={handleSignIn} id="form-signin">
+            <form onSubmit={handleSignIn} id="form-signin" >
                 <label htmlFor="email">Email</label>
                 <br />
                 <input
@@ -67,6 +67,7 @@ const SignIn = () => {
                     // On enregistre la nouvelle valeur de la variable email à chaque modification du champ
                     onChange={handleChange}
                     value={formData.email}
+                    className="form-input"
                 />
 
                 <br />
@@ -80,10 +81,11 @@ const SignIn = () => {
                     // On enregistre la nouvelle valeur de la variable password à chaque modification du champ
                     onChange={handleChange}
                     value={formData.password}
+                    className="form-input"
                 />
                 <br />
                 <br />
-                <input type="submit" value="Se connecter" />
+                <input type="submit" value="Se connecter" className="btn btn-log"/>
                 <div>{errorMsg}</div>
             </form>
         </div>

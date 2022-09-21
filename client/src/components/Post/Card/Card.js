@@ -1,37 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { likePost, getUserInfos } from "../../../services/api";
+import React, {  useState } from "react";
+import { likePost } from "../../../services/api";
 import "./Card.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from '@fortawesome/free-regular-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis, faIls } from '@fortawesome/free-solid-svg-icons';
 
 
 
 
 const Card = (props) => {
 
-
+    
     const [showModal, setShowModal] = useState(false)
     
-    const [user, setUser] = useState("")
-    const [like, setLike] = useState(0)
+    
+    
 
     const postId = props.id
     const usersLike = props.usersLiked
-    console.log(usersLike)
+    const userId = props.user
+    
+    // Si l'utilisateur aime déjà le post alors like = 1 sinon like = 0 
+    let like; 
+    if(usersLike.includes(userId)){
+        like = 1;
+    }else{
+        like = 0;
+    }
 
-
-    useEffect(() => {
-        const data = getUserInfos();
-        setUser(data)
-        
-    }, [])
-
-    console.log(user)
-
+    
+    // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
+    // si la valeur de like était à 1 elle passe à 0 (l'utilisateur retire son like)
      const handleLike =  async () => {
-        like === 0 ? setLike(1) : setLike(0);
+        like === 0 ? like = 1 : like = 0;
         console.log({like: like, id: postId})
         try{
             await likePost({like : like}, postId)

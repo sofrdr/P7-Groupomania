@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { addPost } from "../../services/api";
 import "./CreatePost.scss"
 
@@ -9,15 +9,15 @@ const CreatePost = (props) => {
 
 
     const handleSubmit = async (e) => {
-        e.preventDefault();       
-        const formData = new FormData();
-        formData.append('message', message);
-        formData.append('picture', img)
+        e.preventDefault();  
+        const myForm = document.getElementById('form-addpost')
+        const formData = new FormData(myForm);
+        
 
 
 
         try {
-            const data = await addPost(formData)
+            await addPost(formData)
             for (let key of formData.entries()) {
                 console.log(key[1])
             }
@@ -32,7 +32,7 @@ const CreatePost = (props) => {
 
     return (
         <div className="card addpost">
-            <form method="post" onSubmit={handleSubmit}>
+            <form method="post" onSubmit={handleSubmit} id="form-addpost">
                 <input
                     className="message-field"
                     type="text"
@@ -51,6 +51,7 @@ const CreatePost = (props) => {
                     id="file"
                     name="file"
                     onChange={(e) => setImg(e.target.files[0])}
+                    value={img}
                 />
 
                 <br />

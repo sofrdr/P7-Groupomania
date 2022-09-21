@@ -16,7 +16,7 @@ export default function Home(){
     
 }, [])
 
-
+console.log(user.id)
 
     return(
         <div className="home-container">
@@ -26,7 +26,9 @@ export default function Home(){
             <CreatePost
             user = {user.pseudo}
             />
-            <Posts/>
+            <Posts
+            user = {user}
+            />
             
             </div>
     )

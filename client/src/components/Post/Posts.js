@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card/Card"
-import { getPosts, getUserInfos } from "../../services/api";
+import { getPosts } from "../../services/api";
 import Comment from "./Comment/Comment";
 
 
-const Posts = () => {
+const Posts = (props) => {
 
 
     const [allPosts, setAllPosts] = useState([])
     const [showAllComments, setShowAllComments] = useState(false)
-    const [user, setUser] = useState("")
+    
 
     // Appel API pour récupérer les posts et mise à jour du state 
     useEffect(() => {
@@ -23,14 +23,8 @@ const Posts = () => {
     }, [])
 
 
-    // On récupère les infos de l'utilisateur (email, id, pseudo)
-    useEffect(() => {
-        const data = getUserInfos();
-        setUser(data)
-        
-    }, [])
-
-    console.log(user)
+   const user = props.user
+   console.log(user)
 
 
     const posts = allPosts.map((post) => {
@@ -74,7 +68,7 @@ const Posts = () => {
                 <Card
                     key={post.id}
                     id = {post.id}
-                    userPseudo = {user.pseudo}
+                    user= {user.id}
                     author={post.author}
                     date={post.date}
                     message={post.message}

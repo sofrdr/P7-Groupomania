@@ -66,6 +66,7 @@ const SignUp = () => {
                         // On enregistre la nouvelle valeur de la variable email à chaque modification du champ
                         onChange={handleChange}
                         value={formData.email}
+                        className="form-input"
                     />
 
                     <br />
@@ -80,6 +81,7 @@ const SignUp = () => {
                         // On enregistre la nouvelle valeur de la variable email à chaque modification du champ
                         onChange={handleChange}
                         value={formData.pseudo}
+                        className="form-input"
                     />
                     <br />
                     <br />
@@ -92,10 +94,11 @@ const SignUp = () => {
                         // On enregistre la nouvelle valeur de la variable password à chaque modification du champ
                         onChange={handleChange}
                         value={formData.password}
+                        className="form-input"
                     />
                     <br />
                     <br />
-                    <input type="submit" value="Créer un compte" />
+                    <input type="submit" value="Créer un compte" className="btn btn-log"/>
                     <div className="signup-error-msg">{errorMsg}</div>
                 </form>)}
 
