@@ -54,10 +54,24 @@ async function getPosts(){
 }
 
 
-async function addPost(postData){
+async function addPostMessage(message){
     const response = await fetch("http://localhost:3000/api/posts", {
         method: 'POST',
-        body: postData,       
+        body: JSON.stringify(message),       
+        headers : {
+            'Accept': 'application/json',
+            'Content-Type': ' application/json',
+            'Authorization': headers.Authorization
+        }       
+})
+const data = await response.json()
+return data
+}
+
+async function addPostData(formData){
+    const response = await fetch("http://localhost:3000/api/posts", {
+        method: 'POST',
+        body: formData,    
         headers : {
             'Accept': '*/*',
             'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
@@ -80,4 +94,4 @@ async function likePost({like}, id){
 }
 
 
-module.exports = {signIn, signUp, getPosts, addPost, likePost, getUserInfos}
+module.exports = {signIn, signUp, getPosts, addPostMessage, addPostData, likePost, getUserInfos}

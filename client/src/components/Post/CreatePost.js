@@ -1,5 +1,5 @@
-import React, {  useState } from "react";
-import { addPost } from "../../services/api";
+import React, { useState } from "react";
+import { addPostMessage, addPostData } from "../../services/api";
 import "./CreatePost.scss"
 
 const CreatePost = (props) => {
@@ -9,18 +9,25 @@ const CreatePost = (props) => {
 
 
     const handleSubmit = async (e) => {
-        e.preventDefault();  
-        const myForm = document.getElementById('form-addpost')
-        const formData = new FormData(myForm);
+        e.preventDefault();
+        
+        const formData = new FormData;
+        formData.append('picture', img, img.name);
+        formData.append('message', message)
+        
         
 
-
-
         try {
-            await addPost(formData)
-            for (let key of formData.entries()) {
-                console.log(key[1])
+
+            if (img === "") {
+                await addPostMessage({ message })
+            } else {
+                await addPostData(formData)
+                for (let key of formData.entries()) {
+                    console.log(key[1])
+                }
             }
+
         }
         catch (err) {
             console.log(err)
@@ -32,7 +39,7 @@ const CreatePost = (props) => {
 
     return (
         <div className="card addpost">
-            <form method="post" onSubmit={handleSubmit} id="form-addpost">
+            <form method="post" onSubmit={handleSubmit} encType="multipart/form-data">
                 <input
                     className="message-field"
                     type="text"
@@ -49,9 +56,9 @@ const CreatePost = (props) => {
                     className="addFile"
                     type="file"
                     id="file"
-                    name="file"
+                    name="picture"
                     onChange={(e) => setImg(e.target.files[0])}
-                    value={img}
+                    
                 />
 
                 <br />

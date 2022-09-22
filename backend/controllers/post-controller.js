@@ -18,10 +18,11 @@ exports.addPost = (req, res) => {
 
     if(req.file){
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
-      console.log(req) 
+      console.log(req.file) 
+      
       createPost(userId, author, req.body.message || "", picture);
     }else{ 
-      console.log(req)      
+           
       createPost(userId, author, req.body.message)
     }
      

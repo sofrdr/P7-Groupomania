@@ -9,33 +9,43 @@ const Posts = (props) => {
 
     const [allPosts, setAllPosts] = useState([])
     const [showAllComments, setShowAllComments] = useState(false)
-    
+    const [showOptions, setShowOptions] = useState(false)
+
 
     // Appel API pour récupérer les posts et mise à jour du state 
     useEffect(() => {
         async function getAllPosts() {
-            const data = await getPosts()
-            
-            setAllPosts(data)
+            try {
+                const data = await getPosts()
+
+                setAllPosts(data)
+            } catch (err) {
+                console.log(err)
+            }
+
         }
 
         getAllPosts()
     }, [])
 
 
-   const user = props.user
-   console.log(user)
+    const user = props.user
+    console.log(user)
+
+    const handleOptions = () => {
+        setShowOptions(prevShowOptions => !prevShowOptions)
+    }
 
 
     const posts = allPosts.map((post) => {
         const allComments = JSON.parse(post.comments)
 
         // Fonction pour passer les commentaires de chaque post dans un composant <Comment/>
-        function getAllComments(){
+        function getAllComments() {
             if (allComments === null) {
                 return ""
             } else {
-                
+
                 return allComments.map((comment) => {
                     return (
                         <Comment
@@ -43,6 +53,8 @@ const Posts = (props) => {
                             author={comment.author}
                             message={comment.message}
                             date={comment.date}
+                            handleOptions={handleOptions}
+                            options={showOptions}
                         />
                     )
                 })
@@ -52,23 +64,23 @@ const Posts = (props) => {
         const comments = getAllComments()
         console.log(comments)
 
-        function handleComments(){
-            setShowAllComments((prevShowComments) => !prevShowComments )
-            
-            
+        function handleComments() {
+            setShowAllComments((prevShowComments) => !prevShowComments)
+
+
         }
 
         // On récupère les 3 premiers commentaires de chaque post
 
-        const firstComments = comments.slice(0,3)
+        const firstComments = comments.slice(0, 3)
 
         // On passe chaque post dans le composant <Card/>
         return (
             <div>
                 <Card
                     key={post.id}
-                    id = {post.id}
-                    user= {user.id}
+                    id={post.id}
+                    user={user.id}
                     author={post.author}
                     date={post.date}
                     message={post.message}
@@ -80,6 +92,8 @@ const Posts = (props) => {
                     }
                     handleComments={handleComments}
                     showAllComments={showAllComments}
+                    handleOptions={handleOptions}
+                    options={showOptions}
                 />
 
 

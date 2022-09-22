@@ -2,11 +2,12 @@ import React, {  useState } from "react";
 
 
 import { likePost } from "../../../services/api";
+import Options from "../Options";
 import "./Card.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from '@fortawesome/free-regular-svg-icons';
-import { faEllipsis, faIls } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
@@ -16,8 +17,9 @@ dayjs.extend(relativeTime)
 
 const Card = (props) => {
 
+    const [showOptions, setShowOptions] = useState(false)
     
-    const [showModal, setShowModal] = useState(false)
+    
     
     const date = props.date
     
@@ -49,6 +51,13 @@ const Card = (props) => {
 
     }
 
+    const handleOptions = () => {
+        setShowOptions(prevShowOptions => !prevShowOptions)
+
+    }
+
+    
+
     return (
         <article className="card">
 
@@ -57,7 +66,11 @@ const Card = (props) => {
                 <div >
                     <div className="card-content--header-author">
                         <p>{props.author} </p>
-                        <FontAwesomeIcon icon={faEllipsis} className="icon"/>
+                        <div className="options">
+                         <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={handleOptions}/>
+                        {showOptions && <Options/>}   
+                        </div>
+                        
                     </div>
 
                     <p>{dayjs(date).fromNow()}</p>

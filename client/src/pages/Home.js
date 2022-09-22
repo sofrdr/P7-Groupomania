@@ -5,9 +5,12 @@ import CreatePost from "../components/Post/CreatePost";
 import { getUserInfos } from "../services/api";
 import "./Home.scss"
 
+
+
 export default function Home(){
 
     const [user, setUser] = useState("")
+    
 
  // On récupère les infos de l'utilisateur (email, id, pseudo)
  useEffect(() => {
