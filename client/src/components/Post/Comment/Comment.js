@@ -1,7 +1,7 @@
 import {React, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import Options from "../Options";
+import Options from "../Options/Options";
 import "./Comment.scss"
 
 const Comment = (props) => {

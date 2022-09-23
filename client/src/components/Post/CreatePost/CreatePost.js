@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addPostMessage, addPostData } from "../../services/api";
+import { addPostMessage, addPostData } from "../../../services/api";
 import "./CreatePost.scss"
 
 const CreatePost = (props) => {

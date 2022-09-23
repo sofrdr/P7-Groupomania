@@ -2,7 +2,8 @@ import React, {  useState } from "react";
 
 
 import { likePost } from "../../../services/api";
-import Options from "../Options";
+import Options from "../Options/Options";
+import AddComment from "../AddComment/AddComment";
 import "./Card.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,12 +19,12 @@ dayjs.extend(relativeTime)
 const Card = (props) => {
 
     const [showOptions, setShowOptions] = useState(false)
+    const [addComment, setAddComment] = useState(false)
     
     
     
     const date = props.date
     
-
     const postId = props.id
     const usersLike = props.usersLiked
     const userId = props.user
@@ -56,6 +57,10 @@ const Card = (props) => {
 
     }
 
+
+    const handleAddComment = () => {
+        setAddComment(prevAddComment => !prevAddComment)
+    }
     
 
     return (
@@ -86,12 +91,13 @@ const Card = (props) => {
                         {props.likes}
                     </div>
                     <div className="card-content--indicators-elt">
-                        <FontAwesomeIcon icon={faComment} className="icon"/>
+                        <FontAwesomeIcon icon={faComment} className="icon" onClick={handleAddComment}/>
                         {props.numberOfComments}
                     </div>
                 </div>
 
                 <div className="card-comments">
+                    {addComment && <AddComment postId={postId}/>}
                     {props.comments}
                     <p onClick={props.handleComments} className="card-comments--onclick">
                         {props.showAllComments ? "Voir moins de commentaires" : "Voir tous les commentaires"}</p>

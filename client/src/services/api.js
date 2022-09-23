@@ -94,4 +94,14 @@ async function likePost({like}, id){
 }
 
 
-module.exports = {signIn, signUp, getPosts, addPostMessage, addPostData, likePost, getUserInfos}
+async function addComment(comment, id){
+    const response = await fetch(`http://localhost:3000/api/posts/${id}/comment`, {
+        method: 'POST',
+        body: JSON.stringify(comment),
+        headers
+    })
+    const data = await response.json();
+    console.log(data)
+}
+
+module.exports = {signIn, signUp, getPosts, addPostMessage, addPostData, likePost, getUserInfos, addComment}

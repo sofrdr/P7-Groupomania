@@ -1,7 +1,7 @@
 import {React, useEffect, useState} from "react";
 import Posts from "../components/Post/Posts"
 import Header from "../components/Header/Header";
-import CreatePost from "../components/Post/CreatePost";
+import CreatePost from "../components/Post/CreatePost/CreatePost";
 import { getUserInfos } from "../services/api";
 import "./Home.scss"
 

@@ -1,0 +1,10 @@
+@import '../../../style/utils/variables.scss';
+
+.new-comment-content{
+    width: 100%;
+    border: none;
+    background-color: $light-grey ;
+    font-family: 'Lato', sans-serif;
+    outline: none;
+    font-size: 16px;
+}
