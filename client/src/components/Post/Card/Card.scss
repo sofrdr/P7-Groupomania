@@ -5,7 +5,7 @@
     background-color: white;
     margin: auto;
     width: 38%;
-    border-radius: 20px;
+    border-radius: $radius;
     padding: 10px 0;
     margin-top: 17px;
     
@@ -32,18 +32,21 @@
 
         &--image{
             width: 100%;
-            object-fit: cover;
-            
-            
-            
+            object-fit: cover;          
         }
 
         &--indicators{
             display: flex;
             margin-top: 10px;
 
+
+
             &-elt{
                 margin-right: 20px;
+
+                > .icon {
+                    margin-right: 4px;
+                }
             }
         }
     }
@@ -54,10 +57,11 @@
 
         &--onclick{
             cursor: pointer;
-            text-decoration: underline;
+            font-weight: 600;
+            margin-top: 30px;
 
             &:hover{
-                color: #FD2D01;
+                color: $color-primary;
             }
         }
     }
@@ -65,7 +69,7 @@
 
 .icon{
     cursor: pointer;
-    font-size: x-large;
+    font-size: 22px;
 }
 
 .heart-filled{

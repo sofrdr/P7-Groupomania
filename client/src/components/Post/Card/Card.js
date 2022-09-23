@@ -99,8 +99,9 @@ const Card = (props) => {
                 <div className="card-comments">
                     {addComment && <AddComment postId={postId}/>}
                     {props.comments}
-                    <p onClick={props.handleComments} className="card-comments--onclick">
-                        {props.showAllComments ? "Voir moins de commentaires" : "Voir tous les commentaires"}</p>
+                    {props.comments.length < 2 ? "" : <p onClick={props.handleComments} className="card-comments--onclick">
+                        {props.showAllComments ? "Voir moins de commentaires" : "Voir tous les commentaires"}</p>}
+                    
                 </div>
             </div>
 
