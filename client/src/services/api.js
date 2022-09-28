@@ -74,7 +74,7 @@ async function addPostData(formData){
         body: formData,    
         headers : {
             'Accept': '*/*',
-            'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+            //'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
             'Authorization': headers.Authorization
         }       
 })
@@ -82,11 +82,14 @@ const data = await response.json()
 return data
 }
 
-
-async function likePost({like}, id){
+/**
+ * @param {Boolean} like
+ * @param {Number} id
+ */
+async function likePost(like, id){
     const response = await fetch(`http://localhost:3000/api/posts/${id}/like`, {
         method: 'POST',
-        body: JSON.stringify({like}),
+        body: JSON.stringify({like : like ? 0 : 1}),
         headers
     })
     const data = await response.json();

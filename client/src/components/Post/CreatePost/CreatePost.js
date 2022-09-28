@@ -11,7 +11,7 @@ const CreatePost = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        const formData = new FormData;
+        const formData = new FormData();
         formData.append('picture', img, img.name);
         formData.append('message', message)
         

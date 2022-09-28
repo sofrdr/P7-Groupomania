@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, {  useState, useEffect } from "react";
 
 
 import { likePost } from "../../../services/api";
@@ -19,7 +19,7 @@ dayjs.extend(relativeTime)
 const Card = (props) => {
 
     const [showOptions, setShowOptions] = useState(false)
-    const [addComment, setAddComment] = useState(false)
+    const [addComment, setAddComment] = useState(false);
     
     
     
@@ -28,23 +28,20 @@ const Card = (props) => {
     const postId = props.id
     const usersLike = props.usersLiked
     const userId = props.user
-    
-    // Si l'utilisateur aime déjà le post alors like = 1 sinon like = 0 
-    let like; 
-    if(usersLike.includes(userId)){
-        like = 1;
-    }else{
-        like = 0;
-    }
+    const initiallyLiked = usersLike.includes(userId)
+    const [like, updateLike] = useState(initiallyLiked);
+    const likes =  props.likes - (initiallyLiked ? 1 : 0);
+    let count = likes + (like ? 1 : 0);
+
 
     
     // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
     // si la valeur de like était à 1 elle passe à 0 (l'utilisateur retire son like)
      const handleLike =  async () => {
-        like === 0 ? like = 1 : like = 0;
-        console.log({like: like, id: postId})
-        try{
-            await likePost({like : like}, postId)
+         console.log({like: like, id: postId})
+         try{
+            await likePost(like, postId)
+            updateLike(! like);
         }
         catch(err){
             console.log(err)
@@ -87,8 +84,8 @@ const Card = (props) => {
 
                 <div className="card-content--indicators">
                     <div className="card-content--indicators-elt">
-                        <FontAwesomeIcon icon={faHeart} className={like === 1 ? "icon heart-filled" : "icon"} onClick={handleLike}/>
-                        {props.likes}
+                        <FontAwesomeIcon icon={faHeart} className={like ? "icon heart-filled" : "icon"} onClick={handleLike}/>
+                        {count}
                     </div>
                     <div className="card-content--indicators-elt">
                         <FontAwesomeIcon icon={faComment} className="icon" onClick={handleAddComment}/>
