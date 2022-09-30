@@ -82,6 +82,18 @@ const data = await response.json()
 return data
 }
 
+
+async function deletePost(id){
+    const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+        method: 'DELETE',
+        headers
+    });
+    const data = await response.json()
+    console.log(data)
+}
+
+
+
 /**
  * @param {Boolean} like
  * @param {Number} id
@@ -107,4 +119,4 @@ async function addComment(comment, id){
     console.log(data)
 }
 
-module.exports = {signIn, signUp, getPosts, addPostMessage, addPostData, likePost, getUserInfos, addComment}
+module.exports = {signIn, signUp, getPosts, addPostMessage, addPostData, likePost, getUserInfos, addComment, deletePost}
