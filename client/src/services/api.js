@@ -105,4 +105,13 @@ async function addComment(comment, id) {
     console.log(data)
 }
 
-module.exports = { signIn, signUp, getPosts, addPost, likePost, getUserInfos, addComment, deletePost }
+async function deleteComment(id){
+    const response = await fetch(`http://localhost:3000/api/posts/comment/${id}`, {
+        method: 'DELETE',
+        headers
+    })
+    const data = await response.json();
+    console.log(data)
+}
+
+module.exports = { signIn, signUp, getPosts, addPost, likePost, getUserInfos, addComment, deletePost, deleteComment }
