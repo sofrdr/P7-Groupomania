@@ -12,25 +12,25 @@ exports.addPost = (req, res) => {
     // On récupère le userID du token 
     const userId = req.auth.userId;
     // On récupère l'utilisateur dans la BDD       
-    const user = getUser(userId);   
+    const user = getUser(userId);
     const author = user.pseudo;
-     
 
-    if(req.file){
+
+    if (req.file) {
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
-      console.log(req.file) 
-      
+      console.log(req.file)
+
       createPost(userId, author, req.body.message || "", picture);
-    }else{ 
-           
+    } else {
+
       createPost(userId, author, req.body.message)
     }
-     
+
     res.status(201).json('Le post a bien été créé')
-    
+
   }
   catch (err) {
-    
+
     console.log(err)
     res.status(400).json({ err });
   }
@@ -102,14 +102,21 @@ exports.deletePost = (req, res) => {
     if (post.user_id !== req.auth.userId && currentUser.role !== 1) {
       res.status(403).json({ message: "Suppression non autorisée" })
     } else {
-      const filename = post.picture.split('/images/')[1];
-      console.log(filename)
-      fs.unlink('images/' + filename, (err) => {
-        if (err) throw err;
-        deletePost(id);
-        res.status(200).json({ message: "Le post a bien été supprimé" })
-      })
 
+
+      if (post.picture !== null) {
+
+        const filename = post.picture.split('/images/')[1];
+        console.log(filename)
+        fs.unlink('images/' + filename, (err) => {
+          if (err){
+            throw err;
+          } 
+
+        })
+      }
+      deletePost(id);
+      res.status(200).json({ message: "Le post a bien été supprimé" })
 
 
     }
@@ -130,12 +137,12 @@ exports.likePost = (req, res) => {
 
   const user = getUser(userId);
   //email de l'utilisateur authentifié
-  const userMail = user.email; 
+  const userMail = user.email;
 
   const post = getPost(id);
   console.log(">>", id, post)
   // tableau des utilisateurs qui aiment le post
-  const usersLiked = post.usersLiked 
+  const usersLiked = post.usersLiked
 
 
   try {
