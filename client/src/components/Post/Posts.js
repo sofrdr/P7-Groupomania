@@ -50,6 +50,7 @@ const Posts = (props) => {
                     return (
                         <Comment
                             key={comment.id}
+                            id={comment.id}
                             author={comment.author}
                             message={comment.message}
                             date={comment.date}

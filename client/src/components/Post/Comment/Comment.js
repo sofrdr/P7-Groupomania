@@ -2,14 +2,26 @@ import {React, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import Options from "../Options/Options";
+import { deleteComment } from "../../../services/api";
 import "./Comment.scss"
 
 const Comment = (props) => {
 
     const [showOptions, setShowOptions] = useState(false)
 
+    const commentId = props.id;
+
     const handleOptions = () => {
         setShowOptions(prevShowOptions => !prevShowOptions)
+    }
+
+    const handleDeleteComment = async () => {
+        try{
+            await deleteComment(commentId)
+        }
+        catch(err){
+            console.log(err)
+        }
     }
 
     return (
@@ -18,7 +30,7 @@ const Comment = (props) => {
                 <p className="comment-header--author">{props.author}</p>
                 <div className="options">
                     <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={handleOptions} />
-                    {showOptions && <Options />}
+                    {showOptions && <Options delete={handleDeleteComment}/>}
                 </div>
             </div>
 

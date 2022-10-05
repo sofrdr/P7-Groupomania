@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addPostMessage, addPostData } from "../../../services/api";
+import {addPost} from "../../../services/api";
 import "./CreatePost.scss"
 
 const CreatePost = (props) => {
@@ -10,23 +10,23 @@ const CreatePost = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const formData = new FormData();
-        formData.append('picture', img, img.name);
         formData.append('message', message)
-        
-        
+        if (img !== "") {
+            formData.append('picture', img, img.name);
+        }
+
+
 
         try {
 
-            if (img === "") {
-                await addPostMessage({ message })
-            } else {
-                await addPostData(formData)
-                for (let key of formData.entries()) {
-                    console.log(key[1])
-                }
+
+            await addPost(formData)
+            for (let key of formData.entries()) {
+                console.log(key[1])
             }
+
 
         }
         catch (err) {
@@ -58,7 +58,7 @@ const CreatePost = (props) => {
                     id="file"
                     name="picture"
                     onChange={(e) => setImg(e.target.files[0])}
-                    
+
                 />
 
                 <br />

@@ -1,7 +1,7 @@
 import React, {  useState, useEffect } from "react";
 
 
-import { likePost } from "../../../services/api";
+import { likePost, deletePost } from "../../../services/api";
 import Options from "../Options/Options";
 import AddComment from "../AddComment/AddComment";
 import "./Card.scss";
@@ -49,12 +49,26 @@ const Card = (props) => {
 
     }
 
+// Fonction qui change le state showOptions pour afficher ou non la fenêtre avec les options de modification et suppression (composant Options)
     const handleOptions = () => {
         setShowOptions(prevShowOptions => !prevShowOptions)
 
     }
 
 
+    const updatePost = () => {
+
+    }
+
+    const handleDeletePost = async () => {
+        try{
+            await deletePost(postId)
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+// Fonction qui change le state addComment pour afficher ou non le champ pour ajouter un commentaire (composant AddComment)
     const handleAddComment = () => {
         setAddComment(prevAddComment => !prevAddComment)
     }
@@ -70,7 +84,7 @@ const Card = (props) => {
                         <p>{props.author} </p>
                         <div className="options">
                          <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={handleOptions}/>
-                        {showOptions && <Options/>}   
+                        {showOptions && <Options update = {updatePost} delete = {handleDeletePost}/>}   
                         </div>
                         
                     </div>
