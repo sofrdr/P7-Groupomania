@@ -29,6 +29,7 @@ const Card = (props) => {
     const postId = props.id
     const usersLike = props.usersLiked
     const userId = props.user
+    console.log(userId)
     const initiallyLiked = usersLike.includes(userId)
     const [like, updateLike] = useState(initiallyLiked);
     const likes =  props.likes - (initiallyLiked ? 1 : 0);
@@ -41,8 +42,9 @@ const Card = (props) => {
      const handleLike =  async () => {
          console.log({like: like, id: postId})
          try{
-            await likePost(like, postId)
             updateLike(! like);
+            await likePost(like, postId)
+            
         }
         catch(err){
             console.log(err)

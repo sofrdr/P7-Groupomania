@@ -26,10 +26,10 @@ const SignIn = () => {
 
         try {
             const data = await signIn(formData)
-            const user = data.user.pseudo
-
-            console.log(data)
-            console.log(user)
+            const user = data.user
+            localStorage.setItem("user", JSON.stringify(user))
+            
+            
             
 
             if (data.error) {

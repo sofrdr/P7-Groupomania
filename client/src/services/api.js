@@ -7,7 +7,6 @@ const headers = {
 
 
 
-let user;
 
 function setToken(token) {
     headers.Authorization = 'Bearer ' + token;
@@ -15,9 +14,7 @@ function setToken(token) {
     alert('ok')
 }
 
-function getUserInfos() {
-    return user;
-}
+
 
 async function signIn(dataLogin) {
     const response = await fetch("http://localhost:3000/api/auth/login", {
@@ -27,7 +24,7 @@ async function signIn(dataLogin) {
     })
     const data = await response.json();
     setToken(data.token);
-    user = data.user;
+    
 
     return data;
 
@@ -118,4 +115,4 @@ function refreshPage() {
     window.location.reload()
 }
 
-module.exports = { signIn, signUp, getPosts, addPost, likePost, getUserInfos, addComment, deletePost, deleteComment, refreshPage }
+module.exports = { signIn, signUp, getPosts, addPost, likePost,  addComment, deletePost, deleteComment, refreshPage }
