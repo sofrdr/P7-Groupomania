@@ -30,7 +30,7 @@ const Posts = (props) => {
 
 
     const user = props.user
-    console.log(user)
+    
 
     const handleOptions = () => {
         setShowOptions(prevShowOptions => !prevShowOptions)

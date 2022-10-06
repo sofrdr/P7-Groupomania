@@ -114,4 +114,8 @@ async function deleteComment(id){
     console.log(data)
 }
 
-module.exports = { signIn, signUp, getPosts, addPost, likePost, getUserInfos, addComment, deletePost, deleteComment }
+function refreshPage() {
+    window.location.reload()
+}
+
+module.exports = { signIn, signUp, getPosts, addPost, likePost, getUserInfos, addComment, deletePost, deleteComment, refreshPage }

@@ -15,22 +15,25 @@ export default function Home(){
  // On récupère les infos de l'utilisateur (email, id, pseudo)
  useEffect(() => {
     const data = getUserInfos();
-    setUser(data)
+    setUser(data)   
     
 }, [])
 
-console.log(user.id)
+localStorage.setItem("user", JSON.stringify(user))
+const currentUser = localStorage.getItem("user")
+
+console.log(currentUser)
 
     return(
         <div className="home-container">
             <Header
-            user = {user.pseudo}
+            user = {currentUser.pseudo}
             />
             <CreatePost
-            user = {user.pseudo}
+            user = {currentUser.pseudo}
             />
             <Posts
-            user = {user}
+            user = {currentUser}
             />
             
             </div>

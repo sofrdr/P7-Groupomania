@@ -26,8 +26,10 @@ const SignIn = () => {
 
         try {
             const data = await signIn(formData)
-            
+            const user = data.user.pseudo
+
             console.log(data)
+            console.log(user)
             
 
             if (data.error) {

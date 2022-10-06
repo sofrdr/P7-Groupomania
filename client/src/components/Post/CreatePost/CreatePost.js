@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import {addPost} from "../../../services/api";
+import {addPost, refreshPage} from "../../../services/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage } from "@fortawesome/free-regular-svg-icons";
 import "./CreatePost.scss"
 
 const CreatePost = (props) => {
@@ -17,17 +19,9 @@ const CreatePost = (props) => {
             formData.append('picture', img, img.name);
         }
 
-
-
         try {
-
-
             await addPost(formData)
-            for (let key of formData.entries()) {
-                console.log(key[1])
-            }
-
-
+            refreshPage();
         }
         catch (err) {
             console.log(err)
@@ -51,7 +45,7 @@ const CreatePost = (props) => {
                 />
                 <br />
 
-                <label htmlFor="file">Ajouter une image</label>
+                <label htmlFor="file" className="file-upload">Ajouter une image ... <FontAwesomeIcon icon={faImage} className="file-upload-icon"/></label>
                 <input
                     className="addFile"
                     type="file"

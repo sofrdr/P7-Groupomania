@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addComment } from "../../../services/api";
+import { addComment, refreshPage } from "../../../services/api";
 import "./AddComment.scss"
 
 const AddComment = (props) => {
@@ -17,6 +17,7 @@ const AddComment = (props) => {
         e.preventDefault();
         try{
             await addComment({message}, postId)
+            refreshPage()
         }catch(err){
             console.log(err)
         }

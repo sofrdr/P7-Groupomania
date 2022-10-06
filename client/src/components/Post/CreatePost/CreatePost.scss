@@ -31,3 +31,17 @@ form{
 .btn{
     @include btn;
 }
+
+.addFile{
+    display: none;
+}
+
+.file-upload{
+    
+    cursor: pointer;
+    &-icon{
+        font-size: 20px;
+        margin-left: 10px;       
+        color: $color-tertiary;
+    }
+}

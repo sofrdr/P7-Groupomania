@@ -6,8 +6,8 @@ import './Options.scss'
 
 const Options = (props) => {
     return(
-        <div className="options-container">
-            <ul>
+        <div className="options-container" onMouseOver={props.test} >
+            <ul >
                 <li onClick={props.update}><FontAwesomeIcon icon={faPen} className="options-icon"/>Modifier</li>
                 <li onClick={props.delete}> <FontAwesomeIcon icon={faTrash} className="options-icon"/>Supprimer</li>
                 <li> <FontAwesomeIcon icon={faEyeSlash} className="options-icon"/>Masquer</li>

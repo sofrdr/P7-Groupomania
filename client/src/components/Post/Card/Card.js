@@ -1,7 +1,7 @@
 import React, {  useState, useEffect } from "react";
 
 
-import { likePost, deletePost } from "../../../services/api";
+import { likePost, deletePost, refreshPage } from "../../../services/api";
 import Options from "../Options/Options";
 import AddComment from "../AddComment/AddComment";
 import "./Card.scss";
@@ -18,8 +18,9 @@ dayjs.extend(relativeTime)
 
 const Card = (props) => {
 
-    const [showOptions, setShowOptions] = useState(false)
+    const [showOptions, setShowOptions] = useState(false)   
     const [addComment, setAddComment] = useState(false);
+    
     
     
     
@@ -52,7 +53,7 @@ const Card = (props) => {
 // Fonction qui change le state showOptions pour afficher ou non la fenêtre avec les options de modification et suppression (composant Options)
     const handleOptions = () => {
         setShowOptions(prevShowOptions => !prevShowOptions)
-
+        
     }
 
 
@@ -63,6 +64,7 @@ const Card = (props) => {
     const handleDeletePost = async () => {
         try{
             await deletePost(postId)
+            refreshPage()
         }catch(err){
             console.log(err)
         }
@@ -82,9 +84,9 @@ const Card = (props) => {
                 <div >
                     <div className="card-content--header-author">
                         <p>{props.author} </p>
-                        <div className="options">
+                        <div className="options" >
                          <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={handleOptions}/>
-                        {showOptions && <Options update = {updatePost} delete = {handleDeletePost}/>}   
+                        {showOptions && <Options update = {updatePost} delete = {handleDeletePost} />}   
                         </div>
                         
                     </div>
