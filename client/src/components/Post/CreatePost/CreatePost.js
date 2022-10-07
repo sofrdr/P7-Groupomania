@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {addPost, refreshPage} from "../../../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import "./CreatePost.scss"
 
 const CreatePost = (props) => {
@@ -54,6 +55,10 @@ const CreatePost = (props) => {
                     onChange={(e) => setImg(e.target.files[0])}
 
                 />
+                {img !== "" && <div className="file-remove">
+                  <p>{img.name}</p>  
+                  <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")}/>
+                </div>}
 
                 <br />
                 <input

@@ -36,12 +36,25 @@ form{
     display: none;
 }
 
-.file-upload{
+.file{
+    &-upload{
     
     cursor: pointer;
     &-icon{
         font-size: 20px;
         margin-left: 10px;       
         color: $color-tertiary;
+    }
+
+    
+}
+&-remove{
+        display: flex;
+        align-items: center;
+        &--icon{
+            cursor: pointer;
+            font-size: 12px;            
+            margin-left: 8px;
+        }
     }
 }

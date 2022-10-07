@@ -11,11 +11,11 @@ const UpdatePost = (props) => {
     const [img, setImg] = useState("")
     const id = props.id
     const author = props.author
-    const picture = props.picture
+    const image = props.picture
     const [message, setMessage] = useState(props.message);
 
 
-
+    console.log(img)
 
 
     const handleSubmit = async (e) => {
@@ -56,7 +56,7 @@ const UpdatePost = (props) => {
                 <br />
 
                 <div className="card-content--image-container">
-                    <img src={picture} alt="" className="card-content--image" />
+                    <img src={image} alt="" className="card-content--image" />
                 </div>
 
                 <label htmlFor="file" className="file-upload">Modifier l'image ... <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
@@ -64,10 +64,15 @@ const UpdatePost = (props) => {
                     className="addFile"
                     type="file"
                     id="file"
-                    name="picture"
+                    name="picture"                   
                     onChange={(e) => setImg(e.target.files[0])}
 
                 />
+
+                {img !== "" && <div className="file-remove">
+                    <p>{img.name}</p>
+                    <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")} />
+                </div>}
 
                 <br />
                 <input
