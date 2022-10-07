@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {addPost, refreshPage} from "../../../services/api";
+import { addPost, refreshPage } from "../../../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -35,18 +35,19 @@ const CreatePost = (props) => {
     return (
         <div className="card addpost">
             <form method="post" onSubmit={handleSubmit} encType="multipart/form-data">
-                <input
+                <textarea
                     className="message-field"
-                    type="text"
+
                     name="message"
                     id="message"
                     placeholder={`Quoi de neuf aujourd'hui ${props.user} ?`}
                     onChange={(e) => setMessage(e.target.value)}
-                    value={message}
-                />
+                    value={message}> </textarea>
+
+
                 <br />
 
-                <label htmlFor="file" className="file-upload">Ajouter une image ... <FontAwesomeIcon icon={faImage} className="file-upload-icon"/></label>
+                <label htmlFor="file" className="file-upload">Ajouter une image ... <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
                 <input
                     className="addFile"
                     type="file"
@@ -56,10 +57,10 @@ const CreatePost = (props) => {
 
                 />
 
-                
+
                 {img !== "" && <div className="file-remove">
-                  <p>{img.name}</p>  
-                  <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")}/>
+                    <p>{img.name}</p>
+                    <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")} />
                 </div>}
 
                 <br />

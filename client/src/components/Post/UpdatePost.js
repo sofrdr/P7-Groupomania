@@ -46,14 +46,14 @@ const UpdatePost = (props) => {
                     <FontAwesomeIcon icon={faXmark} className="icon" onClick={props.isModalOpen && props.closeModal} />
                 </div>
 
-                <input
+                <textarea
                     className="message-field"
-                    type="text"
+
                     name="message"
                     id="message"
+                    placeholder={`Quoi de neuf aujourd'hui ${props.user} ?`}
                     onChange={(e) => setMessage(e.target.value)}
-                    value={message}
-                />
+                    value={message}> </textarea>
                 <br />
 
                 <div className="card-content--image-container">
