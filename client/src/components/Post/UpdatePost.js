@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { getOnePost, updatePost } from "../../services/api";
+import { refreshPage, updatePost } from "../../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -29,6 +29,7 @@ const UpdatePost = (props) => {
 
         try {
             await updatePost(formData, id)
+            refreshPage()
 
         }
         catch (err) {
@@ -39,7 +40,7 @@ const UpdatePost = (props) => {
 
     return (
         <div className="card">
-            <form method="post" encType="multipart/form-data">
+            <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
                 <div className="card-content--header-author">
                     <p>{author}</p>
                     <FontAwesomeIcon icon={faXmark} className="icon" onClick={props.isModalOpen && props.closeModal} />
@@ -59,7 +60,7 @@ const UpdatePost = (props) => {
                     <img src={image} alt="" className="card-content--image" />
                 </div>
 
-                <label htmlFor="file" className="file-upload">Modifier l'image ... <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
+                <label htmlFor="file" className="file-upload">{image ? "Modifier l'image" : "Ajouter une image"} <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
                 <input
                     className="addFile"
                     type="file"
