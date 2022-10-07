@@ -59,12 +59,15 @@ const Card = (props) => {
 
     }
 
-
+    // Fonction qui change le state de showModal pour afficher ou non la fenêtre de modification du post (composant UpdatePost)
     const toggleModal = () => {
         setShowModal(!showModal)
 
     }
 
+    /* Fonction pour supprimer un post
+    Paramètre : id du post
+    Rafraîchissement de la page */
     const handleDeletePost = async () => {
         try {
             await deletePost(postId)
@@ -127,7 +130,8 @@ const Card = (props) => {
                             </div>
                         </div>
 
-                        <div className="card-comments">
+                        
+                        <div className="card-comments">                           
                             {addComment && <AddComment postId={postId} />}
                             {props.comments}
                             {props.comments.length < 3 ? "" : <p onClick={props.handleComments} className="card-comments--onclick">

@@ -15,7 +15,6 @@ function setToken(token) {
 }
 
 
-
 async function signIn(dataLogin) {
     const response = await fetch("http://localhost:3000/api/auth/login", {
         method: 'POST',
@@ -48,13 +47,6 @@ async function getPosts() {
     const posts = await response.json()
     return posts
 
-}
-
-
-async function getOnePost(id){
-    const response = await fetch(`http://localhost:3000/api/posts/${id}`, {headers})
-    const post = await response.json();
-    return post
 }
 
 
@@ -135,4 +127,4 @@ function refreshPage() {
     window.location.reload()
 }
 
-module.exports = { signIn, signUp, getPosts, addPost, likePost,  addComment, deletePost, deleteComment, refreshPage, getOnePost, updatePost }
+module.exports = { signIn, signUp, getPosts, addPost, likePost,  addComment, deletePost, deleteComment, refreshPage, updatePost }
