@@ -60,11 +60,11 @@ const UpdatePost = (props) => {
                     <img src={image} alt="" className="card-content--image" />
                 </div>
 
-                <label htmlFor="file" className="file-upload">{image ? "Modifier l'image" : "Ajouter une image"} <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
+                <label htmlFor="file-update" className="file-upload">{image ? "Modifier l'image" : "Ajouter une image"} <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
                 <input
                     className="addFile"
                     type="file"
-                    id="file"
+                    id="file-update"
                     name="picture"                   
                     onChange={(e) => setImg(e.target.files[0])}
 
