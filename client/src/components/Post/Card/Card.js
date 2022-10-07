@@ -7,13 +7,18 @@ import AddComment from "../AddComment/AddComment";
 import UpdatePost from "../UpdatePost";
 import "./Card.scss";
 
+// FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartSolid} from '@fortawesome/free-solid-svg-icons';
+
+// Day.js
 import dayjs from 'dayjs';
+import localeObject from "../../../services/fr"
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
+dayjs.locale('fr', localeObject)
 
 
 
