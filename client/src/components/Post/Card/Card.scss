@@ -22,12 +22,13 @@
         }
 
         &--header{
-            margin-bottom: 40px;
+            
 
             &-author{
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                font-size: 18px;
             }
         }
 
@@ -44,10 +45,6 @@
 
             &-elt{
                 margin-right: 20px;
-
-                > .icon {
-                    margin-right: 4px;
-                }
             }
         }
     }
@@ -70,7 +67,8 @@
 
 .icon{
     cursor: pointer;
-    font-size: 22px;
+    font-size: 20px;
+    margin-right: 4px;
 }
 
 
@@ -83,6 +81,3 @@
     display: none;
 }
 
-.update-modal-hidden{
-    display: none;
-}

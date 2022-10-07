@@ -55,6 +55,8 @@ const CreatePost = (props) => {
                     onChange={(e) => setImg(e.target.files[0])}
 
                 />
+
+                
                 {img !== "" && <div className="file-remove">
                   <p>{img.name}</p>  
                   <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")}/>

@@ -4,13 +4,12 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import Options from "../Options/Options";
 import { deleteComment, refreshPage } from "../../../services/api";
 import "./Comment.scss"
+
+// Day.js
 import dayjs from 'dayjs';
 import localeObject from "../../../services/fr"
 const relativeTime = require('dayjs/plugin/relativeTime')
-
-
 dayjs.extend(relativeTime)
-
 dayjs.locale('fr', localeObject)
 
 

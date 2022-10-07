@@ -93,7 +93,7 @@ const Card = (props) => {
 
         // Si showModal = true alors on affiche la fenêtre de modification du post (composant UpdatePost) sinon on affiche le post
         <div >
-            {showModal ? <div className={showModal ? "update-modal " : "update-modal-hidden"}>
+            {showModal ? <div className={showModal ? "update-modal " : "hidden"}>
 
                 <UpdatePost
                     id={postId}
@@ -129,7 +129,7 @@ const Card = (props) => {
                             <div className="card-content--indicators-elt">
                                <div >
                                 <FontAwesomeIcon icon={faHeart} className={like ? "hidden" : "icon"} onClick={handleLike} />
-                                <FontAwesomeIcon icon={faHeartSolid} className={like ? "icon heart-filled" : " hidden"} onClick={handleLike} />
+                                <FontAwesomeIcon icon={faHeartSolid} className={like ? "icon heart-filled " : " hidden"} onClick={handleLike} />
                                 {count}
                                 </div> 
                                 
