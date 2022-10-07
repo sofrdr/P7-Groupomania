@@ -4,6 +4,10 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import Options from "../Options/Options";
 import { deleteComment, refreshPage } from "../../../services/api";
 import "./Comment.scss"
+import dayjs from 'dayjs';
+const relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime)
+
 
 const Comment = (props) => {
 
@@ -38,7 +42,7 @@ const Comment = (props) => {
 
             <div className="comment-content">
                 <p>{props.message}</p>
-                <p>{props.date}</p>
+                <p>{dayjs(props.date).fromNow()}</p>
             </div>
 
 

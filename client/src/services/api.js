@@ -42,7 +42,7 @@ async function signUp(dataSignUp) {
 }
 
 async function getPosts() {
-    console.log(headers);
+    
     const response = await fetch("http://localhost:3000/api/posts", { headers })
     const posts = await response.json()
     return posts
