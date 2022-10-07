@@ -73,11 +73,14 @@
     font-size: 22px;
 }
 
+
 .heart-filled{
-    background: linear-gradient(to bottom, $color-primary, $color-secondary); 
-    background-clip: content-box;
-       
-        
+    color: $color-primary; 
+         
+}
+
+.hidden{
+    display: none;
 }
 
 .update-modal-hidden{

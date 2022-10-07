@@ -10,6 +10,7 @@ import "./Card.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartSolid} from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
@@ -121,8 +122,12 @@ const Card = (props) => {
 
                         <div className="card-content--indicators">
                             <div className="card-content--indicators-elt">
-                                <FontAwesomeIcon icon={faHeart} className={like ? "icon heart-filled" : "icon"} onClick={handleLike} />
+                               <div >
+                                <FontAwesomeIcon icon={faHeart} className={like ? "hidden" : "icon"} onClick={handleLike} />
+                                <FontAwesomeIcon icon={faHeartSolid} className={like ? "icon heart-filled" : " hidden"} onClick={handleLike} />
                                 {count}
+                                </div> 
+                                
                             </div>
                             <div className="card-content--indicators-elt">
                                 <FontAwesomeIcon icon={faComment} className="icon" onClick={handleAddComment} />
