@@ -63,7 +63,7 @@ const Posts = (props) => {
         }
 
         const comments = getAllComments()
-        console.log(comments)
+        
 
         function handleComments() {
             setShowAllComments((prevShowComments) => !prevShowComments)

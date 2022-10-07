@@ -2,7 +2,7 @@ import {React, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import Options from "../Options/Options";
-import { deleteComment } from "../../../services/api";
+import { deleteComment, refreshPage } from "../../../services/api";
 import "./Comment.scss"
 
 const Comment = (props) => {
@@ -18,6 +18,7 @@ const Comment = (props) => {
     const handleDeleteComment = async () => {
         try{
             await deleteComment(commentId)
+            refreshPage()
         }
         catch(err){
             console.log(err)

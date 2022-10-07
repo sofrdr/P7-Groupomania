@@ -15,6 +15,7 @@
         
         margin: auto;
         padding: 15px;
+        position: relative;
 
         &--message{
             font-size: 20px;
@@ -77,4 +78,8 @@
     background-clip: content-box;
        
         
+}
+
+.update-modal-hidden{
+    display: none;
 }

@@ -1,8 +1,8 @@
 import React from "react";
 
-const Post = () => {
+export default function Post() {
 
     return(
-        <div></div>
+        <div>Le post</div>
     )
 }

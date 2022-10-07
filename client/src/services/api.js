@@ -51,10 +51,30 @@ async function getPosts() {
 }
 
 
+async function getOnePost(id){
+    const response = await fetch(`http://localhost:3000/api/posts/${id}`, {headers})
+    const post = await response.json();
+    return post
+}
+
 
 async function addPost(formData) {
     const response = await fetch("http://localhost:3000/api/posts", {
         method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': '*/*',
+            'Authorization': headers.Authorization
+        }
+    })
+    const data = await response.json()
+    return data
+}
+
+
+async function updatePost(formData, id){
+    const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+        method: 'PUT',
         body: formData,
         headers: {
             'Accept': '*/*',
@@ -115,4 +135,4 @@ function refreshPage() {
     window.location.reload()
 }
 
-module.exports = { signIn, signUp, getPosts, addPost, likePost,  addComment, deletePost, deleteComment, refreshPage }
+module.exports = { signIn, signUp, getPosts, addPost, likePost,  addComment, deletePost, deleteComment, refreshPage, getOnePost, updatePost }

@@ -73,7 +73,6 @@ exports.login = async (req, res) => {
         return res.status(200).json({
             user : {
                 id: user.id,
-                email: user.email,
                 pseudo: user.pseudo
             },
             token : jwt.sign(
