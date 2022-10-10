@@ -47,7 +47,7 @@ dayjs.locale('fr', localeObject)
  */
 const Card = (props) => {
 
-    const {handleOptions, options, id} = props;
+    const {handleOptions, options, id, user, date, author} = props;
     const [addComment, setAddComment] = useState(false);
     const [showModal, setShowModal] = useState(false)
 
@@ -55,11 +55,14 @@ const Card = (props) => {
 
 
 
-    const date = props.date
+    
 
-    const postId = props.id
+   
     const usersLike = props.usersLiked
-    const userId = props.user
+    
+    const userId = user.id
+    const pseudo = user.pseudo
+    const isAuthorized = pseudo === author
 
     const initiallyLiked = usersLike.includes(userId)
     const [like, updateLike] = useState(initiallyLiked);
@@ -77,10 +80,10 @@ const Card = (props) => {
     // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
     // si la valeur de like était à 1 elle passe à 0 (l'utilisateur retire son like)
     const handleLike = async () => {
-        console.log({ like: like, id: postId })
+        console.log({ like: like, id: id })
         try {
             updateLike(!like);
-            await likePost(like, postId)
+            await likePost(like, id)
 
         }
         catch (err) {
@@ -100,7 +103,7 @@ const Card = (props) => {
     Rafraîchissement de la page */
     const handleDeletePost = async () => {
         try {
-            await deletePost(postId)
+            await deletePost(id)
             refreshPage()
         } catch (err) {
             console.log(err)
@@ -120,7 +123,7 @@ const Card = (props) => {
             {showModal ? <div className={showModal ? "update-modal " : "hidden"}>
 
                 <UpdatePost
-                    id={postId}
+                    id={id}
                     message={props.message}
                     author={props.author}
                     picture={props.picture}
@@ -134,10 +137,15 @@ const Card = (props) => {
 
                         <div > 
                             <div className="card-content--header-author">
-                                <p>{props.author} </p>
-                                <div className="options" >
+                                <p>{author} </p>
+                                <div className={isAuthorized ? "options" : "hidden"} >
                                     <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={updateOptions} />
-                                    {visibleOptions && <Options update={toggleModal} delete={handleDeletePost} toggleOptions={updateOptions}/>}
+                                    {visibleOptions && 
+                                    <Options 
+                                    update={toggleModal} 
+                                    delete={handleDeletePost} 
+                                    toggleOptions={updateOptions}
+                                    />}
                                     
                                 </div>
                             </div>
@@ -167,7 +175,7 @@ const Card = (props) => {
 
                         
                         <div className="card-comments">                           
-                            {addComment && <AddComment postId={postId} />}
+                            {addComment && <AddComment id={id} />}
                             {props.comments}
                             {props.comments.length < 3 ? "" : <p onClick={props.handleComments} className="card-comments--onclick">
                                 {props.showAllComments ? "Voir moins de commentaires" : "Voir tous les commentaires"}</p>}

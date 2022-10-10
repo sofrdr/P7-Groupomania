@@ -19,10 +19,12 @@ dayjs.locale('fr', localeObject)
 
 const Comment = (props) => {
 
-    const { handleOptions, options, id, message, date, author } = props;
+    const { handleOptions, options, id, message, date, author, user } = props;
 
     const [showModal, setShowModal] = useState(false)
 
+    const pseudo = user.pseudo
+    const isAuthorized = pseudo === author
 
     const visibleOptions = options.type === "comment" && options.id === id;
    
@@ -65,7 +67,7 @@ const Comment = (props) => {
                 : <div className="comment-container">
                     <div className="comment-header">
                         <p className="comment-header--author">{author}</p>
-                        <div className="options">
+                        <div className={isAuthorized ? "options" : "hidden"}>
                             <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={updateOptions} />
                             {visibleOptions && <Options delete={handleDeleteComment} update={toggleModal}/>}
                         </div>

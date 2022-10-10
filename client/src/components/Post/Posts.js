@@ -38,12 +38,12 @@ const Posts = (props) => {
 
     const user = props.user
     
+    
 
     /**
      * @params {showOptions} [options]
      */
     const handleOptions = (options) => {
-        console.log("kljkljlkjkljlk")
         setShowOptions(options)
     }
 
@@ -62,11 +62,13 @@ const Posts = (props) => {
                         <Comment
                             key={comment.id}
                             id={comment.id}
+                            user = {user}
                             author={comment.author}
                             message={comment.message}
                             date={comment.date}
                             handleOptions={handleOptions}
                             options={showOptions}
+                            
                         />
                     )
                 })
@@ -92,7 +94,7 @@ const Posts = (props) => {
                 <Card
                     key={post.id}
                     id={post.id}
-                    user={user.id}
+                    user={user}
                     author={post.author}
                     date={post.date}
                     message={post.message}
@@ -105,6 +107,7 @@ const Posts = (props) => {
                     showAllComments={showAllComments}
                     handleOptions={handleOptions}
                     options={showOptions}
+                    
                 />
 
 
