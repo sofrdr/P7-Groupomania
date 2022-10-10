@@ -4,12 +4,19 @@ import { getPosts } from "../../services/api";
 import Comment from "./Comment/Comment";
 
 
+/**
+ * @typedef {Object} showOptions
+ * @property {('post' | 'comment')} [type] le type de menu contextuel à  afficher
+ * @property {Number} [id] l'id du post ou du commentaire
+ */
+
+
 const Posts = (props) => {
 
 
     const [allPosts, setAllPosts] = useState([])
     const [showAllComments, setShowAllComments] = useState(false)
-    const [showOptions, setShowOptions] = useState(false)
+    const [showOptions, setShowOptions] = useState({})
 
 
     // Appel API pour récupérer les posts et mise à jour du state 
@@ -32,8 +39,12 @@ const Posts = (props) => {
     const user = props.user
     
 
-    const handleOptions = () => {
-        setShowOptions(prevShowOptions => !prevShowOptions)
+    /**
+     * @params {showOptions} [options]
+     */
+    const handleOptions = (options) => {
+        console.log("kljkljlkjkljlk")
+        setShowOptions(options)
     }
 
 
@@ -89,8 +100,7 @@ const Posts = (props) => {
                     likes={post.likes}
                     usersLiked={post.usersLiked}
                     numberOfComments={allComments === null ? 0 : allComments.length}
-                    comments={showAllComments ? comments : firstComments
-                    }
+                    comments={showAllComments ? comments : firstComments}
                     handleComments={handleComments}
                     showAllComments={showAllComments}
                     handleOptions={handleOptions}

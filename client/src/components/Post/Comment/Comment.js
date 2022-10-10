@@ -18,13 +18,13 @@ dayjs.locale('fr', localeObject)
 
 const Comment = (props) => {
 
-    const [showOptions, setShowOptions] = useState(false)
-
+    const {handleOptions, options, id} = props;
+    
+    
+    const visibleOptions = options.type === "comment" && options.id===id; 
     const commentId = props.id;
 
-    const handleOptions = () => {
-        setShowOptions(prevShowOptions => !prevShowOptions)
-    }
+  
 
     const handleDeleteComment = async () => {
         try{
@@ -36,13 +36,18 @@ const Comment = (props) => {
         }
     }
 
+    function updateOptions(){
+        if (!options.type) return handleOptions({type:"comment", id});
+        if (options.id !== id) return handleOptions({type:"comment", id});
+        handleOptions({});
+    }
     return (
         <div className="comment-container">
             <div className="comment-header">
                 <p className="comment-header--author">{props.author}</p>
                 <div className="options">
-                    <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={handleOptions} />
-                    {showOptions && <Options delete={handleDeleteComment}/>}
+                    <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={updateOptions} />
+                    {visibleOptions && <Options delete={handleDeleteComment}/>}
                 </div>
             </div>
 

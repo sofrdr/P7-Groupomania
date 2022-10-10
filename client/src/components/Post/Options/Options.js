@@ -6,7 +6,7 @@ import './Options.scss'
 
 const Options = (props) => {
     return(
-        <div className="options-container" focusable = {true}>
+        <div className="options-container" focusable = {true} onBlur={props.isOptionOpen && props.toggleOptions}>
             <ul >
                 <li onClick={props.update}><FontAwesomeIcon icon={faPen} className="options-icon"/>Modifier</li>
                 <li onClick={props.delete}> <FontAwesomeIcon icon={faTrash} className="options-icon"/>Supprimer</li>

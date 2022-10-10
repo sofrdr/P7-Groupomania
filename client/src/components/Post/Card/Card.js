@@ -1,3 +1,7 @@
+/**
+ * @typedef {import("../Posts.js").showOptions} showOptions
+ */
+
 import React, { useState } from "react";
 
 
@@ -22,12 +26,32 @@ dayjs.locale('fr', localeObject)
 
 
 
-
+/**
+ * @todo vérifier types
+ * @params {Object} props
+ * @params {String} props.key
+ * @params {String} props.id
+ * @params {String} props.user
+ * @params {String} props.author
+ * @params {String} props.date
+ * @params {String} props.message
+ * @params {String} props.picture
+ * @params {String} props.likes
+ * @params {String} props.usersLiked
+ * @params {String} props.numberOfComments
+ * @params {String} props.comments
+ * @params {String} props.handleComments=
+ * @params {String} props.showAllComments
+ * @params {String} props.handleOptions
+ * @params {showOptions} props.options
+ */
 const Card = (props) => {
 
-    const [showOptions, setShowOptions] = useState(false)
+    const {handleOptions, options, id} = props;
     const [addComment, setAddComment] = useState(false);
     const [showModal, setShowModal] = useState(false)
+
+    const visibleOptions = options.type === "post" && options.id===id; 
 
 
 
@@ -43,6 +67,12 @@ const Card = (props) => {
     let count = likes + (like ? 1 : 0);
 
 
+    function updateOptions(){
+        if (!options.type) return handleOptions({type:"post", id});
+        if (options.id !== id) return handleOptions({type:"post", id});
+        handleOptions({});
+    }
+
 
     // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
     // si la valeur de like était à 1 elle passe à 0 (l'utilisateur retire son like)
@@ -56,12 +86,6 @@ const Card = (props) => {
         catch (err) {
             console.log(err)
         }
-
-    }
-
-    // Fonction qui change le state showOptions pour afficher ou non la fenêtre avec les options de modification et suppression (composant Options)
-    const handleOptions = () => {
-        setShowOptions(prevShowOptions => !prevShowOptions)
 
     }
 
@@ -108,12 +132,13 @@ const Card = (props) => {
                 <article className="card">
                     <div className="card-content">
 
-                        <div >
+                        <div > 
                             <div className="card-content--header-author">
                                 <p>{props.author} </p>
                                 <div className="options" >
-                                    <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={handleOptions} />
-                                    {showOptions && <Options update={toggleModal} delete={handleDeletePost} />}
+                                    <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={updateOptions} />
+                                    {visibleOptions && <Options update={toggleModal} delete={handleDeletePost} toggleOptions={updateOptions}/>}
+                                    
                                 </div>
                             </div>
                             <p>{dayjs(date).fromNow()}</p>

@@ -11,7 +11,7 @@ const headers = {
 function setToken(token) {
     headers.Authorization = 'Bearer ' + token;
     localStorage.setItem('token', token)
-    alert('ok')
+    
 }
 
 
