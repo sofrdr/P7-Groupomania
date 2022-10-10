@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React,  useState } from "react";
 import { refreshPage, updatePost } from "../../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";

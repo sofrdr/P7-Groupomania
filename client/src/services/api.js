@@ -103,6 +103,7 @@ async function likePost(like, id) {
     console.log(data)
 }
 
+// COMMENTS
 
 async function addComment(comment, id) {
     const response = await fetch(`http://localhost:3000/api/posts/${id}/comment`, {
@@ -123,8 +124,18 @@ async function deleteComment(id){
     console.log(data)
 }
 
+async function updateComment(comment, id){
+    const response =  await fetch(`http://localhost:3000/api/posts/comment/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(comment),
+        headers
+    })
+    const data = await response.json();
+    console.log(data)
+}
+
 function refreshPage() {
     window.location.reload()
 }
 
-module.exports = { signIn, signUp, getPosts, addPost, likePost,  addComment, deletePost, deleteComment, refreshPage, updatePost }
+module.exports = { signIn, signUp, getPosts, addPost, likePost,  addComment, deletePost, deleteComment, refreshPage, updatePost, updateComment }
