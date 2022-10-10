@@ -15,15 +15,20 @@ exports.addPost = (req, res) => {
     const user = getUser(userId);
     const author = user.pseudo;
 
+    
 
     if (req.file) {
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
-      console.log(req.file)
-
+      console.log(req.file)     
       createPost(userId, author, req.body.message || "", picture);
+      
     } else {
-
-      createPost(userId, author, req.body.message)
+      if (req.body.message === "") {
+        throw new Error("Merci d'écrire un message")
+      }else{
+        createPost(userId, author, req.body.message)
+      }
+      
     }
 
     res.status(201).json('Le post a bien été créé')
@@ -31,8 +36,8 @@ exports.addPost = (req, res) => {
   }
   catch (err) {
 
-    console.log(err)
-    res.status(400).json({ err });
+    console.log({err})
+    res.status(400).json(err.message);
   }
 }
 
@@ -109,9 +114,9 @@ exports.deletePost = (req, res) => {
         const filename = post.picture.split('/images/')[1];
         console.log(filename)
         fs.unlink('images/' + filename, (err) => {
-          if (err){
+          if (err) {
             throw err;
-          } 
+          }
 
         })
       }
