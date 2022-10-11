@@ -11,7 +11,7 @@ const headers = {
 function setToken(token) {
     headers.Authorization = 'Bearer ' + token;
     localStorage.setItem('token', token)
-    
+
 }
 
 
@@ -23,7 +23,7 @@ async function signIn(dataLogin) {
     })
     const data = await response.json();
     setToken(data.token);
-    
+
 
     return data;
 
@@ -41,8 +41,21 @@ async function signUp(dataSignUp) {
     return data;
 }
 
+async function logout() {
+    const response = await fetch("http://localhost:3000/api/auth/logout",
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+    const data = await response.json()
+    console.log(data)
+}
+
+
 async function getPosts() {
-    
+
     const response = await fetch("http://localhost:3000/api/posts", { headers })
     const posts = await response.json()
     return posts
@@ -64,7 +77,7 @@ async function addPost(formData) {
 }
 
 
-async function updatePost(formData, id){
+async function updatePost(formData, id) {
     const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
         method: 'PUT',
         body: formData,
@@ -115,7 +128,7 @@ async function addComment(comment, id) {
     console.log(data)
 }
 
-async function deleteComment(id){
+async function deleteComment(id) {
     const response = await fetch(`http://localhost:3000/api/posts/comment/${id}`, {
         method: 'DELETE',
         headers
@@ -124,8 +137,8 @@ async function deleteComment(id){
     console.log(data)
 }
 
-async function updateComment(comment, id){
-    const response =  await fetch(`http://localhost:3000/api/posts/comment/${id}`, {
+async function updateComment(comment, id) {
+    const response = await fetch(`http://localhost:3000/api/posts/comment/${id}`, {
         method: 'PUT',
         body: JSON.stringify(comment),
         headers
@@ -138,4 +151,23 @@ function refreshPage() {
     window.location.reload()
 }
 
-module.exports = { signIn, signUp, getPosts, addPost, likePost,  addComment, deletePost, deleteComment, refreshPage, updatePost, updateComment }
+function returnToLogin(){
+    localStorage.clear();   
+    window.location.assign("/");
+}
+
+
+module.exports = {
+    signIn,
+    signUp,
+    getPosts,
+    addPost,
+    likePost,
+    addComment,
+    deletePost,
+    deleteComment,
+    refreshPage,
+    updatePost,
+    updateComment,
+    returnToLogin
+}
