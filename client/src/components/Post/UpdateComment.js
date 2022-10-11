@@ -31,15 +31,15 @@ const UpdateComment = (props) => {
                     <FontAwesomeIcon icon={faXmark} className="icon" onClick={isModalOpen && props.closeModal} />
                 </div>
 
-                <textarea
+                <input
                 className="new-comment-content"             
                 type="text"
                 id="updateMessage"
                 name="updateMessage"
                 placeholder="Laissez un commentaire ..."
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}>
-                </textarea>
+                onChange={(e) => setMessage(e.target.value)}
+                />
             </form>
             
         </div>
