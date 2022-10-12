@@ -73,7 +73,7 @@ const Card = (props) => {
         handleOptions({});
     }
 
-    console.log(message.length)
+    
     // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
     // si la valeur de like était à 1 elle passe à 0 (l'utilisateur retire son like)
     const handleLike = async () => {

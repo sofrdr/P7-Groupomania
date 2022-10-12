@@ -3,6 +3,7 @@ const { getUser } = require('../models/user-model');
 const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost, updatePostComments, addLike, removeLike, updateLikers } = require('../models/post-model');
 const { createComment, getComments, getOneComment, editComment, deleteComment } = require('../models/comment-model')
 const fs = require('fs');
+const validator = require('validator')
 
 // Ajouter un post
 exports.addPost = (req, res) => {
@@ -14,19 +15,20 @@ exports.addPost = (req, res) => {
     // On récupère l'utilisateur dans la BDD       
     const user = getUser(userId);
     const author = user.pseudo;
+    const message = req.body.message
 
     
 
     if (req.file) {
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
       console.log(req.file)     
-      createPost(userId, author, req.body.message || "", picture);
+      createPost(userId, author, message || "", picture);
       
     } else {
-      if (req.body.message === "") {
-        throw new Error("Merci d'écrire un message")
+      if (validator.isEmpty(message, {ignore_whitespace: true} ) || validator.isLength(message, {min: 1, max: 60000} ) === false) {
+        throw new Error("Merci d'écrire un message (60 000 caractères max)")
       }else{
-        createPost(userId, author, req.body.message)
+        createPost(userId, author, message)
       }
       
     }
@@ -36,8 +38,8 @@ exports.addPost = (req, res) => {
   }
   catch (err) {
 
-    console.log({err})
-    res.status(400).json(err.message);
+    console.log(err)
+    res.status(400).json({err});
   }
 }
 
