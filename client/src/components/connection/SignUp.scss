@@ -1,0 +1,16 @@
+@import '../../style/utils/mixins.scss';
+
+@import '../../style/utils/variables.scss';
+
+#signup-form{
+    @include flex-column-center;
+
+    p{
+        text-align: center;
+        color: $color-primary;
+    }
+}
+
+.form-input{
+    margin-bottom: 15px;
+}

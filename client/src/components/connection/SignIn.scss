@@ -1,0 +1,14 @@
+@import '../../style/utils/mixins.scss';
+
+#form-signin{
+    @include flex-column-center;
+
+    p{
+        text-align: center;
+        color: $color-primary;
+    }
+}
+
+.form-input{
+    margin-bottom: 15px;
+}
