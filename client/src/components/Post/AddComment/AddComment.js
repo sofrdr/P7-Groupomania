@@ -6,7 +6,7 @@ const AddComment = (props) => {
 
     const [message, setmessage] = useState("")
 
-    const postId = props.postId
+    const postId = props.id
 
     const handlemessage = (e) => {
         setmessage(e.target.value)

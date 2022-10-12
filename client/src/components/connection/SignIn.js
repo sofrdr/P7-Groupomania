@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import {Navigate} from "react-router-dom";
 import { signIn } from "../../services/api";
+import './SignIn.scss'
 
 
 const SignIn = () => {
@@ -59,7 +60,7 @@ const SignIn = () => {
 
     return (
         <div>
-            <form onSubmit={handleSignIn} id="form-signin" >
+            <form onSubmit={handleSignIn} id="form-signin"  >
                 <label htmlFor="email">Email</label>
                 <br />
                 <input
@@ -86,9 +87,10 @@ const SignIn = () => {
                     className="form-input"
                 />
                 <br />
+                
                 <br />
                 <input type="submit" value="Se connecter" className="btn btn-log"/>
-                <div>{errorMsg}</div>
+                <p>{errorMsg}</p>
             </form>
         </div>
     )
