@@ -124,6 +124,8 @@ async function deleteComment(id){
     console.log(data)
 }
 
+/* Modification commentaire
+2 paramètres : comment(string), id(string */ 
 async function updateComment(comment, id){
     const response =  await fetch(`http://localhost:3000/api/posts/comment/${id}`, {
         method: 'PUT',
@@ -134,6 +136,8 @@ async function updateComment(comment, id){
     console.log(data)
 }
 
+
+// Fonction pour rafraîchir la page
 function refreshPage() {
     window.location.reload()
 }
