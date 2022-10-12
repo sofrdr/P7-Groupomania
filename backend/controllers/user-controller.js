@@ -78,7 +78,7 @@ exports.login = async (req, res) => {
             token : jwt.sign(
                 { userId : user.id},
                 SECRET_KEY, 
-                {expiresIn: '1h'}
+                {expiresIn: "1h"}
             )
         })
     }
@@ -89,5 +89,10 @@ exports.login = async (req, res) => {
 }
 
 exports.logout = (req, res) => {
-    res.redirect('/')
+    try{
+       res.redirect('/').status(200).json("Utilisateur déconnecté") 
+    }
+    catch(err){
+        res.status(500).json({err})
+    }
 }

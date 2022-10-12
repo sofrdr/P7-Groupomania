@@ -51,7 +51,7 @@ const UpdatePost = (props) => {
 
                     name="message"
                     id="message"
-                    placeholder={`Quoi de neuf aujourd'hui ${props.user} ?`}
+                    placeholder="Ajouter un message ..."
                     onChange={(e) => setMessage(e.target.value)}
                     value={message}> </textarea>
                 <br />

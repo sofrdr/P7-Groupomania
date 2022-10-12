@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { signUp } from "../../services/api";
 import SignIn from "./SignIn";
+import './SignUp.scss'
 
 
 const SignUp = () => {
@@ -99,7 +100,7 @@ const SignUp = () => {
                     <br />
                     <br />
                     <input type="submit" value="Créer un compte" className="btn btn-log"/>
-                    <div className="signup-error-msg">{errorMsg}</div>
+                    <p className="signup-error-msg">{errorMsg}</p>
                 </form>)}
 
         </div>

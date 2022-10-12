@@ -1,30 +1,36 @@
 @import '../../../style/utils/variables.scss';
+@import '../../../style/utils/mixins.scss';
 
 .card {
-    
+
     background-color: white;
     margin: auto;
     width: 38%;
     border-radius: $radius;
     padding: 10px 0;
     margin-top: 17px;
-    
-    
 
-    &-content{
-        
+
+
+    &-content {
+
         margin: auto;
         padding: 15px;
         position: relative;
 
-        &--message{
+        &--message {
             font-size: 20px;
+            
+            &_display{
+                @include displayOnClick;
+                width: 95px;
+            }
         }
 
-        &--header{
-            
+        &--header {
 
-            &-author{
+
+            &-author {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -32,52 +38,54 @@
             }
         }
 
-        &--image{
+        &--image {
             width: 100%;
-            object-fit: cover;          
+            object-fit: cover;
+            max-height: 500px;
         }
 
-        &--indicators{
+        &--indicators {
             display: flex;
             margin-top: 10px;
 
 
 
-            &-elt{
+            &-elt {
                 margin-right: 20px;
             }
         }
     }
 
-    &-comments{
+    &-comments {
 
         margin-top: 30px;
 
-        &--onclick{
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 30px;
-
-            &:hover{
-                color: $color-primary;
-            }
+        &--onclick {
+           @include displayOnClick
         }
     }
 }
 
-.icon{
+.icon {
     cursor: pointer;
     font-size: 20px;
     margin-right: 4px;
 }
 
 
-.heart-filled{
-    color: $color-primary; 
-         
+.heart-filled {
+    color: $color-primary;
+
 }
 
-.hidden{
+.hidden {
     display: none;
 }
 
+.text-hidden{
+    display: -webkit-box;
+    -webkit-line-clamp: 15;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

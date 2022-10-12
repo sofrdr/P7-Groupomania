@@ -47,15 +47,12 @@ dayjs.locale('fr', localeObject)
  */
 const Card = (props) => {
 
-    const {handleOptions, options, id, user, date, author} = props;
+    const {handleOptions, options, id, user, date, author, message} = props;
     const [addComment, setAddComment] = useState(false);
     const [showModal, setShowModal] = useState(false)
+    const [showAllText, setShowAllText] = useState(false)
 
-    const visibleOptions = options.type === "post" && options.id===id; 
-
-
-
-    
+    const visibleOptions = options.type === "post" && options.id===id;  
 
    
     const usersLike = props.usersLiked
@@ -76,7 +73,7 @@ const Card = (props) => {
         handleOptions({});
     }
 
-
+    console.log(message.length)
     // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
     // si la valeur de like était à 1 elle passe à 0 (l'utilisateur retire son like)
     const handleLike = async () => {
@@ -115,6 +112,9 @@ const Card = (props) => {
         setAddComment(prevAddComment => !prevAddComment)
     }
 
+    const displayText = () => {
+        setShowAllText(prevShowAllText => !prevShowAllText)
+    }
 
     return (
 
@@ -151,9 +151,9 @@ const Card = (props) => {
                             </div>
                             <p>{dayjs(date).fromNow()}</p>
                         </div>
-
-                        <p className="card-content--message">{props.message}</p>
-
+                                        
+                        <p  className={(message.length > 500 && showAllText === false) ? "card-content--message text-hidden" : "card-content--message"}>{message}</p>
+                        {message.length > 500 && <div className="card-content--message_display" onClick={displayText}>{showAllText ? "Réduire" : "Afficher plus"}</div>}                  
                         <div className="card-content--image-container">
                             <img src={props.picture} alt="" className="card-content--image" />
                         </div>
