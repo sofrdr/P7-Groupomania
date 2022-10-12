@@ -1,5 +1,9 @@
 .auth-container{
     background: url('../assets/plant-background.webp') no-repeat;
     background-size: cover;
-    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
