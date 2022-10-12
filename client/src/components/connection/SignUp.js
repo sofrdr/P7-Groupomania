@@ -24,7 +24,7 @@ const SignUp = () => {
         e.preventDefault();
         try {
             const data = await signUp(formData)
-            console.log(data)
+            console.log(data.error)
 
             if (data.error) {
                 setErrorMsg(data.error)

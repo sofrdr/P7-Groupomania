@@ -46,7 +46,14 @@ exports.signup = async (req, res) => {
 
     }
     catch (err) {
-        res.status(400).json({ err });
+        let errorMessage 
+        if(err.message === "UNIQUE constraint failed: users.email"){
+            errorMessage = "Un compte existe déjà avec cette adresse email"
+        }
+        if(err.message === "UNIQUE constraint failed: users.pseudo"){
+            errorMessage = "Ce pseudo est déjà utilisé"
+        }
+        res.status(400).json({ error : errorMessage ? errorMessage : err.message});
         console.log(err)
     }
 

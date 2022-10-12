@@ -16,7 +16,7 @@ function setToken(token) {
 
 
 async function signIn(dataLogin) {
-    const response = await fetch("http://localhost:3000/api/auth/login", {
+    const response = await fetch("http://localhost:3001/api/auth/login", {
         method: 'POST',
         body: JSON.stringify(dataLogin),
         headers
@@ -31,7 +31,7 @@ async function signIn(dataLogin) {
 
 
 async function signUp(dataSignUp) {
-    const response = await fetch("http://localhost:3000/api/auth/signup", {
+    const response = await fetch("http://localhost:3001/api/auth/signup", {
         method: 'POST',
         body: JSON.stringify(dataSignUp),
         headers,
@@ -42,7 +42,7 @@ async function signUp(dataSignUp) {
 }
 
 async function logout() {
-    const response = await fetch("http://localhost:3000/api/auth/logout",
+    const response = await fetch("http://localhost:3001/api/auth/logout",
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ async function logout() {
 
 async function getPosts() {
 
-    const response = await fetch("http://localhost:3000/api/posts", { headers })
+    const response = await fetch("http://localhost:3001/api/posts", { headers })
     const posts = await response.json()
     return posts
 
@@ -64,7 +64,7 @@ async function getPosts() {
 
 
 async function addPost(formData) {
-    const response = await fetch("http://localhost:3000/api/posts", {
+    const response = await fetch("http://localhost:3001/api/posts", {
         method: 'POST',
         body: formData,
         headers: {
@@ -78,7 +78,7 @@ async function addPost(formData) {
 
 
 async function updatePost(formData, id) {
-    const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+    const response = await fetch(`http://localhost:3001/api/posts/${id}`, {
         method: 'PUT',
         body: formData,
         headers: {
@@ -92,7 +92,7 @@ async function updatePost(formData, id) {
 
 
 async function deletePost(id) {
-    const response = await fetch(`http://localhost:3000/api/posts/${id}`, {
+    const response = await fetch(`http://localhost:3001/api/posts/${id}`, {
         method: 'DELETE',
         headers
     });
@@ -107,7 +107,7 @@ async function deletePost(id) {
  * @param {Number} id
  */
 async function likePost(like, id) {
-    const response = await fetch(`http://localhost:3000/api/posts/${id}/like`, {
+    const response = await fetch(`http://localhost:3001/api/posts/${id}/like`, {
         method: 'POST',
         body: JSON.stringify({ like: like ? 0 : 1 }),
         headers
@@ -119,7 +119,7 @@ async function likePost(like, id) {
 // COMMENTS
 
 async function addComment(comment, id) {
-    const response = await fetch(`http://localhost:3000/api/posts/${id}/comment`, {
+    const response = await fetch(`http://localhost:3001/api/posts/${id}/comment`, {
         method: 'POST',
         body: JSON.stringify(comment),
         headers
@@ -129,7 +129,7 @@ async function addComment(comment, id) {
 }
 
 async function deleteComment(id) {
-    const response = await fetch(`http://localhost:3000/api/posts/comment/${id}`, {
+    const response = await fetch(`http://localhost:3001/api/posts/comment/${id}`, {
         method: 'DELETE',
         headers
     })
@@ -138,9 +138,9 @@ async function deleteComment(id) {
 }
 
 /* Modification commentaire
-2 paramètres : comment(string), id(string */ 
+ */ 
 async function updateComment(comment, id){
-    const response =  await fetch(`http://localhost:3000/api/posts/comment/${id}`, {
+    const response =  await fetch(`http://localhost:3001/api/posts/comment/${id}`, {
         method: 'PUT',
         body: JSON.stringify(comment),
         headers
