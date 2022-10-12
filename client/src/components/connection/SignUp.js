@@ -50,11 +50,11 @@ const SignUp = () => {
     }
 
     return (
-        <div className="signup-form-container">
+        <div className="signup">
             {isFormSend ? (
                 <div>
                     <SignIn />
-                    <p>Le compte a bien été créé, veuillez vous connecter</p>
+                    <p className="signup-confirm">Le compte a bien été créé, veuillez vous connecter</p>
                 </div>
             )
                 : (<form id="signup-form" onSubmit={handleSignUp}>
