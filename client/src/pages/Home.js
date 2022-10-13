@@ -1,5 +1,5 @@
 import {React, useEffect} from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { isExpired} from "react-jwt";
 import Posts from "../components/Post/Posts"
 import Header from "../components/Header/Header";
@@ -19,7 +19,8 @@ const token = localStorage.getItem("token")
 
 
 if(isExpired(token)){
-    returnToLogin()    
+    localStorage.clear();
+   return  <Navigate to="/"/> 
 }
 else{
     return(

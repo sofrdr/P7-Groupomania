@@ -47,13 +47,14 @@ dayjs.locale('fr', localeObject)
  */
 const Card = (props) => {
 
-    const {handleOptions, options, id, user, date, author, message} = props;
+    const {handleOptions, options, id, user, date, author} = props;
     const [addComment, setAddComment] = useState(false);
     const [showModal, setShowModal] = useState(false)
     const [showAllText, setShowAllText] = useState(false)
+    const [message, setMessage] = useState(props.message)
 
     const visibleOptions = options.type === "post" && options.id===id;  
-
+    console.log(typeof id)
    
     const usersLike = props.usersLiked
     
@@ -73,7 +74,12 @@ const Card = (props) => {
         handleOptions({});
     }
 
-    
+    function updateMessage(message){
+        toggleModal();
+        setMessage(message)
+    }
+
+
     // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
     // si la valeur de like était à 1 elle passe à 0 (l'utilisateur retire son like)
     const handleLike = async () => {
@@ -129,6 +135,8 @@ const Card = (props) => {
                     picture={props.picture}
                     isModalOpen={showModal}
                     closeModal={toggleModal}
+                    updateMessage={updateMessage}
+                    
                 /></div>
 
                 :

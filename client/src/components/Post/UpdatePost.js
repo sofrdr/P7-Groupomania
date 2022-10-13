@@ -13,7 +13,8 @@ const UpdatePost = (props) => {
     const author = props.author
     const image = props.picture
     const [message, setMessage] = useState(props.message);
-
+    const [count, setCount] = useState(0);
+    const updateMessage = props.updateMessage
 
     console.log(img)
 
@@ -29,7 +30,7 @@ const UpdatePost = (props) => {
 
         try {
             await updatePost(formData, id)
-            refreshPage()
+            updateMessage(message)
 
         }
         catch (err) {
