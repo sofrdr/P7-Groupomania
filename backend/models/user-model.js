@@ -19,7 +19,14 @@ catch (err) {
   console.error(err)
 }
 
-
+/**
+ * [Ajouter un utilisateur en BDD]
+ *
+ * @param   {String}  email     [email]
+ * @param   {String}  password  [mot de passe]
+ * @param   {String}  pseudo    [pseudo]
+ *
+ */
 function createUser(email, password, pseudo) {
 
   //const uuid = uuidv4();
@@ -32,11 +39,23 @@ function createUser(email, password, pseudo) {
 
 }
 
+/**
+ * [Récupérer les infos d'un utilisateur selon son id]
+ *
+ * @param   {Number}  id  [id de l'utilisateur]
+ *
+ */
 function getUser(id){
   const user = db.prepare(`SELECT * FROM users WHERE id = @id`).get({id:id});
   return user;
 }
 
+/**
+ * [Récupérer les infos d'un utilisateur selon son email]
+ *
+ * @param   {String}  email  [email de l'utilisateur]
+ *
+ */
 function getUserByEmail(email){
   const user = db.prepare('SELECT * FROM users WHERE email= @email')
   .get({email : email});
