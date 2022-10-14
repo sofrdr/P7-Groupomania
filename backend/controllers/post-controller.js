@@ -211,8 +211,11 @@ exports.commentPost = (req, res) => {
     const author = user.pseudo;
     const id = req.params.id;
 
+    // On empêche l'envoi des caractères <, >, &, ', " et /
+    const sanitizedMessage = validator.escape(message)
+
     // Un commentaire est ajouté à la table comments
-    createComment(author, message, id)
+    createComment(author, sanitizedMessage, id)
     const comments = getComments(id)
 
     // On actualise la ligne comments de la table posts
@@ -259,12 +262,15 @@ exports.editComment = (req, res) => {
     const currentUser = getUser(userId);
     const message = req.body.message;
 
+    // On empêche l'envoi des caractères <, >, &, ', " et /
+    const sanitizedMessage = validator.escape(message)
+
 
     // On vérifie si l'utilisateur est l'auteur du commentaire ou a le rôle administrateur
     if (comment.author !== currentUser.pseudo && currentUser.role !== 1) {
       res.status(403).json({ message: "Modification du commentaire non autorisée" });
     } else {
-      editComment(id, message);
+      editComment(id, sanitizedMessage);
       const comments = getComments(postId)
       // On actualise la ligne comments de la table posts
       updatePostComments(comments, postId)
