@@ -17,6 +17,7 @@ const Posts = (props) => {
     const [allPosts, setAllPosts] = useState([])
     const [showAllComments, setShowAllComments] = useState(false)
     const [showOptions, setShowOptions] = useState({})
+    const [count, setCount] = useState(0)
 
 
     // Appel API pour récupérer les posts et mise à jour du state 
@@ -38,6 +39,9 @@ const Posts = (props) => {
 
     const user = props.user
     
+    function refresh(){
+        setCount(count + 1)
+    }
     
 
     /**
@@ -107,6 +111,7 @@ const Posts = (props) => {
                     showAllComments={showAllComments}
                     handleOptions={handleOptions}
                     options={showOptions}
+                    refresh={refresh}
                     
                 />
 

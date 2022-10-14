@@ -17,20 +17,22 @@ exports.addPost = (req, res) => {
     const author = user.pseudo;
     const message = req.body.message
 
-    
+    // On empêche l'envoi des caractères <, >, &, ', " et /
+    const sanitizedMessage = validator.escape(message)
+
 
     if (req.file) {
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
-      console.log(req.file)     
-      createPost(userId, author, message || "", picture);
-      
+      console.log(req.file)
+      createPost(userId, author, sanitizedMessage || "", picture);
+
     } else {
-      if (validator.isEmpty(message, {ignore_whitespace: true} ) || validator.isLength(message, {min: 1, max: 60000} ) === false) {
+      if (validator.isEmpty(message, { ignore_whitespace: true }) || validator.isLength(message, { min: 1, max: 60000 }) === false) {
         throw new Error("Merci d'écrire un message (60 000 caractères max)")
-      }else{
-        createPost(userId, author, message)
+      } else {
+        createPost(userId, author, sanitizedMessage)
       }
-      
+
     }
 
     res.status(201).json('Le post a bien été créé')
@@ -39,7 +41,7 @@ exports.addPost = (req, res) => {
   catch (err) {
 
     console.log(err)
-    res.status(400).json({err});
+    res.status(400).json({ err });
   }
 }
 
@@ -71,6 +73,8 @@ exports.modifyPost = (req, res) => {
     } else {
 
       const message = req.body.message;
+      // On empêche l'envoi des caractères <, >, &, ', " et /
+      const sanitizedMessage = validator.escape(message)
 
       /* Si la requête contient une image alors on supprime l'image existante du dossier et on actualise l'image du post */
       if (req.file) {
@@ -82,7 +86,7 @@ exports.modifyPost = (req, res) => {
       }
 
       if (message) {
-        updatePostMessage(message, id)
+        updatePostMessage(sanitizedMessage, id)
       }
       res.status(200).json({ message: "Le post a bien été modifié" })
     }
