@@ -211,7 +211,9 @@ async function updateComment(comment, id){
     console.log(data)
 }
 
-
+function refreshPage(){
+    window.location.reload()
+}
 
 
 module.exports = {
@@ -225,5 +227,5 @@ module.exports = {
     deleteComment,
     updatePost,
     updateComment,
-    
+    refreshPage
 }

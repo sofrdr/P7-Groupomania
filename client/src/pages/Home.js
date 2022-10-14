@@ -1,4 +1,4 @@
-import {React, useEffect} from "react";
+import {React, useEffect, useState} from "react";
 import { Navigate } from "react-router-dom";
 import { isExpired} from "react-jwt";
 import Posts from "../components/Post/Posts"
@@ -11,7 +11,7 @@ import { returnToLogin } from "../services/api";
 
 export default function Home(){
 
-   
+
 
 const currentUser = JSON.parse(localStorage.getItem("user"))
 const token = localStorage.getItem("token")
@@ -33,6 +33,7 @@ else{
             />
             <Posts
             user = {currentUser}
+            
             />
             
             </div>

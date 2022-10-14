@@ -114,7 +114,7 @@ const Card = (props) => {
     }
 
     // Fonction qui change le state addComment pour afficher ou non le champ pour ajouter un commentaire (composant AddComment)
-    const handleAddComment = () => {
+    const toggleAddComment = () => {
         setAddComment(prevAddComment => !prevAddComment)
     }
 
@@ -176,7 +176,7 @@ const Card = (props) => {
                                 
                             </div>
                             <div className="card-content--indicators-elt">
-                                <FontAwesomeIcon icon={faComment} className="icon" onClick={handleAddComment} />
+                                <FontAwesomeIcon icon={faComment} className="icon" onClick={toggleAddComment} />
                                 {props.numberOfComments}
                             </div>
                         </div>

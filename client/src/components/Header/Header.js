@@ -1,15 +1,19 @@
 import {React, useState} from "react";
 import { Navigate } from "react-router-dom";
+
+// FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 import logo from "../../assets/icon-left-font.png"
-
 import "./Header.scss"
 
 const Header = (props) => {
 
     const [redirect, setRedirect] = useState(false)
+
+   
+    // Déconnexion de l'utilisateur : nettoyage du localStorage et retour à la page de connexion
     const disconnect = () => {
         try {
             localStorage.clear();

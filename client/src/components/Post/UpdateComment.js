@@ -8,7 +8,7 @@ const UpdateComment = (props) => {
 
     const [message, setMessage] = useState(props.message)
 
-    const {author, isModalOpen, id} = props
+    const {author, isModalOpen, id, updateMessage} = props
     
 
 
@@ -17,7 +17,7 @@ const UpdateComment = (props) => {
         e.preventDefault();
         try{
             await updateComment({message}, id)
-            refreshPage()
+            updateMessage(message)
         }catch(err){
             console.log(err)
         }

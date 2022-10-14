@@ -16,23 +16,22 @@ const SignIn = () => {
 
     const [loggedIn, setLoggedIn] = useState(false);
 
-   
-    // Fonction pour envoyer les données au back à la validation du formulaire
 
-    
+    // Fonction pour envoyer les données au back à la validation du formulaire
 
     async function handleSignIn(e) {
 
         e.preventDefault();
 
-        try {
+        try {         
             const data = await signIn(formData)
+            // On recupère dans la réponse l'objet user et on l'enregistre dans le localStorage
             const user = data.user
             localStorage.setItem("user", JSON.stringify(user))
             
             
-            
-
+            /* Si la réponse contient une erreur alors on enregistre cette erreur dans errorMsg
+            Si aucune erreur on passe loggedIn à true */ 
             if (data.error) {
                 setErrorMsg(data.error)
             } else {
@@ -45,7 +44,13 @@ const SignIn = () => {
     }
 
     
-
+    /**
+     * [Actualiser la valeur des champs à chaque changement ]
+     *
+     * @param   {Object}  e  [Event]
+     *
+     * @return  {Object}     [formData : email, password]
+     */
     function handleChange(e) {
         const {name, value} = e.target
         setFormData(prevFormData => {

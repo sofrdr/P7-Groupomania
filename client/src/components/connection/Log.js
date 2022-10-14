@@ -11,6 +11,7 @@ const [signInModal, setSignInModal] = useState(true);
 const [signUpModal, setSignUpModal] = useState(false);
 
 // On modifie le state de signUpModal et signInModal pour afficher le bon composant au clic
+
 const handleConnection = (e) => {
     if(e.target.id === "register"){
         setSignUpModal(true);
