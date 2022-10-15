@@ -47,18 +47,16 @@ dayjs.locale('fr', localeObject)
  */
 const Card = (props) => {
 
-    const { handleOptions, options, id, user, date, author, comments, handleComments, showAllComments, numberOfComments, refresh } = props;
+    const { handleOptions, options, id, user, date, author, comments, handleComments, showAllComments, numberOfComments,  createComment, removePost } = props;
 
     const [addComment, setAddComment] = useState(false);
-    const [showModal, setShowModal] = useState(false)
+    const [showUpdate, setShowUpdate] = useState(false)
     const [showAllText, setShowAllText] = useState(false)
     const [message, setMessage] = useState(props.message)
 
 
 
     const visibleOptions = options.type === "post" && options.id === id;
-
-
 
 
     const userId = user.id
@@ -101,9 +99,9 @@ const Card = (props) => {
 
     }
 
-    // Fonction qui change le state de showModal pour afficher ou non la fenêtre de modification du post (composant UpdatePost)
+    // Fonction qui change le state de showUpdate pour afficher ou non la fenêtre de modification du post (composant UpdatePost)
     const toggleModal = () => {
-        setShowModal(!showModal)
+        setShowUpdate(!showUpdate)
 
     }
 
@@ -123,8 +121,9 @@ const Card = (props) => {
     Rafraîchissement de la page */
     const handleDeletePost = async () => {
         try {
-            await deletePost(id)
-            refresh()
+            await deletePost(id);
+            removePost(id)
+            
         } catch (err) {
             console.log(err)
         }
@@ -134,16 +133,16 @@ const Card = (props) => {
 
     return (
 
-        // Si showModal = true alors on affiche le composant de modification du post (UpdatePost) sinon on affiche le post
+        // Si showUpdate = true alors on affiche le composant de modification du post (UpdatePost) sinon on affiche le post
         <div >
-            {showModal ? <div className={showModal ? "update-modal " : "hidden"}>
+            {showUpdate ? <div className={showUpdate ? "update-modal " : "hidden"}>
 
                 <UpdatePost
                     id={id}
                     message={props.message}
                     author={props.author}
                     picture={props.picture}
-                    isModalOpen={showModal}
+                    isModalOpen={showUpdate}
                     closeModal={toggleModal}
                     updateMessage={updateMessage}
 
@@ -201,7 +200,7 @@ const Card = (props) => {
 
 
                         <div className="card-comments">
-                            {addComment && <AddComment id={id} />}
+                            {addComment && <AddComment id={id} createComment={createComment} toggleAddComment={toggleAddComment}/>}
                             {comments}
                             {comments.length < 3 ? "" : <p onClick={handleComments} className="card-comments--onclick">
                                 {showAllComments ? "Voir moins de commentaires" : "Voir tous les commentaires"}</p>}

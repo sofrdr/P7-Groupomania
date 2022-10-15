@@ -173,7 +173,7 @@ async function addComment(comment, id) {
         headers
     })
     const data = await response.json();
-    console.log(data)
+    return data
 }
 
 

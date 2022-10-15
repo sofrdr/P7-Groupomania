@@ -50,13 +50,14 @@ function getAllPosts() {
  *
  */
 function createPost(userId, author, message, picture) {
-    newPostStmt = db.prepare(`INSERT INTO posts (user_id, author,  message, date, picture) VALUES (@userId, @author, @message, datetime('now', 'localtime'), @picture)`);
-    newPostStmt.run({
+    const newPost = db.prepare(`INSERT INTO posts (user_id, author,  message, date, picture) VALUES (@userId, @author, @message, datetime('now', 'localtime'), @picture)`)
+    .run({
         userId: userId,
         author: author,
         message: message,
         picture: picture
     })
+    return newPost
 }
 
 /**

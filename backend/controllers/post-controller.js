@@ -20,22 +20,26 @@ exports.addPost = (req, res) => {
     // On empêche l'envoi des caractères <, >, &, ', " et /
     const sanitizedMessage = validator.escape(message)
 
-
+    let newPostDb;
     if (req.file) {
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
       console.log(req.file)
-      createPost(userId, author, sanitizedMessage || "", picture);
+
+      newPostDb = createPost(userId, author, sanitizedMessage || "", picture);
 
     } else {
       if (validator.isEmpty(message, { ignore_whitespace: true }) || validator.isLength(message, { min: 1, max: 60000 }) === false) {
         throw new Error("Merci d'écrire un message (60 000 caractères max)")
       } else {
-        createPost(userId, author, sanitizedMessage)
+        newPostDb = createPost(userId, author, sanitizedMessage)
       }
+
 
     }
 
-    res.status(201).json('Le post a bien été créé')
+    const newPostId = newPostDb.lastInsertRowid
+    const newPost = getPost(newPostId)
+    res.status(201).json({message: "Le post a bien été créé", newPost})
 
   }
   catch (err) {
@@ -215,13 +219,17 @@ exports.commentPost = (req, res) => {
     const sanitizedMessage = validator.escape(message)
 
     // Un commentaire est ajouté à la table comments
-    createComment(author, sanitizedMessage, id)
-    const comments = getComments(id)
+    const newCommentDb = createComment(author, sanitizedMessage, id)
+    const newCommentId = newCommentDb.lastInsertRowid;
+
 
     // On actualise la ligne comments de la table posts
+    const comments = getComments(id)
     updatePostComments(comments, id)
 
-    res.status(201).json({ message: "Le commentaire a bien été ajouté" })
+    const newComment = getOneComment(newCommentId)
+
+    res.status(201).json({ message: "Le commentaire a bien été ajouté", newComment })
   }
   catch (err) {
     console.log(err)

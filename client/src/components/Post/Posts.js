@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card/Card"
+import CreatePost from "./CreatePost/CreatePost";
 import { getPosts } from "../../services/api";
 import Comment from "./Comment/Comment";
 
@@ -14,18 +15,24 @@ import Comment from "./Comment/Comment";
 const Posts = (props) => {
 
 
+
+
     const [allPosts, setAllPosts] = useState([])
     const [showAllComments, setShowAllComments] = useState(false)
     const [showOptions, setShowOptions] = useState({})
-    const [count, setCount] = useState(0)
 
+
+
+    const user = props.user
 
     // Appel API pour récupérer les posts et mise à jour du state 
     useEffect(() => {
         async function getAllPosts() {
             try {
                 const data = await getPosts()
-
+                for (const post of data) {
+                    post.comments = JSON.parse(post.comments)
+                }
                 setAllPosts(data)
             } catch (err) {
                 console.log(err)
@@ -37,12 +44,8 @@ const Posts = (props) => {
     }, [])
 
 
-    const user = props.user
-    
-    function refresh(){
-        setCount(count + 1)
-    }
-    
+
+
 
     /**
      * @params {showOptions} [options]
@@ -51,9 +54,62 @@ const Posts = (props) => {
         setShowOptions(options)
     }
 
+    function removeComment(idPost, idComment) {
+        const newData = JSON.parse(JSON.stringify(allPosts));
+        for (const post of newData) {
+            if (post.id === idPost) {
+                const newComments = [];
+                for (let i = 0; i < post.comments.length; i++) {
+                    if (post.comments[i].id === idComment) continue;
+                    newComments.push(post.comments[i]);
+                }
+                post.comments = newComments
+                setAllPosts(newData);
+                return;
+            }
+        }
+    }
+
+    function createComment(idPost, newComment) {
+        const newData = JSON.parse(JSON.stringify(allPosts));
+        for (const post of newData) {
+            if (post.id === idPost) {
+                if (post.comments = []) {
+                    post.comments.push(newComment);
+                } else {
+                    post.comments.unshift(newComment)
+                }
+
+                setAllPosts(newData);
+                return;
+            }
+        }
+    }
+
+
+    function createPost(newPost) {
+        const newData = JSON.parse(JSON.stringify(allPosts));
+        newData.unshift(newPost);
+        setAllPosts(newData);
+    }
+
+    function removePost(idPost) {
+        const newData = JSON.parse(JSON.stringify(allPosts));
+        for (let i =0; i<newData.length; i++) {
+            if(newData[i].id === idPost){
+                newData.splice(i, 1)
+                setAllPosts(newData)
+                return;
+            }
+        }
+
+
+    }
+
 
     const posts = allPosts.map((post) => {
-        const allComments = JSON.parse(post.comments)
+        //const allComments = JSON.parse(post.comments)
+        const allComments = post.comments
 
         // Fonction pour passer les commentaires de chaque post dans un composant <Comment/>
         function getAllComments() {
@@ -62,17 +118,20 @@ const Posts = (props) => {
             } else {
 
                 return allComments.map((comment) => {
+
                     return (
                         <Comment
                             key={comment.id}
                             id={comment.id}
-                            user = {user}
+                            user={user}
                             author={comment.author}
                             message={comment.message}
                             date={comment.date}
                             handleOptions={handleOptions}
                             options={showOptions}
-                            
+                            removeComment={removeComment}
+                            postId={post.id}
+
                         />
                     )
                 })
@@ -80,11 +139,10 @@ const Posts = (props) => {
         }
 
         const comments = getAllComments()
-        
+
 
         function handleComments() {
             setShowAllComments((prevShowComments) => !prevShowComments)
-
 
         }
 
@@ -111,8 +169,9 @@ const Posts = (props) => {
                     showAllComments={showAllComments}
                     handleOptions={handleOptions}
                     options={showOptions}
-                    refresh={refresh}
-                    
+                    createComment={createComment}
+                    removePost={removePost}
+
                 />
 
 
@@ -123,6 +182,10 @@ const Posts = (props) => {
 
     return (
         <div>
+            <CreatePost
+                user={user.pseudo}
+                createPost={createPost}
+            />
             {posts}
         </div>
     )

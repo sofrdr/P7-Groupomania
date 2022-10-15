@@ -49,12 +49,13 @@ function getOneComment(id) {
  *
  */
 function createComment(author, message, post_id) {
-    newComment = db.prepare(`INSERT INTO comments (author, message, date, post_id) VALUES (@author, @message, datetime('now', 'localtime'), @post_id)`)
+    const newComment = db.prepare(`INSERT INTO comments (author, message, date, post_id) VALUES (@author, @message, datetime('now', 'localtime'), @post_id)`)
         .run({
             author: author,
             message: message,
             post_id: post_id
         })
+    return newComment
 }
 
 /**
