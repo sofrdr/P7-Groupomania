@@ -12,7 +12,7 @@ const AddComment = (props) => {
     const handlemessage = (e) => {
         setmessage(e.target.value)
     }
-    console.log({message})
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();

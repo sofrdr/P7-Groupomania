@@ -74,12 +74,12 @@ const Posts = (props) => {
         const newData = JSON.parse(JSON.stringify(allPosts));
         for (const post of newData) {
             if (post.id === idPost) {
-                if (post.comments = []) {
-                    post.comments.push(newComment);
-                } else {
+                if(post.comments === null){
+                    post.comments = [];
+                    post.comments.push(newComment)
+                }else{
                     post.comments.unshift(newComment)
                 }
-
                 setAllPosts(newData);
                 return;
             }
@@ -89,14 +89,22 @@ const Posts = (props) => {
 
     function createPost(newPost) {
         const newData = JSON.parse(JSON.stringify(allPosts));
-        newData.unshift(newPost);
+        if(newData === null){
+            newData = [];
+            newData.push(newPost)
+        }else{
+            newData.unshift(newPost)
+        }
+            
+       
+
         setAllPosts(newData);
     }
 
     function removePost(idPost) {
         const newData = JSON.parse(JSON.stringify(allPosts));
-        for (let i =0; i<newData.length; i++) {
-            if(newData[i].id === idPost){
+        for (let i = 0; i < newData.length; i++) {
+            if (newData[i].id === idPost) {
                 newData.splice(i, 1)
                 setAllPosts(newData)
                 return;
