@@ -7,39 +7,42 @@ const AddComment = (props) => {
     const [message, setmessage] = useState("")
 
     const postId = props.id
-    const {createComment, toggleAddComment} = props
+    const { createComment, toggleAddComment } = props
 
     const handlemessage = (e) => {
         setmessage(e.target.value)
     }
-    
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            const data = await addComment({message}, postId)          
+        try {
+            const data = await addComment({ message }, postId)
             const newComment = data.newComment
-            createComment(postId, newComment)
-            toggleAddComment()
-        }catch(err){
+            if (message !== "") {
+                createComment(postId, newComment)
+                toggleAddComment()
+            }
+
+        } catch (err) {
             console.log(err)
         }
     }
 
-    return(
+    return (
         <div className="comment-container ">
             <form onSubmit={handleSubmit}>
-                <input   
-                className="new-comment-content"             
-                type="text"
-                id="message"
-                name="message"
-                placeholder="Laissez un commentaire ..."
-                value={message}
-                onChange={handlemessage}
+                <input
+                    className="new-comment-content"
+                    type="text"
+                    id="message"
+                    name="message"
+                    placeholder="Laissez un commentaire ..."
+                    value={message}
+                    onChange={handlemessage}
                 />
             </form>
-            
+
         </div>
     )
 
