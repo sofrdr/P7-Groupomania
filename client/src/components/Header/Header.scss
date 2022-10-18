@@ -1,7 +1,7 @@
 @import '../../style/utils/variables.scss';
 
 
-.header{
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -13,37 +13,56 @@
     z-index: 1;
     width: 100%;
     top: 0px;
-    
-    
 
-    &--logo{
-        width: 310px;
-        height: 70px;
-        object-fit: cover;
+
+
+    &--logo {
+        @media screen and (min-width: 992px) {
+           width: 25%; 
+        }
+
+        @media screen and (max-width : 992px) {
+            width: 70%;
+        }
+
+
+        img {
+            object-fit: cover;
+            height: 70px;
+            width: 100%;
+        }
     }
-    
-    &-profil{
+
+    &-profil {
         margin-right: 50px;
         font-size: 20px;
         display: flex;
         align-items: center;
 
-        
-        
+        @media screen and (max-width: 768px){
+            flex-direction: column;
+
+            p{
+                display: none;
+            }
+        }
+
+
+
     }
 
-    &-logout{
+    &-logout {
         display: flex;
         align-items: center;
         font-size: 16px;
         cursor: pointer;
         margin-left: 50px;
 
-        &:hover{
+        &:hover {
             color: $color-primary;
         }
 
-        &--icon{
+        &--icon {
             margin-right: 10px;
         }
     }

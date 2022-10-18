@@ -17,7 +17,10 @@ const UpdateComment = (props) => {
         e.preventDefault();
         try{
             await updateComment({message}, id)
-            updateMessage(message)
+            if(message !== ""){
+              updateMessage(message)  
+            }
+            
         }catch(err){
             console.log(err)
         }

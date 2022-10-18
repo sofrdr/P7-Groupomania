@@ -219,7 +219,13 @@ exports.commentPost = (req, res) => {
     const sanitizedMessage = validator.escape(message)
 
     // Un commentaire est ajouté à la table comments
-    const newCommentDb = createComment(author, sanitizedMessage, id)
+    let newCommentDb;
+
+    if(message !== ""){
+      newCommentDb = createComment(author, sanitizedMessage, id)
+    }else{
+      throw new Error("Commentaire vide")
+    }
     const newCommentId = newCommentDb.lastInsertRowid;
 
 
@@ -233,7 +239,7 @@ exports.commentPost = (req, res) => {
   }
   catch (err) {
     console.log(err)
-    res.status(400).json({ err })
+    res.status(400).json({ err: err.message})
   }
 
 

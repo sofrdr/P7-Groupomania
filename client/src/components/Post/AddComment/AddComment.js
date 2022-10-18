@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addComment, refreshPage } from "../../../services/api";
+import { addComment} from "../../../services/api";
 import "./AddComment.scss"
 
 const AddComment = (props) => {

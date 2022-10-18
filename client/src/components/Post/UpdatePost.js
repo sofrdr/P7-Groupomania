@@ -62,7 +62,7 @@ const UpdatePost = (props) => {
 
                 <label htmlFor="file-update" className="file-upload">{image ? "Modifier l'image" : "Ajouter une image"} <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
                 <input
-                    className="addFile"
+                    className="file-add"
                     type="file"
                     id="file-update"
                     name="picture"                   
@@ -75,7 +75,11 @@ const UpdatePost = (props) => {
                     <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")} />
                 </div>}
 
+
+
                 <br />
+
+                
                 <input
                     type="submit"
                     value="Modifier la publication"
