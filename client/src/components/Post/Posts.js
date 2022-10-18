@@ -88,7 +88,7 @@ const Posts = (props) => {
 
 
     function createPost(newPost) {
-        const newData = JSON.parse(JSON.stringify(allPosts));
+        let newData = JSON.parse(JSON.stringify(allPosts));
         if(newData === null){
             newData = [];
             newData.push(newPost)

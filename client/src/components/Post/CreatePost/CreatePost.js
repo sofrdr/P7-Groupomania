@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addPost, refreshPage } from "../../../services/api";
+import { addPost } from "../../../services/api";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,7 +32,8 @@ const removeImgName = () => {
             const data = await addPost(formData)
             const newPost = data.newPost
             createPost(newPost)
-            removeImgName()
+            removeImgName();
+            setMessage("");
         }
         catch (err) {
             console.log(err)
