@@ -29,7 +29,7 @@ exports.addPost = (req, res) => {
 
     } else {
       if (validator.isEmpty(message, { ignore_whitespace: true }) || validator.isLength(message, { min: 1, max: 60000 }) === false) {
-        throw new Error("Merci d'écrire un message (60 000 caractères max)")
+        throw new Error("Merci d'écrire un message (60 000 caractères max) ou de sélectionner une image")
       } else {
         newPostDb = createPost(userId, author, sanitizedMessage)
       }
@@ -45,7 +45,7 @@ exports.addPost = (req, res) => {
   catch (err) {
 
     console.log(err)
-    res.status(400).json({ err });
+    res.status(400).json({error : err.message});
   }
 }
 

@@ -12,10 +12,11 @@ const CreatePost = (props) => {
 
     const [message, setMessage] = useState("");
     const [img, setImg] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
 
-    const {createPost} = props;
+    const { createPost } = props;
 
-const removeImgName = () => {
+    const removeImgName = () => {
         setImg("");
     }
 
@@ -30,10 +31,17 @@ const removeImgName = () => {
 
         try {
             const data = await addPost(formData)
-            const newPost = data.newPost
-            createPost(newPost)
-            removeImgName();
-            setMessage("");
+            if (data.error) {
+                setErrorMessage(data.error)
+                setMessage("")
+            } else {
+                const newPost = data.newPost
+                createPost(newPost)
+                removeImgName();
+                setMessage("");
+                setErrorMessage("");
+            }
+
         }
         catch (err) {
             console.log(err)
@@ -41,10 +49,10 @@ const removeImgName = () => {
 
     }
 
-    
+
     return (
         <div className="card addpost">
-            <form method="post" onSubmit={handleSubmit} encType="multipart/form-data">
+            <form method="post" onSubmit={handleSubmit} encType="multipart/form-data" >
                 <textarea
                     className="message-field"
 
@@ -59,7 +67,7 @@ const removeImgName = () => {
 
                 <label htmlFor="file" className="file-upload">Ajouter une image ... <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
                 <input
-                    className="addFile"
+                    className="file-add"
                     type="file"
                     id="file"
                     name="picture"
@@ -80,6 +88,8 @@ const removeImgName = () => {
                     className="btn"
 
                 />
+
+                {errorMessage !== "" && <p className="errormsg">{errorMessage}</p>}
             </form>
 
 
