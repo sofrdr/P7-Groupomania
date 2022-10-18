@@ -24,8 +24,10 @@ const SignUp = () => {
         e.preventDefault();
         try {
             const data = await signUp(formData)
-            console.log(data)
+            console.log(data.error)
 
+            /* Si la réponse contient une erreur alors on enregistre cette erreur dans errorMsg
+            Si aucune erreur on passe isFormSend à true */ 
             if (data.error) {
                 setErrorMsg(data.error)
             } else {
@@ -39,6 +41,13 @@ const SignUp = () => {
 
     }
 
+    /**
+     * [Actualiser la valeur des champs à chaque changement ]
+     *
+     * @param   {Object}  e  [Event]
+     *
+     * @return  {Object}     [formData : email, password, pseudo]
+     */
     function handleChange(e) {
         const {name, value} = e.target
         setFormData(prevFormData => {
@@ -50,17 +59,17 @@ const SignUp = () => {
     }
 
     return (
-        <div className="signup-form-container">
+        <div className="signup">           
             {isFormSend ? (
                 <div>
                     <SignIn />
-                    <p>Le compte a bien été créé, veuillez vous connecter</p>
+                    <p className="signup-confirm">Le compte a bien été créé, veuillez vous connecter</p>
                 </div>
             )
                 : (<form id="signup-form" onSubmit={handleSignUp}>
                     <label htmlFor="email">Email</label>
                     <br />
-                    <input
+                    <input 
                         type="email"
                         id="email"
                         name="email"

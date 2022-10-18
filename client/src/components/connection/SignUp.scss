@@ -1,16 +1,21 @@
-@import '../../style/utils/mixins.scss';
+@import "../../style/utils/mixins.scss";
 
-@import '../../style/utils/variables.scss';
+@import "../../style/utils/variables.scss";
 
-#signup-form{
-    @include flex-column-center;
-
-    p{
+.signup {
+    &-error-msg {
         text-align: center;
         color: $color-primary;
     }
-}
 
-.form-input{
-    margin-bottom: 15px;
+    &-confirm{
+        text-align: center;
+    }
+    #signup-form {
+        @include flex-column-center;
+    }
+
+    .form-input {
+        margin-bottom: 15px;
+    }
 }

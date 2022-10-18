@@ -19,9 +19,10 @@ dayjs.locale('fr', localeObject)
 
 const Comment = (props) => {
 
-    const { handleOptions, options, id, message, date, author, user } = props;
+    const { handleOptions, options, id, date, author, user, removeComment, postId } = props;
 
     const [showModal, setShowModal] = useState(false)
+    const [message, setMessage] = useState(props.message)
 
     const pseudo = user.pseudo
     const isAuthorized = pseudo === author
@@ -38,7 +39,7 @@ const Comment = (props) => {
     const handleDeleteComment = async () => {
         try {
             await deleteComment(id)
-            refreshPage()
+            removeComment(postId, id)
         }
         catch (err) {
             console.log(err)
@@ -50,6 +51,12 @@ const Comment = (props) => {
         if (options.id !== id) return handleOptions({ type: "comment", id });
         handleOptions({});
     }
+
+    function updateMessage(message) {
+        toggleModal();
+        setMessage(message)
+    }
+
     return (
 
         <div>
@@ -60,6 +67,7 @@ const Comment = (props) => {
             author = {author}
             isModalOpen = {showModal}
             closeModal = {toggleModal}
+            updateMessage = {updateMessage}
 
             
             />

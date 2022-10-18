@@ -3,6 +3,7 @@ const { getUser } = require('../models/user-model');
 const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost, updatePostComments, addLike, removeLike, updateLikers } = require('../models/post-model');
 const { createComment, getComments, getOneComment, editComment, deleteComment } = require('../models/comment-model')
 const fs = require('fs');
+const validator = require('validator')
 
 // Ajouter un post
 exports.addPost = (req, res) => {
@@ -14,30 +15,37 @@ exports.addPost = (req, res) => {
     // On récupère l'utilisateur dans la BDD       
     const user = getUser(userId);
     const author = user.pseudo;
+    const message = req.body.message
 
-    
+    // On empêche l'envoi des caractères <, >, &, ', " et /
+    const sanitizedMessage = validator.escape(message)
 
+    let newPostDb;
     if (req.file) {
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
-      console.log(req.file)     
-      createPost(userId, author, req.body.message || "", picture);
-      
+      console.log(req.file)
+
+      newPostDb = createPost(userId, author, sanitizedMessage || "", picture);
+
     } else {
-      if (req.body.message === "") {
-        throw new Error("Merci d'écrire un message")
-      }else{
-        createPost(userId, author, req.body.message)
+      if (validator.isEmpty(message, { ignore_whitespace: true }) || validator.isLength(message, { min: 1, max: 60000 }) === false) {
+        throw new Error("Merci d'écrire un message (60 000 caractères max)")
+      } else {
+        newPostDb = createPost(userId, author, sanitizedMessage)
       }
-      
+
+
     }
 
-    res.status(201).json('Le post a bien été créé')
+    const newPostId = newPostDb.lastInsertRowid
+    const newPost = getPost(newPostId)
+    res.status(201).json({message: "Le post a bien été créé", newPost})
 
   }
   catch (err) {
 
-    console.log({err})
-    res.status(400).json(err.message);
+    console.log(err)
+    res.status(400).json({ err });
   }
 }
 
@@ -69,6 +77,8 @@ exports.modifyPost = (req, res) => {
     } else {
 
       const message = req.body.message;
+      // On empêche l'envoi des caractères <, >, &, ', " et /
+      const sanitizedMessage = validator.escape(message)
 
       /* Si la requête contient une image alors on supprime l'image existante du dossier et on actualise l'image du post */
       if (req.file) {
@@ -80,7 +90,7 @@ exports.modifyPost = (req, res) => {
       }
 
       if (message) {
-        updatePostMessage(message, id)
+        updatePostMessage(sanitizedMessage, id)
       }
       res.status(200).json({ message: "Le post a bien été modifié" })
     }
@@ -205,14 +215,21 @@ exports.commentPost = (req, res) => {
     const author = user.pseudo;
     const id = req.params.id;
 
+    // On empêche l'envoi des caractères <, >, &, ', " et /
+    const sanitizedMessage = validator.escape(message)
+
     // Un commentaire est ajouté à la table comments
-    createComment(author, message, id)
-    const comments = getComments(id)
+    const newCommentDb = createComment(author, sanitizedMessage, id)
+    const newCommentId = newCommentDb.lastInsertRowid;
+
 
     // On actualise la ligne comments de la table posts
+    const comments = getComments(id)
     updatePostComments(comments, id)
 
-    res.status(201).json({ message: "Le commentaire a bien été ajouté" })
+    const newComment = getOneComment(newCommentId)
+
+    res.status(201).json({ message: "Le commentaire a bien été ajouté", newComment })
   }
   catch (err) {
     console.log(err)
@@ -253,12 +270,15 @@ exports.editComment = (req, res) => {
     const currentUser = getUser(userId);
     const message = req.body.message;
 
+    // On empêche l'envoi des caractères <, >, &, ', " et /
+    const sanitizedMessage = validator.escape(message)
+
 
     // On vérifie si l'utilisateur est l'auteur du commentaire ou a le rôle administrateur
     if (comment.author !== currentUser.pseudo && currentUser.role !== 1) {
       res.status(403).json({ message: "Modification du commentaire non autorisée" });
     } else {
-      editComment(id, message);
+      editComment(id, sanitizedMessage);
       const comments = getComments(postId)
       // On actualise la ligne comments de la table posts
       updatePostComments(comments, postId)

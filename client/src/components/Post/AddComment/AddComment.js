@@ -7,17 +7,20 @@ const AddComment = (props) => {
     const [message, setmessage] = useState("")
 
     const postId = props.id
+    const {createComment, toggleAddComment} = props
 
     const handlemessage = (e) => {
         setmessage(e.target.value)
     }
-    console.log({message})
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            await addComment({message}, postId)
-            refreshPage()
+            const data = await addComment({message}, postId)          
+            const newComment = data.newComment
+            createComment(postId, newComment)
+            toggleAddComment()
         }catch(err){
             console.log(err)
         }

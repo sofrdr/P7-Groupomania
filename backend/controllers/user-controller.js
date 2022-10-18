@@ -27,10 +27,10 @@ exports.signup = async (req, res) => {
         */
         } else if (validator.matches(password, /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$/gm) === false) {
             return res.status(401).send({ error: 'Le mot de passe doit contenir au moins 8 caractères, un chiffre, une majuscule et un caractère spécial' });
-        }else if(pseudo === "" || validator.matches(pseudo, /^(?=.{3,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9_-]+([^._-])$/
-        ) === false){
-            return res.status(401).send({error : 'Merci de saisir un pseudo entre 3 et 20 caractères'})
-        } else {
+        } else if (pseudo === "" || validator.matches(pseudo, /^(?=.{3,20}$)(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9_-]+([^._-])$/
+        ) === false) {
+            return res.status(401).send({ error: 'Merci de saisir un pseudo entre 3 et 20 caractères' })
+        }else {
             // Cryptage du mot de passe
             const hash = await bcrypt.hash(password, 12);
             // Ajout de l'utilisateur en BDD       
@@ -46,7 +46,14 @@ exports.signup = async (req, res) => {
 
     }
     catch (err) {
-        res.status(400).json({ err });
+        let errorMessage 
+        if(err.message === "UNIQUE constraint failed: users.email"){
+            errorMessage = "Un compte existe déjà avec cette adresse email"
+        }
+        if(err.message === "UNIQUE constraint failed: users.pseudo"){
+            errorMessage = "Ce pseudo est déjà utilisé"
+        }
+        res.status(400).json({ error : errorMessage ? errorMessage : err.message});
         console.log(err)
     }
 

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { addPost, refreshPage } from "../../../services/api";
+
+// FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
 import "./CreatePost.scss"
 
 const CreatePost = (props) => {
@@ -10,6 +13,11 @@ const CreatePost = (props) => {
     const [message, setMessage] = useState("");
     const [img, setImg] = useState("")
 
+    const {createPost} = props;
+
+const removeImgName = () => {
+        setImg("");
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,8 +29,10 @@ const CreatePost = (props) => {
         }
 
         try {
-            await addPost(formData)
-            refreshPage();
+            const data = await addPost(formData)
+            const newPost = data.newPost
+            createPost(newPost)
+            removeImgName()
         }
         catch (err) {
             console.log(err)
@@ -30,8 +40,7 @@ const CreatePost = (props) => {
 
     }
 
-
-
+    
     return (
         <div className="card addpost">
             <form method="post" onSubmit={handleSubmit} encType="multipart/form-data">
@@ -60,7 +69,7 @@ const CreatePost = (props) => {
 
                 {img !== "" && <div className="file-remove">
                     <p>{img.name}</p>
-                    <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")} />
+                    <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={removeImgName} />
                 </div>}
 
                 <br />
