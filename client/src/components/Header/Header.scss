@@ -18,11 +18,15 @@
 
     &--logo {
         @media screen and (min-width: 992px) {
-           width: 25%; 
+            width: 25%;
         }
 
-        @media screen and (max-width : 992px) {
-            width: 70%;
+        @media screen and (min-width: 768px) and (max-width: 992px) {
+            width: 40%;
+        }
+
+        @media screen and (max-width : 768px) {
+            width: 66%;
         }
 
 
@@ -39,10 +43,10 @@
         display: flex;
         align-items: center;
 
-        @media screen and (max-width: 768px){
+        @media screen and (max-width: 768px) {
             flex-direction: column;
 
-            p{
+            p {
                 display: none;
             }
         }

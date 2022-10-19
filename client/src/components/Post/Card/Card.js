@@ -53,6 +53,8 @@ const Card = (props) => {
     const [showUpdate, setShowUpdate] = useState(false)
     const [showAllText, setShowAllText] = useState(false)
     const [message, setMessage] = useState(props.message)
+    const [image, setImage] = useState(props.picture)
+    
 
 
 
@@ -82,6 +84,12 @@ const Card = (props) => {
         toggleModal();
         setMessage(message)
     }
+
+    function updatePicture(img){
+        toggleModal();
+        setImage(img)
+    }
+    
 
 
     // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
@@ -145,6 +153,7 @@ const Card = (props) => {
                     isModalOpen={showUpdate}
                     closeModal={toggleModal}
                     updateMessage={updateMessage}
+                    updatePicture={updatePicture}
 
                 /></div>
 
@@ -180,7 +189,7 @@ const Card = (props) => {
                             : "Afficher plus"}</div>}
 
                         <div className="card-content--image-container">
-                            <img src={props.picture} alt="" className="card-content--image" />
+                            <img src={image} alt="" className="card-content--image" />
                         </div>
 
                         <div className="card-content--indicators">

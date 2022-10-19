@@ -39,13 +39,13 @@ exports.addPost = (req, res) => {
 
     const newPostId = newPostDb.lastInsertRowid
     const newPost = getPost(newPostId)
-    res.status(201).json({message: "Le post a bien été créé", newPost})
+    res.status(201).json({ message: "Le post a bien été créé", newPost })
 
   }
   catch (err) {
 
     console.log(err)
-    res.status(400).json({error : err.message});
+    res.status(400).json({ error: err.message });
   }
 }
 
@@ -81,23 +81,46 @@ exports.modifyPost = (req, res) => {
       const sanitizedMessage = validator.escape(message)
 
       /* Si la requête contient une image alors on supprime l'image existante du dossier et on actualise l'image du post */
+      
+      let newPost;
+
       if (req.file) {
         const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename
-        const filename = post.picture.split('/images/')[1];
-        fs.unlink('images/' + filename, (err) => {
+
+        let filename;
+        
+        if (post.picture) {
+          filename = post.picture.split('/images/')[1];
+           fs.unlink('images/' + filename, (err) => {
           updatePostPicture(picture, id);
+          
+
         })
+        }else{
+          updatePostPicture(picture, id)
+          
+        }
+        
+        
+      }
+      
+
+      if (message === "") {
+        throw new Error("Champ message vide")
+      }else{
+       updatePostMessage(sanitizedMessage, id)
+       
       }
 
-      if (message) {
-        updatePostMessage(sanitizedMessage, id)
-      }
-      res.status(200).json({ message: "Le post a bien été modifié" })
+      
+      newPost = getPost(id)
+
+      res.status(200).json({ message: "Le post a bien été modifié", newPost })
     }
 
   }
   catch (err) {
-    res.status(404).json({ err })
+    res.status(404).json({ err: err.message })
 
   }
 
@@ -221,9 +244,9 @@ exports.commentPost = (req, res) => {
     // Un commentaire est ajouté à la table comments
     let newCommentDb;
 
-    if(message !== ""){
+    if (message !== "") {
       newCommentDb = createComment(author, sanitizedMessage, id)
-    }else{
+    } else {
       throw new Error("Commentaire vide")
     }
     const newCommentId = newCommentDb.lastInsertRowid;
@@ -239,7 +262,7 @@ exports.commentPost = (req, res) => {
   }
   catch (err) {
     console.log(err)
-    res.status(400).json({ err: err.message})
+    res.status(400).json({ err: err.message })
   }
 
 

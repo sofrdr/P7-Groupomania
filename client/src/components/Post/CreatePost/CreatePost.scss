@@ -9,16 +9,18 @@
 }
 
 form {
-    margin: auto;
+    
     width: 95%;
+    margin: auto;
 
     .message-field {
-        width: 95%;
+        width: 99%;
         background-color: $light-grey;
         border-radius: 20px;
         border: none;
         outline: none;
-        padding: 10px;
+        text-align: left;
+        padding-top: 5px;
         margin: 15px 0;
         font-family: 'Lato', sans-serif;
         resize: none;

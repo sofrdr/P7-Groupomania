@@ -1,5 +1,5 @@
-import { React,  useState } from "react";
-import { refreshPage, updatePost } from "../../services/api";
+import { React, useState } from "react";
+import { updatePost } from "../../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +13,7 @@ const UpdatePost = (props) => {
     const author = props.author
     const image = props.picture
     const [message, setMessage] = useState(props.message);
-    const updateMessage = props.updateMessage
+    const { updateMessage, updatePicture } = props
 
     console.log(img)
 
@@ -28,8 +28,16 @@ const UpdatePost = (props) => {
         }
 
         try {
-            await updatePost(formData, id)
+            const data = await updatePost(formData, id)
+            if(data.picture){
+                updatePicture(data.picture)
+            }
+
             updateMessage(message)
+            
+
+
+
 
         }
         catch (err) {
@@ -65,7 +73,7 @@ const UpdatePost = (props) => {
                     className="file-add"
                     type="file"
                     id="file-update"
-                    name="picture"                   
+                    name="picture"
                     onChange={(e) => setImg(e.target.files[0])}
 
                 />
@@ -79,7 +87,7 @@ const UpdatePost = (props) => {
 
                 <br />
 
-                
+
                 <input
                     type="submit"
                     value="Modifier la publication"

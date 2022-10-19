@@ -68,11 +68,12 @@ function createPost(userId, author, message, picture) {
  *
  */
 function updatePostMessage(message, id) {
-    db.prepare(`UPDATE posts SET message = @message WHERE id = @id`)
+    const newPostMessage = db.prepare(`UPDATE posts SET message = @message WHERE id = @id`)
         .run({
             message: message,
             id: id
         })
+    
 
 }
 
@@ -84,11 +85,12 @@ function updatePostMessage(message, id) {
  *
  */
 function updatePostPicture(picture, id) {
-    db.prepare(`UPDATE posts SET picture = @picture WHERE id = @id`).run({
+   const newPostPicture = db.prepare(`UPDATE posts SET picture = @picture WHERE id = @id`).run({
         picture: picture,
         id: id
     })
 }
+    
 
 /**
  * [Supprimer un post]
