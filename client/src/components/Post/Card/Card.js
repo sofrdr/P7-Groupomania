@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 
 import { likePost, deletePost } from "../../../services/api";
-import Options from "../Options/Options";
+import Options from "../../Options/Options";
 import AddComment from "../AddComment/AddComment";
 import UpdatePost from "../UpdatePost";
 import Error from "../../Error/Error";
@@ -150,6 +150,7 @@ const Card = (props) => {
                                         <Options
                                             update={toggleModal}
                                             delete={handleDeletePost}
+                                            context="card"
 
                                         />}
 

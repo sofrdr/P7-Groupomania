@@ -3,7 +3,7 @@ import { React, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
-import Options from "../Options/Options";
+import Options from "../../Options/Options";
 import UpdateComment from "../UpdateComment";
 import Error from "../../Error/Error";
 
@@ -73,7 +73,7 @@ const Comment = (props) => {
             closeModal = {toggleModal}
             updateMessage = {updateMessage}          
             />
-            
+
             </div>
                 : <div className="comment-container">
                     <div className="comment-header">

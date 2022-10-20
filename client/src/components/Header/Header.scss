@@ -1,20 +1,17 @@
-@import '../../style/utils/variables.scss';
-
+@import "../../style/utils/variables.scss";
 
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     background-color: white;
     border-bottom: solid 1px $color-primary;
     position: fixed;
     z-index: 1;
     width: 100%;
     top: 0px;
-
-
 
     &--logo {
         @media screen and (min-width: 992px) {
@@ -25,10 +22,9 @@
             width: 40%;
         }
 
-        @media screen and (max-width : 768px) {
+        @media screen and (max-width: 768px) {
             width: 66%;
         }
-
 
         img {
             object-fit: cover;
@@ -38,21 +34,11 @@
     }
 
     &-profil {
-        margin-right: 50px;
+        position: absolute;
+        right: 250px;
         font-size: 20px;
         display: flex;
         align-items: center;
-
-        @media screen and (max-width: 768px) {
-            flex-direction: column;
-
-            p {
-                display: none;
-            }
-        }
-
-
-
     }
 
     &-logout {
@@ -60,14 +46,14 @@
         align-items: center;
         font-size: 16px;
         cursor: pointer;
-        margin-left: 50px;
-
-        &:hover {
-            color: $color-primary;
-        }
+        margin-right: 40px;
 
         &--icon {
             margin-right: 10px;
+
+            &:hover {
+                color: $color-primary;
+            }
         }
     }
 }
