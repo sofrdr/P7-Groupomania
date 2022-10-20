@@ -17,7 +17,7 @@ const UpdatePost = (props) => {
     const [message, setMessage] = useState(props.message);
     const [showError, setShowError] = useState(null);
 
-    const { updateCard, id, author } = props
+    const { updateCard, id, author, updateOptions } = props
 
    
 
@@ -41,6 +41,7 @@ const UpdatePost = (props) => {
                 newMessage,
                 newImg
             })
+            updateOptions()
         
         }
         catch (err) {

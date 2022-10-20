@@ -25,7 +25,9 @@ const Posts = (props) => {
     const [showOptions, setShowOptions] = useState({})
 
 
-    const {user} = props
+    const {user, windowWidth} = props
+
+    
 
     // Appel API pour récupérer les posts et mise à jour du state allPosts
     useEffect(() => {
@@ -174,6 +176,7 @@ const Posts = (props) => {
                             options={showOptions}
                             removeComment={removeComment}
                             postId={post.id}
+                            windowWidth={windowWidth}
 
                         />
                     ) 
@@ -212,6 +215,7 @@ const Posts = (props) => {
                     options={showOptions}
                     createComment={createComment}
                     removePost={removePost}
+                    windowWidth={windowWidth}
                 />
 
 

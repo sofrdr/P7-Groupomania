@@ -27,7 +27,7 @@ dayjs.locale('fr', localeObject)
 
 const Card = (props) => {
 
-    const { handleOptions, options, id, user, date, author, comments, handleComments, showAllComments, numberOfComments, createComment, removePost } = props;
+    const { handleOptions, options, id, user, date, author, comments, handleComments, showAllComments, numberOfComments, createComment, removePost, windowWidth } = props;
 
     const [addComment, setAddComment] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false)
@@ -36,7 +36,7 @@ const Card = (props) => {
     const [image, setImage] = useState(props.picture)
     const [showError, setShowError] = useState(null)
 
-
+   
     const userId = user.id
     const pseudo = user.pseudo
 
@@ -129,9 +129,9 @@ const Card = (props) => {
                     picture={image}
                     isModalOpen={showUpdate}
                     closeModal={toggleModal}
-                    // updateMessage={updateMessage}
-                    // updatePicture={updatePicture}
                     updateCard={updateCard}
+                    updateOptions={updateOptions}
+                    
 
                 /></div>
 
@@ -188,7 +188,13 @@ const Card = (props) => {
 
 
                         <div className="card-comments">
-                            {addComment && <AddComment id={id} createComment={createComment} toggleAddComment={toggleAddComment} />}
+                            {addComment && 
+                            <AddComment 
+                            id={id}
+                            windowWidth={windowWidth} 
+                            createComment={createComment}                          
+                            toggleAddComment={toggleAddComment}
+                             />}
                             {comments}
                             {comments.length < 3 ? "" : <p onClick={handleComments} className="card-comments--onclick">
                                 {showAllComments ? "Voir moins de commentaires" : "Voir tous les commentaires"}</p>}

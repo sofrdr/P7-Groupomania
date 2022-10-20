@@ -1,11 +1,20 @@
-@import '../../../style/utils/variables.scss';
+@import "../../../style/utils/variables.scss";
 
-.new-comment-content{
-    width: 100%;
-    border: none;
-    background-color: $light-grey ;
-    font-family: 'Lato', sans-serif;
-    outline: none;
-    font-size: 16px;
-    resize: none;
+.new-comment {
+display: flex;
+    position: relative;
+    &-content {
+        width: 100%;
+        border: none;
+        background-color: $light-grey;
+        font-family: "Lato", sans-serif;
+        outline: none;
+        font-size: 16px;
+        resize: none;
+    }
+
+    &-icon {
+        position: absolute;
+        right: 10px;
+    }
 }
