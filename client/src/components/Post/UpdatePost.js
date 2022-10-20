@@ -1,21 +1,25 @@
-import { React,  useState } from "react";
-import { refreshPage, updatePost } from "../../services/api";
+import { React, useState } from "react";
+import { updatePost } from "../../services/api";
+
+import Error from "../Error/Error";
+
+// FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
+
+
 const UpdatePost = (props) => {
 
-
-
     const [img, setImg] = useState("")
-    const id = props.id
-    const author = props.author
-    const image = props.picture
+    const [image, setImage] = useState(props.picture)
     const [message, setMessage] = useState(props.message);
-    const updateMessage = props.updateMessage
+    const [showError, setShowError] = useState(null);
 
-    console.log(img)
+    const { updateCard, id, author } = props
+
+   
 
 
     const handleSubmit = async (e) => {
@@ -28,16 +32,26 @@ const UpdatePost = (props) => {
         }
 
         try {
-            await updatePost(formData, id)
-            updateMessage(message)
-
+            const data = await updatePost(formData, id)
+            console.log(data.newPost)
+            const newMessage = data.newPost.message
+            
+            const newImg = data.newPost.picture
+            updateCard({
+                newMessage,
+                newImg
+            })
+        
         }
         catch (err) {
             console.log(err)
+            setShowError(err)
         }
 
     }
 
+   
+    if (showError !== null) return <Error errorData={showError} />;
     return (
         <div className="card">
             <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
@@ -62,10 +76,10 @@ const UpdatePost = (props) => {
 
                 <label htmlFor="file-update" className="file-upload">{image ? "Modifier l'image" : "Ajouter une image"} <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
                 <input
-                    className="addFile"
+                    className="file-add"
                     type="file"
                     id="file-update"
-                    name="picture"                   
+                    name="picture"
                     onChange={(e) => setImg(e.target.files[0])}
 
                 />
@@ -75,7 +89,11 @@ const UpdatePost = (props) => {
                     <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")} />
                 </div>}
 
+
+
                 <br />
+
+
                 <input
                     type="submit"
                     value="Modifier la publication"

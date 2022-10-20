@@ -68,11 +68,12 @@ function createPost(userId, author, message, picture) {
  *
  */
 function updatePostMessage(message, id) {
-    db.prepare(`UPDATE posts SET message = @message WHERE id = @id`)
+     db.prepare(`UPDATE posts SET message = @message WHERE id = @id`)
         .run({
             message: message,
             id: id
         })
+    
 
 }
 
@@ -89,6 +90,7 @@ function updatePostPicture(picture, id) {
         id: id
     })
 }
+    
 
 /**
  * [Supprimer un post]

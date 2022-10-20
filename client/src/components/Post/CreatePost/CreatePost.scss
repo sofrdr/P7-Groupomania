@@ -2,60 +2,66 @@
 @import '../../../style/utils/mixins.scss';
 
 
-.addpost{
+.addpost {
     display: flex;
     flex-direction: column;
-    
+
 }
 
-form{
+form {
+    
+    width: 95%;
     margin: auto;
-    width: 95%;
-}
 
-.message-field{
-    width: 95%;
-    background-color: $light-grey;
-    border-radius: 20px;
-    border: none;
-    outline: none;
-    padding: 10px;
-    margin: 15px 0 ;  
-    font-family: 'Lato', sans-serif;
-    resize: none;
-    
-    
+    .message-field {
+        width: 99%;
+        background-color: $light-grey;
+        border-radius: 20px;
+        border: none;
+        outline: none;
+        text-align: left;
+        padding-top: 5px;
+        margin: 15px 0;
+        font-family: 'Lato', sans-serif;
+        resize: none;
 
-
-}
-
-
-.btn{
-    @include btn;
-}
-
-.addFile{
-    display: none;
-}
-
-.file{
-    &-upload{
-    
-    cursor: pointer;
-    &-icon{
-        font-size: 20px;
-        margin-left: 10px;       
-        color: $color-tertiary;
     }
 
-    
+    .errormsg{
+        color: $color-primary;
+    }
+
+    .btn {
+        @include btn;
+    }
 }
-&-remove{
+
+
+.file {
+    &-add {
+        display: none;
+    }
+
+    &-upload {
+
+        cursor: pointer;
+
+        &-icon {
+            font-size: 20px;
+            margin-left: 10px;
+            color: $color-tertiary;
+        }
+
+
+    }
+
+    &-remove {
         display: flex;
         align-items: center;
-        &--icon{
+
+        &--icon {
             cursor: pointer;
-            font-size: 12px;            
+            font-size: 12px;
             margin-left: 8px;
         }
     }

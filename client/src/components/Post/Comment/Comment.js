@@ -1,9 +1,13 @@
 import { React, useState } from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+
 import Options from "../Options/Options";
 import UpdateComment from "../UpdateComment";
-import { deleteComment, refreshPage } from "../../../services/api";
+import Error from "../../Error/Error";
+
+import { deleteComment } from "../../../services/api";
 import "./Comment.scss"
 
 // Day.js
@@ -14,15 +18,13 @@ dayjs.extend(relativeTime)
 dayjs.locale('fr', localeObject)
 
 
-
-
-
 const Comment = (props) => {
 
     const { handleOptions, options, id, date, author, user, removeComment, postId } = props;
 
     const [showModal, setShowModal] = useState(false)
     const [message, setMessage] = useState(props.message)
+    const [showError, setShowError] = useState(null)
 
     const pseudo = user.pseudo
     const isAuthorized = pseudo === author
@@ -43,6 +45,7 @@ const Comment = (props) => {
         }
         catch (err) {
             console.log(err)
+            setShowError(err)
         }
     }
 
@@ -57,6 +60,7 @@ const Comment = (props) => {
         setMessage(message)
     }
 
+    if (showError !== null) return <Error errorData={showError} />;
     return (
 
         <div>
@@ -67,10 +71,9 @@ const Comment = (props) => {
             author = {author}
             isModalOpen = {showModal}
             closeModal = {toggleModal}
-            updateMessage = {updateMessage}
-
-            
+            updateMessage = {updateMessage}          
             />
+            
             </div>
                 : <div className="comment-container">
                     <div className="comment-header">

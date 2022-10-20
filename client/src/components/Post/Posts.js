@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+
 import Card from "./Card/Card"
 import CreatePost from "./CreatePost/CreatePost";
-import { getPosts } from "../../services/api";
 import Comment from "./Comment/Comment";
+import { getPosts } from "../../services/api";
+
+
+
 
 
 /**
@@ -15,17 +20,14 @@ import Comment from "./Comment/Comment";
 const Posts = (props) => {
 
 
-
-
     const [allPosts, setAllPosts] = useState([])
     const [showAllComments, setShowAllComments] = useState(false)
     const [showOptions, setShowOptions] = useState({})
 
 
+    const {user} = props
 
-    const user = props.user
-
-    // Appel API pour récupérer les posts et mise à jour du state 
+    // Appel API pour récupérer les posts et mise à jour du state allPosts
     useEffect(() => {
         async function getAllPosts() {
             try {
@@ -45,31 +47,45 @@ const Posts = (props) => {
 
 
 
-
+ 
 
     /**
      * @params {showOptions} [options]
      */
-    const handleOptions = (options) => {
-        setShowOptions(options)
+    function handleOptions(options) {
+        setShowOptions(options);
     }
 
+    /**
+     * [Supprimer un commentaire de la liste des commentaires]
+     *
+     * @param   {Number}  idPost     [id du post]
+     * @param   {Number}  idComment  [id du commentaire]
+     *
+     */
     function removeComment(idPost, idComment) {
         const newData = JSON.parse(JSON.stringify(allPosts));
         for (const post of newData) {
             if (post.id === idPost) {
-                const newComments = [];
+                
                 for (let i = 0; i < post.comments.length; i++) {
-                    if (post.comments[i].id === idComment) continue;
-                    newComments.push(post.comments[i]);
-                }
-                post.comments = newComments
+                    if (post.comments[i].id === idComment){
+                        post.comments.splice(i, 1)
+                    } 
+                }             
                 setAllPosts(newData);
                 return;
             }
         }
     }
 
+    /**
+     * Ajouter un commentaire
+     *
+     * @param   {Number}  idPost      [id du post]
+     * @param   {Object}  newComment  [nouveau commentaire envoyé par l'API]
+     *
+     */
     function createComment(idPost, newComment) {
         const newData = JSON.parse(JSON.stringify(allPosts));
         for (const post of newData) {
@@ -87,20 +103,30 @@ const Posts = (props) => {
     }
 
 
+    /**
+     * Ajouter un post
+     *
+     * @param   {Object}  newPost  [Nouveau post renvoyé par l'API]
+     *
+     */
     function createPost(newPost) {
-        const newData = JSON.parse(JSON.stringify(allPosts));
+        let newData = JSON.parse(JSON.stringify(allPosts));
         if(newData === null){
             newData = [];
             newData.push(newPost)
         }else{
             newData.unshift(newPost)
         }
-            
-       
-
         setAllPosts(newData);
     }
 
+
+    /**
+     * Supprimer un post
+     *
+     * @param   {Number}  idPost  [id du post]
+     *
+     */
     function removePost(idPost) {
         const newData = JSON.parse(JSON.stringify(allPosts));
         for (let i = 0; i < newData.length; i++) {
@@ -114,9 +140,15 @@ const Posts = (props) => {
 
     }
 
+    // Fonction qui change le state de showAllComments afin d'afficher tous les commentaires d'un post 
+    function handleComments() {
+        setShowAllComments((prevShowComments) => !prevShowComments)
+    }
+
+
 
     const posts = allPosts.map((post) => {
-        //const allComments = JSON.parse(post.comments)
+        
         const allComments = post.comments
 
         // Fonction pour passer les commentaires de chaque post dans un composant <Comment/>
@@ -127,7 +159,10 @@ const Posts = (props) => {
 
                 return allComments.map((comment) => {
 
-                    return (
+                    if(comment === undefined){
+                        return <Navigate to="/"/>
+                    }else{
+                       return (
                         <Comment
                             key={comment.id}
                             id={comment.id}
@@ -141,26 +176,24 @@ const Posts = (props) => {
                             postId={post.id}
 
                         />
-                    )
+                    ) 
+                    }
+                    
                 })
             }
         }
 
         const comments = getAllComments()
-
-
-        function handleComments() {
-            setShowAllComments((prevShowComments) => !prevShowComments)
-
-        }
-
+        
         // On récupère les 3 premiers commentaires de chaque post
 
         const firstComments = comments.slice(0, 3)
-
-        // On passe chaque post dans le composant <Card/>
+        if(post === undefined){
+            return <Navigate to="/"/>
+        }else{
+            // On passe chaque post dans le composant <Card/>
         return (
-            <div>
+            <div >
                 <Card
                     key={post.id}
                     id={post.id}
@@ -179,12 +212,13 @@ const Posts = (props) => {
                     options={showOptions}
                     createComment={createComment}
                     removePost={removePost}
-
                 />
 
 
             </div>
         )
+        }
+        
 
     })
 

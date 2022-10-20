@@ -1,12 +1,17 @@
 import { React,  useState } from "react";
+
+import { updateComment } from "../../services/api";
+
+import Error from "../Error/Error";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { updateComment, refreshPage } from "../../services/api";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const UpdateComment = (props) => {
 
 
     const [message, setMessage] = useState(props.message)
+    const [showError, setShowError] = useState(null)
 
     const {author, isModalOpen, id, updateMessage} = props
     
@@ -17,12 +22,18 @@ const UpdateComment = (props) => {
         e.preventDefault();
         try{
             await updateComment({message}, id)
-            updateMessage(message)
+            if(message !== ""){
+              updateMessage(message)  
+            }
+            
         }catch(err){
             console.log(err)
+            setShowError(err)
         }
     }
 
+
+    if (showError !== null) return <Error errorData={showError} />;
     return(
         <div className="comment-container ">
             <form onSubmit={handleSubmit}>

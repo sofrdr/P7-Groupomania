@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { addPost, refreshPage } from "../../../services/api";
+
+import { addPost } from "../../../services/api";
+
+import Error from "../../Error/Error";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,11 +15,16 @@ const CreatePost = (props) => {
 
     const [message, setMessage] = useState("");
     const [img, setImg] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
+    const [showError, setShowError] = useState(null);
 
-    const {createPost} = props;
 
-const removeImgName = () => {
+    const { createPost } = props;
+
+    const removeData = () => {
         setImg("");
+        setMessage("");
+        setErrorMessage("")
     }
 
     const handleSubmit = async (e) => {
@@ -32,18 +40,19 @@ const removeImgName = () => {
             const data = await addPost(formData)
             const newPost = data.newPost
             createPost(newPost)
-            removeImgName()
+            removeData();
         }
         catch (err) {
             console.log(err)
+            setShowError(err)
         }
 
     }
 
-    
+    if(showError !== null) return <Error errorData={showError} />;
     return (
         <div className="card addpost">
-            <form method="post" onSubmit={handleSubmit} encType="multipart/form-data">
+            <form method="post" onSubmit={handleSubmit} encType="multipart/form-data" >
                 <textarea
                     className="message-field"
 
@@ -58,7 +67,7 @@ const removeImgName = () => {
 
                 <label htmlFor="file" className="file-upload">Ajouter une image ... <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
                 <input
-                    className="addFile"
+                    className="file-add"
                     type="file"
                     id="file"
                     name="picture"
@@ -69,7 +78,7 @@ const removeImgName = () => {
 
                 {img !== "" && <div className="file-remove">
                     <p>{img.name}</p>
-                    <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={removeImgName} />
+                    <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")} />
                 </div>}
 
                 <br />
@@ -79,6 +88,8 @@ const removeImgName = () => {
                     className="btn"
 
                 />
+
+                {errorMessage !== "" && <p className="errormsg">{errorMessage}</p>}
             </form>
 
 

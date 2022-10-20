@@ -1,0 +1,29 @@
+@import "../../style/utils/variables.scss";
+@import "../../style/utils/mixins.scss";
+
+.error-modal {
+    
+    border-radius: $radius;
+    padding: 30px;
+    border: 2px solid $color-primary;
+    width: fit-content;
+    background-color: #ffffff;
+    color: $color-primary;
+    font-weight: 600;
+
+
+    margin: auto;
+
+
+    &_content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &--btn{
+            @include btn;
+            margin-top: 30px;
+        }
+    }
+    
+}

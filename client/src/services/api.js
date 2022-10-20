@@ -1,8 +1,23 @@
-
 const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'Authorization': 'Bearer ' + localStorage.getItem('token')
+}
+
+function errorHandler(err) {
+    console.log("clearCache", err);
+    const response = {};
+    switch (err) {
+        case "Requête non authentifiée":  //TODO ajuster en fonction des messages
+            localStorage.clear();
+            response.messageToShow = "Votre session a expiré, merci de vous reconnecter";
+            response.redirect = true;
+            break;
+        default:
+            response.messageToShow = "Houston on a un problème :(";
+            break;
+    }
+    throw response;
 }
 
 // ---------------------- USERS ------------------------------------------------------------------------------------
@@ -80,19 +95,26 @@ async function getPosts() {
  *
  * @param   {Object}  formData  [picture, message]
  *
- * @return  {String}            [Confirmation de la création du post]
+ * @return  {Object}            [message : Confirmation de la création du post, newPost : nouveau post]
  */
 async function addPost(formData) {
-    const response = await fetch("http://localhost:3001/api/posts", {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': '*/*',
-            'Authorization': headers.Authorization
-        }
-    })
-    const data = await response.json()
-    return data
+    try {
+        const response = await fetch("http://localhost:3001/api/posts", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': '*/*',
+                'Authorization': headers.Authorization
+            }
+        })
+        const data = await response.json()
+        if (data.error) throw data.error;
+        return data
+    }
+    catch (err) {
+        errorHandler(err)
+    }
+
 }
 
 /**
@@ -101,20 +123,26 @@ async function addPost(formData) {
  * @param   {Object}  formData  [picture, message]
  * @param   {Number}  id        [id du post]
  *
- * @return {String}             [Confirmation de la modification du post]
+ * @return {Object}           [message : Confirmation de la modification du post, newPost :  post modifié]
  *
  */
 async function updatePost(formData, id) {
-    const response = await fetch(`http://localhost:3001/api/posts/${id}`, {
-        method: 'PUT',
-        body: formData,
-        headers: {
-            'Accept': '*/*',
-            'Authorization': headers.Authorization
-        }
-    })
-    const data = await response.json()
-    return data
+    try {
+        const response = await fetch(`http://localhost:3001/api/posts/${id}`, {
+            method: 'PUT',
+            body: formData,
+            headers: {
+                'Accept': '*/*',
+                'Authorization': headers.Authorization
+            }
+        })
+        const data = await response.json()
+        if (data.error) throw data.error;
+        return data
+    }
+    catch (err) {
+        errorHandler(err)
+    }
 }
 
 /**
@@ -126,12 +154,18 @@ async function updatePost(formData, id) {
  * 
  */
 async function deletePost(id) {
-    const response = await fetch(`http://localhost:3001/api/posts/${id}`, {
+    try{
+        const response = await fetch(`http://localhost:3001/api/posts/${id}`, {
         method: 'DELETE',
         headers
     });
     const data = await response.json()
+    if (data.error) throw data.error;
     console.log(data)
+    }
+    catch(err){
+        errorHandler(err)
+    }
 }
 
 
@@ -145,13 +179,19 @@ async function deletePost(id) {
  * @return {String}             [Confirmation de l'ajout ou du retrait du like']
  */
 async function likePost(like, id) {
-    const response = await fetch(`http://localhost:3001/api/posts/${id}/like`, {
+    try{
+       const response = await fetch(`http://localhost:3001/api/posts/${id}/like`, {
         method: 'POST',
         body: JSON.stringify({ like: like ? 0 : 1 }),
         headers
     })
     const data = await response.json();
-    console.log(data)
+    if (data.error) throw data.error;
+    console.log(data) 
+    }
+    catch(err){
+        errorHandler(err)
+    }
 }
 
 // ------------------------------- COMMENTS -------------------------------------------------------------------
@@ -167,13 +207,19 @@ async function likePost(like, id) {
  */
 
 async function addComment(comment, id) {
-    const response = await fetch(`http://localhost:3001/api/posts/${id}/comment`, {
-        method: 'POST',
-        body: JSON.stringify(comment),
-        headers
-    })
-    const data = await response.json();
-    return data
+    try {
+        const response = await fetch(`http://localhost:3001/api/posts/${id}/comment`, {
+            method: 'POST',
+            body: JSON.stringify(comment),
+            headers
+        })
+        const data = await response.json();      
+        if (data.error) throw data.error;
+        return data
+    }
+    catch (err) {
+        errorHandler(err);
+    }
 }
 
 
@@ -185,12 +231,18 @@ async function addComment(comment, id) {
  * @return  {String}      [Confirmation de la suppression]
  */
 async function deleteComment(id) {
-    const response = await fetch(`http://localhost:3001/api/posts/comment/${id}`, {
+    try{
+       const response = await fetch(`http://localhost:3001/api/posts/comment/${id}`, {
         method: 'DELETE',
         headers
     })
     const data = await response.json();
-    console.log(data)
+    if (data.error) throw data.error;
+    console.log(data) 
+    }
+    catch(err){
+        errorHandler(err)
+    }
 }
 
 /**
@@ -201,18 +253,20 @@ async function deleteComment(id) {
  *
  * @return  {String}           [Confirmation de la modification]
  */
-async function updateComment(comment, id){
-    const response =  await fetch(`http://localhost:3001/api/posts/comment/${id}`, {
+async function updateComment(comment, id) {
+    try{
+      const response = await fetch(`http://localhost:3001/api/posts/comment/${id}`, {
         method: 'PUT',
         body: JSON.stringify(comment),
         headers
     })
     const data = await response.json();
-    console.log(data)
-}
-
-function refreshPage(){
-    window.location.reload()
+    if (data.error) throw data.error;
+    console.log(data)  
+    }
+    catch(err){
+        errorHandler(err)
+    }
 }
 
 
@@ -226,6 +280,5 @@ module.exports = {
     deletePost,
     deleteComment,
     updatePost,
-    updateComment,
-    refreshPage
+    updateComment
 }

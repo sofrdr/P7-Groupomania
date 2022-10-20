@@ -5,10 +5,11 @@
 import React, { useState } from "react";
 
 
-import { likePost, deletePost, refreshPage } from "../../../services/api";
+import { likePost, deletePost } from "../../../services/api";
 import Options from "../Options/Options";
 import AddComment from "../AddComment/AddComment";
 import UpdatePost from "../UpdatePost";
+import Error from "../../Error/Error";
 import "./Card.scss";
 
 // FontAwesome
@@ -24,64 +25,26 @@ const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 dayjs.locale('fr', localeObject)
 
-
-
-/**
- * @todo vérifier types
- * @params {Object} props
- * @params {String} props.key
- * @params {String} props.id
- * @params {String} props.user
- * @params {String} props.author
- * @params {String} props.date
- * @params {String} props.message
- * @params {String} props.picture
- * @params {String} props.likes
- * @params {String} props.usersLiked
- * @params {String} props.numberOfComments
- * @params {String} props.comments
- * @params {String} props.handleComments=
- * @params {String} props.showAllComments
- * @params {String} props.handleOptions
- * @params {showOptions} props.options
- */
 const Card = (props) => {
 
-    const { handleOptions, options, id, user, date, author, comments, handleComments, showAllComments, numberOfComments,  createComment, removePost } = props;
+    const { handleOptions, options, id, user, date, author, comments, handleComments, showAllComments, numberOfComments, createComment, removePost } = props;
 
     const [addComment, setAddComment] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false)
     const [showAllText, setShowAllText] = useState(false)
     const [message, setMessage] = useState(props.message)
-
-
-
-    const visibleOptions = options.type === "post" && options.id === id;
+    const [image, setImage] = useState(props.picture)
+    const [showError, setShowError] = useState(null)
 
 
     const userId = user.id
     const pseudo = user.pseudo
+
     const usersLike = props.usersLiked
-
-    // isAuthorized = true si l'auteur du post est l'utilisateur connecté
-    const isAuthorized = pseudo === author
-
     const initiallyLiked = usersLike.includes(userId)
     const [like, updateLike] = useState(initiallyLiked);
     const likes = props.likes - (initiallyLiked ? 1 : 0);
     let count = likes + (like ? 1 : 0);
-
-
-    function updateOptions() {
-        if (!options.type) return handleOptions({ type: "post", id });
-        if (options.id !== id) return handleOptions({ type: "post", id });
-        handleOptions({});
-    }
-
-    function updateMessage(message) {
-        toggleModal();
-        setMessage(message)
-    }
 
 
     // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
@@ -91,20 +54,54 @@ const Card = (props) => {
         try {
             updateLike(!like);
             await likePost(like, id)
-
         }
         catch (err) {
             console.log(err)
+            setShowError(err)
         }
 
     }
 
-    // Fonction qui change le state de showUpdate pour afficher ou non la fenêtre de modification du post (composant UpdatePost)
-    const toggleModal = () => {
-        setShowUpdate(!showUpdate)
 
+    // isAuthorized = true si l'auteur du post est l'utilisateur connecté
+    const isAuthorized = pseudo === author
+
+    const visibleOptions = options.type === "post" && options.id === id;
+
+
+    function updateOptions() {
+        if (!options.type) return handleOptions({ type: "post", id });
+        if (options.id !== id) return handleOptions({ type: "post", id });
+        handleOptions({});
     }
 
+    /* Fonction pour supprimer un post  */
+    const handleDeletePost = async () => {
+        try {
+            await deletePost(id);
+            removePost(id)
+
+        } catch (err) {
+            console.log(err)
+            setShowError(err)
+        }
+    }
+
+
+
+     // Fonction qui change le state de showUpdate pour afficher ou non la fenêtre de modification du post (composant UpdatePost)
+     const toggleModal = () => {
+        setShowUpdate(!showUpdate)
+    }
+
+    function updateCard({newImg, newMessage}){
+              
+        toggleModal();
+        setImage(newImg)
+        setMessage(newMessage)
+    }
+
+   
     // Fonction qui change le state addComment pour afficher ou non le champ pour ajouter un commentaire (composant AddComment)
     const toggleAddComment = () => {
         setAddComment(prevAddComment => !prevAddComment)
@@ -116,35 +113,25 @@ const Card = (props) => {
         setShowAllText(prevShowAllText => !prevShowAllText)
     }
 
-    /* Fonction pour supprimer un post
-    Paramètre : id du post
-    Rafraîchissement de la page */
-    const handleDeletePost = async () => {
-        try {
-            await deletePost(id);
-            removePost(id)
-            
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
     
 
+    if (showError !== null) return <Error errorData={showError} />;
     return (
 
         // Si showUpdate = true alors on affiche le composant de modification du post (UpdatePost) sinon on affiche le post
-        <div >
+        <div  >
             {showUpdate ? <div className={showUpdate ? "update-modal " : "hidden"}>
 
                 <UpdatePost
                     id={id}
-                    message={props.message}
-                    author={props.author}
-                    picture={props.picture}
+                    message={message}
+                    author={author}
+                    picture={image}
                     isModalOpen={showUpdate}
                     closeModal={toggleModal}
-                    updateMessage={updateMessage}
+                    // updateMessage={updateMessage}
+                    // updatePicture={updatePicture}
+                    updateCard={updateCard}
 
                 /></div>
 
@@ -163,7 +150,7 @@ const Card = (props) => {
                                         <Options
                                             update={toggleModal}
                                             delete={handleDeletePost}
-                                            
+
                                         />}
 
                                 </div>
@@ -180,7 +167,7 @@ const Card = (props) => {
                             : "Afficher plus"}</div>}
 
                         <div className="card-content--image-container">
-                            <img src={props.picture} alt="" className="card-content--image" />
+                            <img src={image} alt="" className="card-content--image" />
                         </div>
 
                         <div className="card-content--indicators">
@@ -200,7 +187,7 @@ const Card = (props) => {
 
 
                         <div className="card-comments">
-                            {addComment && <AddComment id={id} createComment={createComment} toggleAddComment={toggleAddComment}/>}
+                            {addComment && <AddComment id={id} createComment={createComment} toggleAddComment={toggleAddComment} />}
                             {comments}
                             {comments.length < 3 ? "" : <p onClick={handleComments} className="card-comments--onclick">
                                 {showAllComments ? "Voir moins de commentaires" : "Voir tous les commentaires"}</p>}

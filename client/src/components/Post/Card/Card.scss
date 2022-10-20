@@ -10,60 +10,72 @@
     padding: 10px 0;
     margin-top: 17px;
 
+    
+
+    @media screen and (max-width: 768px) {
+        width: 95%;
+
+    }
+
+    @media screen and (min-width:768px) and (max-width: 992px) {
+        width: 65%;
+    }
 
 
-    &-content {
 
-        margin: auto;
-        padding: 15px;
-        position: relative;
 
-        &--message {
-            font-size: 20px;
-            
-            &_display{
-                @include displayOnClick;
-                width: 95px;
-            }
+&-content {
+
+    margin: auto;
+    padding: 15px;
+    position: relative;
+
+    &--message {
+        font-size: 20px;
+
+        &_display {
+            @include displayOnClick;
+            width: 95px;
         }
+    }
 
-        &--header {
+    &--header {
 
 
-            &-author {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                font-size: 18px;
-            }
-        }
-
-        &--image {
-            width: 100%;
-            object-fit: cover;
-            max-height: 500px;
-        }
-
-        &--indicators {
+        &-author {
             display: flex;
-            margin-top: 10px;
-
-
-
-            &-elt {
-                margin-right: 20px;
-            }
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
         }
     }
 
-    &-comments {
+    &--image {
+        width: 100%;
+        object-fit: cover;
+        max-height: 500px;
+    }
 
-        margin-top: 30px;
+    &--indicators {
+        display: flex;
+        margin-top: 10px;
 
-        &--onclick {
-           @include displayOnClick
+
+
+        &-elt {
+            margin-right: 20px;
         }
     }
+}
+
+&-comments {
+
+    margin-top: 30px;
+
+    &--onclick {
+        @include displayOnClick
+    }
+}
 }
 
 .icon {
@@ -82,7 +94,7 @@
     display: none;
 }
 
-.text-hidden{
+.text-hidden {
     display: -webkit-box;
     -webkit-line-clamp: 15;
     -webkit-box-orient: vertical;

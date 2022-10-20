@@ -64,8 +64,9 @@ exports.login = async (req, res) => {
 
     const {email, password} = req.body;
 
+    const emailSanitized = validator.escape(email)
     // On récupère l'utilisateur dans la BDD
-    const user = getUserByEmail(email)
+    const user = getUserByEmail(emailSanitized)
       
     try{
         // Si aucun utilisateur ne correspond à l'adresse mail de la requête on renvoie une erreur
@@ -88,7 +89,7 @@ exports.login = async (req, res) => {
             token : jwt.sign(
                 { userId : user.id},
                 SECRET_KEY, 
-                {expiresIn: "1h"}
+                {expiresIn: "5000"}
             )
         })
     }

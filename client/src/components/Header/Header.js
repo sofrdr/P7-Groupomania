@@ -30,7 +30,7 @@ if(redirect){
 }        
     return (
         <header className="header">
-            <a href={window.location}><img src={logo} alt="groupomania-logo" className="header--logo" /></a>
+            <a href={window.location} className="header--logo"><img src={logo} alt="groupomania-logo"  /></a>
             <div className="header-profil">
                 <p >Bienvenue {props.user} !</p>
                 <div className="header-logout" onClick={disconnect}>
