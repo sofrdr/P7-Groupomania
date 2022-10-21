@@ -14,11 +14,16 @@ const UpdateComment = (props) => {
     const [message, setMessage] = useState(props.message)
     const [showError, setShowError] = useState(null)
 
-    const { author, isModalOpen, id, updateMessage, windowWidth, updateOptions } = props
+    const { author,  id, updateMessage, windowWidth, updateOptions, toggleModal } = props
 
 
     const toggleError = () => {
         setShowError(null)
+    }
+
+    const closeComponent = () => {
+        toggleModal();
+        updateOptions()
     }
 
     const handleSubmit = async (e) => {
@@ -43,7 +48,7 @@ const UpdateComment = (props) => {
             <form onSubmit={handleSubmit}>
                 <div className="comment-header">
                     <p className="comment-header--author"> {author}</p>
-                    <FontAwesomeIcon icon={faXmark} className="icon" onClick={isModalOpen && props.closeModal} />
+                    <button title="Fermer la fenêtre de modification du commentaire" onClick={closeComponent}><FontAwesomeIcon icon={faXmark} className="icon" /></button>
                 </div>
 
                 <input

@@ -131,7 +131,7 @@ const Card = (props) => {
                     author={author}
                     picture={image}
                     isModalOpen={showUpdate}
-                    closeModal={toggleModal}
+                    toggleModal={toggleModal}
                     updateCard={updateCard}
                     updateOptions={updateOptions}
                     toggleError={toggleError}
@@ -149,7 +149,7 @@ const Card = (props) => {
 
                                 {/* L'icône des options est affichée seulement si l'utilisateur est autorisé à modifier ou supprimer  */}
                                 <div className={isAuthorized ? "options" : "hidden"} >
-                                    <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={updateOptions} />
+                                    <button title="Ouvrir les options" onClick={updateOptions}><FontAwesomeIcon icon={faEllipsis} className="icon"  /></button>
                                     {visibleOptions &&
                                         <Options
                                             update={toggleModal}
@@ -168,8 +168,8 @@ const Card = (props) => {
                               et le bouton qui permet d'afficher plus ou de réduire le texte */}
                         <p className={(message.length > 500 && showAllText === false) ? "card-content--message text-hidden"
                             : "card-content--message"}>{message}</p>
-                        {message.length > 500 && <div className="card-content--message_display" onClick={displayText}>{showAllText ? "Réduire"
-                            : "Afficher plus"}</div>}
+                        {message.length > 500 && <button className="card-content--message_display" onClick={displayText}>{showAllText ? "Réduire"
+                            : "Afficher plus"}</button>}
 
                         <div className="card-content--image-container">
                             <img src={image} alt="" className="card-content--image" />
@@ -178,14 +178,14 @@ const Card = (props) => {
                         <div className="card-content--indicators">
                             <div className="card-content--indicators-elt">
                                 <div >
-                                    <FontAwesomeIcon icon={faHeart} className={like ? "hidden" : "icon"} onClick={handleLike} />
-                                    <FontAwesomeIcon icon={faHeartSolid} className={like ? "icon heart-filled " : " hidden"} onClick={handleLike} />
+                                   <button title="Ajouter un like" onClick={handleLike}><FontAwesomeIcon icon={faHeart} className={like ? "hidden" : "icon"}  /></button> 
+                                    <button title="Retirer un like" onClick={handleLike}><FontAwesomeIcon icon={faHeartSolid} className={like ? "icon heart-filled " : " hidden"}  /></button>
                                     {count}
                                 </div>
 
                             </div>
                             <div className="card-content--indicators-elt">
-                                <FontAwesomeIcon icon={faComment} className="icon" onClick={toggleAddComment} />
+                                <button title="Ajouter un commentaire" onClick={toggleAddComment}><FontAwesomeIcon icon={faComment} className="icon"  /></button>
                                 {numberOfComments}
                             </div>
                         </div>

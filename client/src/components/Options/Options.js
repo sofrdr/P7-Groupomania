@@ -11,8 +11,8 @@ const Options = (props) => {
     return (
         <div className={context === "card" ? "options-container options-container-card" : "options-container options-container-header"} >
             {context === "card" ? <ul >
-                <li onClick={props.update} ><FontAwesomeIcon icon={faPen} className="options-icon" />Modifier</li>
-                <li onClick={props.delete}> <FontAwesomeIcon icon={faTrash} className="options-icon" />Supprimer</li>
+                <li  ><button title="Modifier le contenu" onClick={props.update} className="options_btn"><FontAwesomeIcon icon={faPen} className="options-icon" />Modifier</button></li>
+                <li ><button title="Supprimer le contenu" onClick={props.delete} className="options_btn"><FontAwesomeIcon icon={faTrash} className="options-icon" />Supprimer</button> </li>
             </ul> :
                 <ul>
                     <li>{user}</li>

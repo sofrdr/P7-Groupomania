@@ -17,7 +17,7 @@ const UpdatePost = (props) => {
     const [message, setMessage] = useState(props.message);
     const [showError, setShowError] = useState(null);
 
-    const { updateCard, id, author, updateOptions} = props
+    const { updateCard, id, author, updateOptions, toggleModal} = props
 
    
 
@@ -51,6 +51,11 @@ const UpdatePost = (props) => {
 
     }
 
+    const closeComponent = () => {
+        toggleModal();
+        updateOptions()
+    }
+
     const toggleError = () => {
         setShowError(null)
     }
@@ -62,7 +67,7 @@ const UpdatePost = (props) => {
             <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
                 <div className="card-content--header-author">
                     <p>{author}</p>
-                    <FontAwesomeIcon icon={faXmark} className="icon" onClick={props.isModalOpen && props.closeModal} />
+                    <button onClick={closeComponent} title="Fermer la fenêtre de modification du post"><FontAwesomeIcon icon={faXmark} className="icon"  /></button>
                 </div>
 
                 <textarea

@@ -21,6 +21,8 @@ const CreatePost = (props) => {
 
     const { createPost } = props;
 
+
+   
     const removeData = () => {
         setImg("");
         setMessage("");
@@ -33,6 +35,8 @@ const CreatePost = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+       
 
         const formData = new FormData();
         formData.append('message', message)
@@ -57,19 +61,21 @@ const CreatePost = (props) => {
     return (
         <div className="card addpost">
             <form method="post" onSubmit={handleSubmit} encType="multipart/form-data" >
+                <label htmlFor="message" className="hidden">Message</label>
                 <textarea
                     className="message-field"
-
                     name="message"
                     id="message"
                     placeholder={`Quoi de neuf aujourd'hui ${props.user} ?`}
                     onChange={(e) => setMessage(e.target.value)}
-                    value={message}> </textarea>
+                    value={message}
+                    >
+                         </textarea>
 
 
                 <br />
 
-                <label htmlFor="file" className="file-upload">Ajouter une image ... <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
+                <label htmlFor="file" className="file-upload" >Ajouter une image ... <FontAwesomeIcon icon={faImage} className="file-upload-icon" /></label>
                 <input
                     className="file-add"
                     type="file"
@@ -82,7 +88,7 @@ const CreatePost = (props) => {
 
                 {img !== "" && <div className="file-remove">
                     <p>{img.name}</p>
-                    <FontAwesomeIcon icon={faXmark} className="file-remove--icon" onClick={() => setImg("")} />
+                    <button onClick={() => setImg("")}><FontAwesomeIcon icon={faXmark} className="file-remove--icon"  /></button>
                 </div>}
 
                 <br />

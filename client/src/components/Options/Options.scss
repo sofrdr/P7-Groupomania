@@ -35,15 +35,21 @@
         }
 
         li {
-            display: flex;
+           
             margin-bottom: 20px;
 
-            &:hover {
+            
+        }
+    }
+
+    &_btn{
+         display: flex;
+
+         &:hover {
                 font-weight: 600;
                 color: $color-primary;
                 cursor: pointer;
             }
-        }
     }
 
     &-icon {

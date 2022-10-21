@@ -72,7 +72,7 @@ const Comment = (props) => {
             message = {message}
             author = {author}
             isModalOpen = {showModal}
-            closeModal = {toggleModal}
+            toggleModal = {toggleModal}
             updateMessage = {updateMessage}
             windowWidth={windowWidth} 
             updateOptions={updateOptions}         
@@ -83,7 +83,7 @@ const Comment = (props) => {
                     <div className="comment-header">
                         <p className="comment-header--author">{author}</p>
                         <div className={isAuthorized ? "options" : "hidden"}>
-                            <FontAwesomeIcon icon={faEllipsis} className="icon" onClick={updateOptions} />
+                            <button title="Ouvrir les options de commentaire" onClick={updateOptions}><FontAwesomeIcon icon={faEllipsis} className="icon"  /></button>
                             {visibleOptions && <Options delete={handleDeleteComment} update={toggleModal} context="card"/>}
                         </div>
                     </div>
