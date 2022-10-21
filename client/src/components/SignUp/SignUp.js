@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { signUp } from "../../services/api";
-import SignIn from "./SignIn";
+import SignIn from "../SignIn/SignIn";
 import './SignUp.scss'
 
 
@@ -68,7 +68,7 @@ const SignUp = () => {
             )
                 : (<form id="signup-form" onSubmit={handleSignUp}>
                     <label htmlFor="email">Email</label>
-                    <br />
+                    
                     <input 
                         type="email"
                         id="email"
@@ -79,10 +79,9 @@ const SignUp = () => {
                         className="form-input"
                     />
 
-                    <br />
-                    <br />
+                    
                     <label htmlFor="pseudo">Pseudo</label>
-                    <br />
+                   
 
                     <input
                         type="text"
@@ -93,10 +92,9 @@ const SignUp = () => {
                         value={formData.pseudo}
                         className="form-input"
                     />
-                    <br />
-                    <br />
+                    
                     <label htmlFor="password">Mot de passe</label>
-                    <br />
+                    
                     <input
                         type="password"
                         id="password"
@@ -106,8 +104,7 @@ const SignUp = () => {
                         value={formData.password}
                         className="form-input"
                     />
-                    <br />
-                    <br />
+                    
                     <input type="submit" value="Créer un compte" className="btn btn-log"/>
                     <p className="signup-error-msg">{errorMsg}</p>
                 </form>)}

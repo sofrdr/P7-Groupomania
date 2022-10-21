@@ -1,5 +1,5 @@
 import React from "react";
-import Log from "../components/Connection/Log";
+import Log from "../../components/Log/Log";
 
 import "./Auth.scss"
 

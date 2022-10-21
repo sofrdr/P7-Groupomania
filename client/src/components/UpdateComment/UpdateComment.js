@@ -1,8 +1,8 @@
 import { React, useState } from "react";
 
-import { updateComment } from "../services/api";
+import { updateComment } from "../../services/api";
 
-import Error from "./Error/Error";
+import Error from "../Error/Error";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';

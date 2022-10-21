@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
 import Options from "../Options/Options";
-import UpdateComment from "../UpdateComment";
+import UpdateComment from "../UpdateComment/UpdateComment";
 import Error from "../Error/Error";
 
 import { deleteComment } from "../../services/api";

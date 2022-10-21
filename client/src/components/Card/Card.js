@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { likePost, deletePost } from "../../services/api";
 import Options from "../Options/Options";
 import AddComment from "../AddComment/AddComment";
-import UpdatePost from "../UpdatePost";
+import UpdatePost from "../UpdatePost/UpdatePost";
 import Error from "../Error/Error";
 import "./Card.scss";
 

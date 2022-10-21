@@ -1,7 +1,7 @@
 import { React, useState } from "react";
-import { updatePost } from "../services/api";
+import { updatePost } from "../../services/api";
 
-import Error from "./Error/Error";
+import Error from "../Error/Error";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
