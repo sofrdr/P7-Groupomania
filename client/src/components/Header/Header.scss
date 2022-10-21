@@ -1,5 +1,9 @@
 @import "../../style/utils/variables.scss";
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 562c443044e85c54030a86ca6ce6cae9af297609
 .header {
     display: flex;
     align-items: center;
@@ -13,6 +17,11 @@
     width: 100%;
     top: 0px;
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 562c443044e85c54030a86ca6ce6cae9af297609
     &--logo {
         @media screen and (min-width: 992px) {
             width: 25%;
@@ -22,10 +31,18 @@
             width: 40%;
         }
 
+<<<<<<< HEAD
         @media screen and (max-width: 768px) {
             width: 66%;
         }
 
+=======
+        @media screen and (max-width : 768px) {
+            width: 66%;
+        }
+
+
+>>>>>>> 562c443044e85c54030a86ca6ce6cae9af297609
         img {
             object-fit: cover;
             height: 70px;
@@ -34,11 +51,29 @@
     }
 
     &-profil {
+<<<<<<< HEAD
         position: absolute;
         right: 250px;
         font-size: 20px;
         display: flex;
         align-items: center;
+=======
+        margin-right: 50px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+
+            p {
+                display: none;
+            }
+        }
+
+
+
+>>>>>>> 562c443044e85c54030a86ca6ce6cae9af297609
     }
 
     &-logout {
@@ -48,6 +83,13 @@
         cursor: pointer;
         margin-right: 40px;
 
+<<<<<<< HEAD
+=======
+        &:hover {
+            color: $color-primary;
+        }
+
+>>>>>>> 562c443044e85c54030a86ca6ce6cae9af297609
         &--icon {
             margin-right: 10px;
 

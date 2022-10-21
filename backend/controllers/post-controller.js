@@ -21,12 +21,12 @@ exports.addPost = (req, res) => {
     const sanitizedMessage = validator.escape(message)
 
     let newPostDb;
-    if (validator.isLength(message, { max: 60000 }) === false){
-      throw new Error("Message trop long");     
-    } 
+    if (validator.isLength(message, { max: 60000 }) === false) {
+      throw new Error("Message trop long");
+    }
     if (req.file) {
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
-      
+
 
       newPostDb = createPost(userId, author, sanitizedMessage || "", picture);
 
@@ -102,7 +102,7 @@ exports.modifyPost = (req, res) => {
 
       if (post.picture === null && message === "") {
         throw new Error("Champ message vide")
-      }else if(validator.isLength(message, {max: 60000 }) === false){
+      } else if (validator.isLength(message, { max: 60000 }) === false) {
         throw new Error("Message trop long")
       } else {
         updatePostMessage(sanitizedMessage, id)
@@ -175,7 +175,7 @@ exports.likePost = (req, res) => {
   const userMail = user.email;
 
   const post = getPost(id);
-  
+
   // tableau des utilisateurs qui aiment le post
   const usersLiked = post.usersLiked
 
@@ -241,9 +241,9 @@ exports.commentPost = (req, res) => {
     // Un commentaire est ajouté à la table comments
     let newCommentDb;
 
-    if(validator.isEmpty(message, { ignore_whitespace: true })) {
+    if (validator.isEmpty(message, { ignore_whitespace: true })) {
       throw new Error("Commentaire vide")
-    } else if(validator.isLength(message, {max: 8000 }) === false){
+    } else if (validator.isLength(message, { max: 8000 }) === false) {
       throw new Error("Commentaire trop long")
     } else {
       newCommentDb = createComment(author, sanitizedMessage, id)
@@ -305,9 +305,9 @@ exports.editComment = (req, res) => {
     // On vérifie si l'utilisateur est l'auteur du commentaire ou a le rôle administrateur
     if (comment.author !== currentUser.pseudo && currentUser.role !== 1) {
       res.status(403).json({ message: "Modification du commentaire non autorisée" });
-    } else if(validator.isEmpty(message, { ignore_whitespace: true })) {
+    } else if (validator.isEmpty(message, { ignore_whitespace: true })) {
       throw new Error("Commentaire vide")
-    } else if(validator.isLength(message, { max: 8000 }) === false){
+    } else if (validator.isLength(message, { max: 8000 }) === false) {
       throw new Error("Commentaire trop long")
     }
     else {

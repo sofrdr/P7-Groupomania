@@ -68,7 +68,11 @@ function createPost(userId, author, message, picture) {
  *
  */
 function updatePostMessage(message, id) {
+<<<<<<< HEAD
      db.prepare(`UPDATE posts SET message = @message WHERE id = @id`)
+=======
+    const newPostMessage = db.prepare(`UPDATE posts SET message = @message WHERE id = @id`)
+>>>>>>> 562c443044e85c54030a86ca6ce6cae9af297609
         .run({
             message: message,
             id: id
@@ -85,7 +89,7 @@ function updatePostMessage(message, id) {
  *
  */
 function updatePostPicture(picture, id) {
-    db.prepare(`UPDATE posts SET picture = @picture WHERE id = @id`).run({
+   const newPostPicture = db.prepare(`UPDATE posts SET picture = @picture WHERE id = @id`).run({
         picture: picture,
         id: id
     })
