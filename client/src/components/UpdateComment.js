@@ -1,8 +1,8 @@
 import { React, useState } from "react";
 
-import { updateComment } from "../../services/api";
+import { updateComment } from "../services/api";
 
-import Error from "../Error/Error";
+import Error from "./Error/Error";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +17,9 @@ const UpdateComment = (props) => {
     const { author, isModalOpen, id, updateMessage, windowWidth, updateOptions } = props
 
 
-    console.log(windowWidth)
+    const toggleError = () => {
+        setShowError(null)
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,7 +37,7 @@ const UpdateComment = (props) => {
     }
 
 
-    if (showError !== null) return <Error errorData={showError} />;
+    if (showError !== null) return <Error errorData={showError} toggleError={toggleError} />;
     return (
         <div className="comment-container new-comment ">
             <form onSubmit={handleSubmit}>

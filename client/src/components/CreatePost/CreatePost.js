@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { addPost } from "../../../services/api";
+import { addPost } from "../../services/api";
 
-import Error from "../../Error/Error";
+import Error from "../Error/Error";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,6 +27,10 @@ const CreatePost = (props) => {
         setErrorMessage("")
     }
 
+    const toggleError = () => {
+        setShowError(null)
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -49,7 +53,7 @@ const CreatePost = (props) => {
 
     }
 
-    if(showError !== null) return <Error errorData={showError} />;
+    if(showError !== null) return <Error errorData={showError} toggleError={toggleError}/>;
     return (
         <div className="card addpost">
             <form method="post" onSubmit={handleSubmit} encType="multipart/form-data" >

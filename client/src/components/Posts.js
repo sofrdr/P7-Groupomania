@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import Card from "./Card/Card"
 import CreatePost from "./CreatePost/CreatePost";
 import Comment from "./Comment/Comment";
-import { getPosts } from "../../services/api";
+import { getPosts } from "../services/api";
 
 
 

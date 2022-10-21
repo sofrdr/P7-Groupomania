@@ -21,15 +21,18 @@ exports.addPost = (req, res) => {
     const sanitizedMessage = validator.escape(message)
 
     let newPostDb;
+    if (validator.isLength(message, { max: 60000 }) === false){
+      throw new Error("Message trop long");     
+    } 
     if (req.file) {
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
-      console.log(req.file)
+      
 
       newPostDb = createPost(userId, author, sanitizedMessage || "", picture);
 
     } else {
-      if (validator.isEmpty(message, { ignore_whitespace: true }) || validator.isLength(message, { min: 1, max: 60000 }) === false) {
-        throw new Error("Merci d'écrire un message (60 000 caractères max) ou de sélectionner une image")
+      if (validator.isEmpty(message, { ignore_whitespace: true })) {
+        throw new Error("Champ message vide")
       } else {
         newPostDb = createPost(userId, author, sanitizedMessage)
       }
@@ -97,8 +100,10 @@ exports.modifyPost = (req, res) => {
       }
 
 
-      if (message === "") {
+      if (post.picture === null && message === "") {
         throw new Error("Champ message vide")
+      }else if(validator.isLength(message, {max: 60000 }) === false){
+        throw new Error("Message trop long")
       } else {
         updatePostMessage(sanitizedMessage, id)
 
@@ -112,7 +117,7 @@ exports.modifyPost = (req, res) => {
 
   }
   catch (err) {
-    res.status(404).json({ err: err.message })
+    res.status(404).json({ error: err.message })
 
   }
 
@@ -170,7 +175,7 @@ exports.likePost = (req, res) => {
   const userMail = user.email;
 
   const post = getPost(id);
-  console.log(">>", id, post)
+  
   // tableau des utilisateurs qui aiment le post
   const usersLiked = post.usersLiked
 
@@ -236,10 +241,12 @@ exports.commentPost = (req, res) => {
     // Un commentaire est ajouté à la table comments
     let newCommentDb;
 
-    if (message !== "") {
-      newCommentDb = createComment(author, sanitizedMessage, id)
-    } else {
+    if(validator.isEmpty(message, { ignore_whitespace: true })) {
       throw new Error("Commentaire vide")
+    } else if(validator.isLength(message, {max: 8000 }) === false){
+      throw new Error("Commentaire trop long")
+    } else {
+      newCommentDb = createComment(author, sanitizedMessage, id)
     }
     const newCommentId = newCommentDb.lastInsertRowid;
 
@@ -254,7 +261,7 @@ exports.commentPost = (req, res) => {
   }
   catch (err) {
     console.log(err)
-    res.status(400).json({ err: err.message })
+    res.status(400).json({ error: err.message })
   }
 
 
@@ -298,7 +305,12 @@ exports.editComment = (req, res) => {
     // On vérifie si l'utilisateur est l'auteur du commentaire ou a le rôle administrateur
     if (comment.author !== currentUser.pseudo && currentUser.role !== 1) {
       res.status(403).json({ message: "Modification du commentaire non autorisée" });
-    } else {
+    } else if(validator.isEmpty(message, { ignore_whitespace: true })) {
+      throw new Error("Commentaire vide")
+    } else if(validator.isLength(message, { max: 8000 }) === false){
+      throw new Error("Commentaire trop long")
+    }
+    else {
       editComment(id, sanitizedMessage);
       const comments = getComments(postId)
       // On actualise la ligne comments de la table posts
@@ -307,7 +319,7 @@ exports.editComment = (req, res) => {
     }
   }
   catch (err) {
-    res.status(404).json({ err })
+    res.status(404).json({ error: err.message })
   }
 
 }

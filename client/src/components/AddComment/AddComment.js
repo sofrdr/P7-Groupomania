@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShareFromSquare } from "@fortawesome/free-regular-svg-icons";
 
-import { addComment } from "../../../services/api";
+import { addComment } from "../../services/api";
 import "./AddComment.scss"
-import Error from "../../Error/Error";
+import Error from "../Error/Error";
 
 const AddComment = (props) => {
 
@@ -13,7 +13,7 @@ const AddComment = (props) => {
     const [showError, setShowError] = useState(null);
 
     const postId = props.id
-    const { createComment, toggleAddComment, windowWidth } = props
+    const { createComment, toggleAddComment, windowWidth} = props
 
     
 
@@ -21,7 +21,9 @@ const AddComment = (props) => {
         setmessage(e.target.value)
     }
 
-    console.log(windowWidth)
+    const toggleError = () => {
+        setShowError(null)
+    }
 
 
     const handleSubmit = async (e) => {
@@ -38,7 +40,7 @@ const AddComment = (props) => {
             setShowError(err);
         }
     }
-    if (showError !== null) return <Error errorData={showError} />;
+    if (showError !== null) return <Error errorData={showError} toggleError={toggleError} />;
     return (
         <div className="comment-container new-comment">
             <form onSubmit={handleSubmit}>

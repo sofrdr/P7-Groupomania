@@ -3,16 +3,16 @@ import { React, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
-import Options from "../../Options/Options";
+import Options from "../Options/Options";
 import UpdateComment from "../UpdateComment";
-import Error from "../../Error/Error";
+import Error from "../Error/Error";
 
-import { deleteComment } from "../../../services/api";
+import { deleteComment } from "../../services/api";
 import "./Comment.scss"
 
 // Day.js
 import dayjs from 'dayjs';
-import localeObject from "../../../services/fr"
+import localeObject from "../../services/fr"
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 dayjs.locale('fr', localeObject)

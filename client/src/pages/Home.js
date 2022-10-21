@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import {Navigate } from "react-router-dom";
 
 import { isExpired } from "react-jwt";
-import Posts from "../components/Post/Posts"
+import Posts from "../components/Posts"
 import Header from "../components/Header/Header";
 
 

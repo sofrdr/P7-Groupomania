@@ -67,7 +67,7 @@ const SignIn = () => {
         <div>
             <form onSubmit={handleSignIn} id="form-signin"  >
                 <label htmlFor="email">Email</label>
-                <br />
+                
                 <input
                     type="email"
                     id="email"
@@ -78,10 +78,9 @@ const SignIn = () => {
                     className="form-input"
                 />
 
-                <br />
-                <br />
+                
                 <label htmlFor="password">Mot de passe</label>
-                <br />
+                
                 <input
                     type="password"
                     id="password"
@@ -91,9 +90,7 @@ const SignIn = () => {
                     value={formData.password}
                     className="form-input"
                 />
-                <br />
-                
-                <br />
+ 
                 <input type="submit" value="Se connecter" className="btn btn-log"/>
                 <p>{errorMsg}</p>
             </form>

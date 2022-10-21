@@ -1,3 +1,4 @@
+
 const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -8,13 +9,30 @@ function errorHandler(err) {
     console.log("clearCache", err);
     const response = {};
     switch (err) {
-        case "Requête non authentifiée":  //TODO ajuster en fonction des messages
+        case "Requête non authentifiée":  
             localStorage.clear();
-            response.messageToShow = "Votre session a expiré, merci de vous reconnecter";
+            response.messageToShow = "La session a expiré, merci de vous reconnecter";
             response.redirect = true;
             break;
+        case "Champ message vide":
+            response.messageToShow = "Merci d'écrire un message ou de sélectionner une image";
+            response.redirect = false;
+            break;
+        case "Message trop long": 
+            response.messageToShow = "Le message dépasse les 60 000 caractères autorisés";
+            response.redirect = false;
+            break;
+        case "Commentaire vide":
+            response.messageToShow = "Merci de saisir un commentaire";
+            response.redirect = false;
+            break;
+        case "Commentaire trop long":
+            response.messageToShow = "Le commentaire dépasse les 8 000 caractères autorisés";
+            response.redirect = false;
+            break;
         default:
-            response.messageToShow = "Houston on a un problème :(";
+            response.messageToShow = "Une erreur s'est produite :(";
+            response.redirect = false
             break;
     }
     throw response;

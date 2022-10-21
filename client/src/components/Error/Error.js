@@ -8,13 +8,18 @@ import './Error.scss'
  * @param {String} props.errorData.messageToShow
  * @param {Boolean} [props.errorData.redirect]
  */
-const Error = ({errorData}) =>{
-    const {messageToShow, redirect} = errorData;
+const Error = (props) => {
+    const { messageToShow, redirect } = props.errorData;
+    const {toggleError} = props
     const navigate = useNavigate()
 
-    function click(){
-        if (!redirect) return;
-        navigate("/");
+    function click() {
+        if (!redirect) {
+            toggleError();
+        } else {
+            navigate("/");
+        }
+
     }
     return (
         <div className="error-modal" >

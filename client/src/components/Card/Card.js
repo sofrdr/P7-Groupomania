@@ -1,15 +1,15 @@
 /**
- * @typedef {import("../Posts.js").showOptions} showOptions
+ * @typedef {import("../Post/Posts.js").showOptions} showOptions
  */
 
 import React, { useState } from "react";
 
 
-import { likePost, deletePost } from "../../../services/api";
-import Options from "../../Options/Options";
+import { likePost, deletePost } from "../../services/api";
+import Options from "../Options/Options";
 import AddComment from "../AddComment/AddComment";
 import UpdatePost from "../UpdatePost";
-import Error from "../../Error/Error";
+import Error from "../Error/Error";
 import "./Card.scss";
 
 // FontAwesome
@@ -20,7 +20,7 @@ import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 
 // Day.js
 import dayjs from 'dayjs';
-import localeObject from "../../../services/fr"
+import localeObject from "../../services/fr"
 const relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 dayjs.locale('fr', localeObject)
@@ -88,6 +88,9 @@ const Card = (props) => {
     }
 
 
+    const toggleError = () => {
+        setShowError(null)
+    }
 
      // Fonction qui change le state de showUpdate pour afficher ou non la fenêtre de modification du post (composant UpdatePost)
      const toggleModal = () => {
@@ -131,6 +134,7 @@ const Card = (props) => {
                     closeModal={toggleModal}
                     updateCard={updateCard}
                     updateOptions={updateOptions}
+                    toggleError={toggleError}
                     
 
                 /></div>
@@ -194,6 +198,7 @@ const Card = (props) => {
                             windowWidth={windowWidth} 
                             createComment={createComment}                          
                             toggleAddComment={toggleAddComment}
+                            toggleError={toggleError}
                              />}
                             {comments}
                             {comments.length < 3 ? "" : <p onClick={handleComments} className="card-comments--onclick">

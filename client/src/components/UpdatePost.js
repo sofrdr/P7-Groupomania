@@ -1,7 +1,7 @@
 import { React, useState } from "react";
-import { updatePost } from "../../services/api";
+import { updatePost } from "../services/api";
 
-import Error from "../Error/Error";
+import Error from "./Error/Error";
 
 // FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +17,7 @@ const UpdatePost = (props) => {
     const [message, setMessage] = useState(props.message);
     const [showError, setShowError] = useState(null);
 
-    const { updateCard, id, author, updateOptions } = props
+    const { updateCard, id, author, updateOptions} = props
 
    
 
@@ -51,8 +51,12 @@ const UpdatePost = (props) => {
 
     }
 
+    const toggleError = () => {
+        setShowError(null)
+    }
+
    
-    if (showError !== null) return <Error errorData={showError} />;
+    if (showError !== null) return <Error errorData={showError} toggleError={toggleError}/>;
     return (
         <div className="card">
             <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
