@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 // Limite de 3 tentatives de connexion par fenêtre de 5 minutes
 const limiterLogin = rateLimit({
     windowMs: 5 * 60 * 1000,
-    max: 3,
+    max: 5,
     message: "Trop de tentatives infructueuses de connexion, veuillez réessayer plus tard.",
     statusCode: 429,
     standardHeaders: true, 

@@ -29,8 +29,8 @@ const handleConnection = (e) => {
             <img src={logo} alt="logo groupomania" />
             <div className="form">
                 <ul className="form-selectors">
-                    <li id="register" className={ signUpModal ? "form-selectors-items_focus" : "form-selectors-items"} onClick={handleConnection} tabIndex="1">S'inscrire</li>
-                    <li id="login"  className={ signInModal ? "form-selectors-items_focus" : "form-selectors-items"} onClick={handleConnection} tabIndex="1">Se connecter</li>
+                    <li  className="form-selectors-items"  ><button id="register"  onClick={handleConnection}   className={signUpModal ? "form-selectors_btn--focus" : "form-selectors_btn"}>S'inscrire</button></li>
+                    <li   className="form-selectors-items"  ><button id="login"   onClick={handleConnection}  className={signInModal ? "form-selectors_btn--focus" : "form-selectors_btn"}>Se connecter</button></li>
                 </ul>
                 
                 {signInModal && <SignIn/>} 
