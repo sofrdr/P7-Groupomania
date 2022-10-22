@@ -34,16 +34,10 @@ const Header = (props) => {
     }
     return (
         <header className="header">
-<<<<<<< HEAD
             <a href={window.location} className="header--logo"><img src={logo} alt="groupomania-logo" /></a>
             {windowWidth >= 992 &&
                 <p className="header-profil">Bienvenue {user} !</p>}
             {windowWidth >= 992 ?
-=======
-            <a href={window.location} className="header--logo"><img src={logo} alt="groupomania-logo"  /></a>
-            <div className="header-profil">
-                <p >Bienvenue {props.user} !</p>
->>>>>>> 562c443044e85c54030a86ca6ce6cae9af297609
                 <div className="header-logout" onClick={disconnect}>
                     <FontAwesomeIcon icon={faRightFromBracket} className="icon header-logout--icon" />
                     <p>Déconnexion</p>
