@@ -63,8 +63,8 @@ const Card = (props) => {
     }
 
 
-    // isAuthorized = true si l'auteur du post est l'utilisateur connecté
-    const isAuthorized = pseudo === author
+    // isAuthorized = true si l'utilisateur connecté est admin ou auteur du post 
+    const isAuthorized = pseudo === author || user.isAdmin === 1
 
     const visibleOptions = options.type === "post" && options.id === id;
 

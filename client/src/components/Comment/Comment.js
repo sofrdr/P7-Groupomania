@@ -27,7 +27,7 @@ const Comment = (props) => {
     const [showError, setShowError] = useState(null)
 
     const pseudo = user.pseudo
-    const isAuthorized = pseudo === author
+    const isAuthorized = pseudo === author || user.isAdmin === 1
 
     
 

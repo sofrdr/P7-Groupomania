@@ -67,6 +67,7 @@ exports.login = async (req, res) => {
     const emailSanitized = validator.escape(email)
     // On récupère l'utilisateur dans la BDD
     const user = getUserByEmail(emailSanitized)
+    console.log(user)
       
     try{
         // Si aucun utilisateur ne correspond à l'adresse mail de la requête on renvoie une erreur
@@ -83,11 +84,13 @@ exports.login = async (req, res) => {
         // Sinon création d'un token d'authentification valable 1h
         return res.status(200).json({
             user : {
-                id: user.id,
                 pseudo: user.pseudo
             },
             token : jwt.sign(
-                { userId : user.id},
+                { 
+                    userId : user.id,
+                    isAdmin : user.role
+                },
                 SECRET_KEY, 
                 {expiresIn: "1h"}
             )
