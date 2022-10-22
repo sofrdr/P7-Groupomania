@@ -1,3 +1,5 @@
-config/.env
-/node_modules
 images/*
+!images/.keep
+/node_modules
+config/.env
+!config/.keep
