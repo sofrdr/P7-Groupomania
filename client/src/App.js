@@ -2,10 +2,12 @@
 import React  from 'react';
 
 import {BrowserRouter, Routes, Route} from "react-router-dom";
+
+// Pages
 import Home from './pages/Home/Home';
 import Auth from './pages/Auth/Auth';
 
-function App() {
+const App = () => {
 
   
   return (

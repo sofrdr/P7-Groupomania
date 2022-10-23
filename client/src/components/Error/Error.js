@@ -13,7 +13,8 @@ const Error = (props) => {
     const {toggleError} = props
     const navigate = useNavigate()
 
-    function click() {
+    // Au clic si redirect === false alors on ferme le composant Error sinon on redirige l'utilisateur à la page de connexion
+    const click = () => {
         if (!redirect) {
             toggleError();
         } else {

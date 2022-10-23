@@ -4,12 +4,16 @@
 
 import React, { useState } from "react";
 
-
+// API
 import { likePost, deletePost } from "../../services/api";
+
+// Composants
 import Options from "../Options/Options";
 import AddComment from "../AddComment/AddComment";
 import UpdatePost from "../UpdatePost/UpdatePost";
 import Error from "../Error/Error";
+
+// Sass
 import "./Card.scss";
 
 // FontAwesome
@@ -47,10 +51,8 @@ const Card = (props) => {
     let count = likes + (like ? 1 : 0);
 
 
-    // Au clic, si la valeur de like était 0 elle passe à 1 (l'utilisateur ajoute un like)
-    // si la valeur de like était à 1 elle passe à 0 (l'utilisateur retire son like)
+    // Au clic la valeur de like est modifiée (0 ou 1), envoi de cette valeur à l'API
     const handleLike = async () => {
-        console.log({ like: like, id: id })
         try {
             updateLike(!like);
             await likePost(like, id)
@@ -69,7 +71,7 @@ const Card = (props) => {
     const visibleOptions = options.type === "post" && options.id === id;
 
 
-    function updateOptions() {
+    const updateOptions = ()  => {
         if (!options.type) return handleOptions({ type: "post", id });
         if (options.id !== id) return handleOptions({ type: "post", id });
         handleOptions({});
@@ -88,6 +90,7 @@ const Card = (props) => {
     }
 
 
+    // On passe le state de showError à null pour fermer le composant Error
     const toggleError = () => {
         setShowError(null)
     }
@@ -97,8 +100,8 @@ const Card = (props) => {
         setShowUpdate(!showUpdate)
     }
 
-    function updateCard({newImg, newMessage}){
-              
+    // Fonction qui met à jour l'image et le message d'un post après modification
+    const updateCard = ({newImg, newMessage}) => {             
         toggleModal();
         setImage(newImg)
         setMessage(newMessage)
@@ -117,7 +120,7 @@ const Card = (props) => {
     }
 
     
-
+    // Si une erreur est retournée par l'API, on l'affiche dans le composant Error
     if (showError !== null) return <Error errorData={showError} />;
     return (
 

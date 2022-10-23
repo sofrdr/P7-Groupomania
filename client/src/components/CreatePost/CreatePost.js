@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
+// API
 import { addPost } from "../../services/api";
 
+// Composant
 import Error from "../Error/Error";
 
 // FontAwesome
@@ -9,34 +11,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
+// Sass
 import "./CreatePost.scss"
 
 const CreatePost = (props) => {
 
     const [message, setMessage] = useState("");
     const [img, setImg] = useState("")
-    const [errorMessage, setErrorMessage] = useState("")
     const [showError, setShowError] = useState(null);
 
 
     const { createPost } = props;
 
-
-   
+    // Fonction pour réinitialiser le state img et message
     const removeData = () => {
         setImg("");
         setMessage("");
-        setErrorMessage("")
     }
 
+    // On passe le state de showError à null pour fermer le composant Error
     const toggleError = () => {
         setShowError(null)
     }
 
+    // Envoi du formulaire de création de post à l'API
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-       
 
         const formData = new FormData();
         formData.append('message', message)
@@ -57,7 +57,8 @@ const CreatePost = (props) => {
 
     }
 
-    if(showError !== null) return <Error errorData={showError} toggleError={toggleError}/>;
+    // Si une erreur est retournée par l'API, on l'affiche dans le composant Error
+    if (showError !== null) return <Error errorData={showError} toggleError={toggleError} />;
     return (
         <div className="card addpost">
             <form method="post" onSubmit={handleSubmit} encType="multipart/form-data" >
@@ -69,8 +70,8 @@ const CreatePost = (props) => {
                     placeholder={`Quoi de neuf aujourd'hui ${props.user} ?`}
                     onChange={(e) => setMessage(e.target.value)}
                     value={message}
-                    >
-                         </textarea>
+                >
+                </textarea>
 
 
                 <br />
@@ -88,7 +89,7 @@ const CreatePost = (props) => {
 
                 {img !== "" && <div className="file-remove">
                     <p>{img.name}</p>
-                    <button onClick={() => setImg("")}><FontAwesomeIcon icon={faXmark} className="file-remove--icon"  /></button>
+                    <button onClick={() => setImg("")}><FontAwesomeIcon icon={faXmark} className="file-remove--icon" /></button>
                 </div>}
 
                 <br />
@@ -98,8 +99,6 @@ const CreatePost = (props) => {
                     className="btn"
 
                 />
-
-                {errorMessage !== "" && <p className="errormsg">{errorMessage}</p>}
             </form>
 
 

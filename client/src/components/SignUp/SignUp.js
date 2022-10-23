@@ -1,6 +1,12 @@
 import React, { useState } from "react"
+
+// API
 import { signUp } from "../../services/api";
+
+// Composant
 import SignIn from "../SignIn/SignIn";
+
+// Sass
 import './SignUp.scss'
 
 
@@ -18,13 +24,12 @@ const SignUp = () => {
 
     
 
-    // Fonction pour envoyer les données au back à la validation du formulaire
+    // Fonction pour envoyer les données à l'API à la validation du formulaire
     async function handleSignUp(e) {
 
         e.preventDefault();
         try {
             const data = await signUp(formData)
-            console.log(data.error)
 
             /* Si la réponse contient une erreur alors on enregistre cette erreur dans errorMsg
             Si aucune erreur on passe isFormSend à true */ 
@@ -48,7 +53,7 @@ const SignUp = () => {
      *
      * @return  {Object}     [formData : email, password, pseudo]
      */
-    function handleChange(e) {
+    const handleChange = (e) => {
         const {name, value} = e.target
         setFormData(prevFormData => {
             return {
@@ -59,6 +64,7 @@ const SignUp = () => {
     }
 
     return (
+        // Si le compte a bien été créé on affiche le composant SignIn pour que l'utilisateur se connecte 
         <div className="signup">           
             {isFormSend ? (
                 <div>
@@ -106,7 +112,8 @@ const SignUp = () => {
                     />
                     
                     <input type="submit" value="Créer un compte" className="btn btn-log"/>
-                    <p className="signup-error-msg">{errorMsg}</p>
+                    {/*Affichage des erreurs ici */}
+                    {errorMsg && <p className="signup-error-msg">{errorMsg}</p>}
                 </form>)}
 
         </div>

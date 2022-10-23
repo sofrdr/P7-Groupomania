@@ -28,7 +28,6 @@ catch (err) {
  */
 function createUser(email, password, pseudo) {
 
-  //const uuid = uuidv4();
   const stmt = db.prepare('INSERT INTO users (email, password, pseudo) VALUES (@email, @password, @pseudo)');
   stmt.run({
     email: email,

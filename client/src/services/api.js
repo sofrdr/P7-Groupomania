@@ -5,8 +5,8 @@ const headers = {
     'Authorization': 'Bearer ' + localStorage.getItem('token')
 }
 
+// Fonction pour afficher des messages d'erreurs personnalisés selon le type d'erreur, renvoie un objet response
 function errorHandler(err) {
-    console.log("clearCache", err);
     const response = {};
     switch (err) {
         case "Requête non authentifiée":  
@@ -59,7 +59,7 @@ function setToken(token) {
  *
  * @param   {Object}  dataLogin  [email, password]
  *
- * @return  {Object}             [user: id, pseudo]
+ * @return  {Object}             [user: pseudo]
  */
 async function signIn(dataLogin) {
     const response = await fetch("http://localhost:3001/api/auth/login", {
@@ -168,7 +168,7 @@ async function updatePost(formData, id) {
  *
  * @param   {Number}  id  [id du post]
  *
- * @return {String}       [Confirmation de la suppression du post]
+ * @return {Object}       [message : Confirmation de la suppression du post]
  * 
  */
 async function deletePost(id) {
@@ -179,7 +179,7 @@ async function deletePost(id) {
     });
     const data = await response.json()
     if (data.error) throw data.error;
-    console.log(data)
+
     }
     catch(err){
         errorHandler(err)
@@ -194,7 +194,7 @@ async function deletePost(id) {
  * @param {Boolean} like
  * @param {Number} id       [id du post]
  * 
- * @return {String}             [Confirmation de l'ajout ou du retrait du like']
+ * @return {Object}             [message : Confirmation de l'ajout ou du retrait du like']
  */
 async function likePost(like, id) {
     try{
@@ -205,7 +205,6 @@ async function likePost(like, id) {
     })
     const data = await response.json();
     if (data.error) throw data.error;
-    console.log(data) 
     }
     catch(err){
         errorHandler(err)
@@ -221,7 +220,7 @@ async function likePost(like, id) {
  * @param   {String}  comment  [message]
  * @param   {Number}  id       [id du post]
  *
- * @return  {String}           [Confirmation de l'ajout du commentaire]
+ * @return  {Object}           [message : Confirmation de l'ajout du commentaire, newComment : nouveau commentaire]
  */
 
 async function addComment(comment, id) {
@@ -246,7 +245,7 @@ async function addComment(comment, id) {
  *
  * @param   {Number}  id  [id du commentaire à supprimer]
  *
- * @return  {String}      [Confirmation de la suppression]
+ * @return  {Object}      [message : Confirmation de la suppression]
  */
 async function deleteComment(id) {
     try{
@@ -256,7 +255,6 @@ async function deleteComment(id) {
     })
     const data = await response.json();
     if (data.error) throw data.error;
-    console.log(data) 
     }
     catch(err){
         errorHandler(err)
@@ -269,7 +267,7 @@ async function deleteComment(id) {
  * @param   {String}  comment  [message]
  * @param   {Number}  id       [id du commentaire à modifier]
  *
- * @return  {String}           [Confirmation de la modification]
+ * @return  {Object}           [message : Confirmation de la modification]
  */
 async function updateComment(comment, id) {
     try{
@@ -280,7 +278,6 @@ async function updateComment(comment, id) {
     })
     const data = await response.json();
     if (data.error) throw data.error;
-    console.log(data)  
     }
     catch(err){
         errorHandler(err)

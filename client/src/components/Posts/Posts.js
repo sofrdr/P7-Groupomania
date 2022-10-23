@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
+// Composants 
 import Card from "../Card/Card"
 import CreatePost from "../CreatePost/CreatePost";
 import Comment from "../Comment/Comment";
+
+// API
 import { getPosts } from "../../services/api";
-
-
 
 
 
@@ -54,7 +55,7 @@ const Posts = (props) => {
     /**
      * @params {showOptions} [options]
      */
-    function handleOptions(options) {
+    const handleOptions = (options) => {
         setShowOptions(options);
     }
 
@@ -65,7 +66,7 @@ const Posts = (props) => {
      * @param   {Number}  idComment  [id du commentaire]
      *
      */
-    function removeComment(idPost, idComment) {
+    const removeComment = (idPost, idComment) => {
         const newData = JSON.parse(JSON.stringify(allPosts));
         for (const post of newData) {
             if (post.id === idPost) {
@@ -88,7 +89,7 @@ const Posts = (props) => {
      * @param   {Object}  newComment  [nouveau commentaire envoyé par l'API]
      *
      */
-    function createComment(idPost, newComment) {
+    const createComment = (idPost, newComment) => {
         const newData = JSON.parse(JSON.stringify(allPosts));
         for (const post of newData) {
             if (post.id === idPost) {
@@ -111,7 +112,7 @@ const Posts = (props) => {
      * @param   {Object}  newPost  [Nouveau post renvoyé par l'API]
      *
      */
-    function createPost(newPost) {
+    const createPost = (newPost) => {
         let newData = JSON.parse(JSON.stringify(allPosts));
         if(newData === null){
             newData = [];
@@ -129,7 +130,7 @@ const Posts = (props) => {
      * @param   {Number}  idPost  [id du post]
      *
      */
-    function removePost(idPost) {
+    const removePost = (idPost) => {
         const newData = JSON.parse(JSON.stringify(allPosts));
         for (let i = 0; i < newData.length; i++) {
             if (newData[i].id === idPost) {
@@ -143,7 +144,7 @@ const Posts = (props) => {
     }
 
     // Fonction qui change le state de showAllComments afin d'afficher tous les commentaires d'un post 
-    function handleComments() {
+    const handleComments = () => {
         setShowAllComments((prevShowComments) => !prevShowComments)
     }
 

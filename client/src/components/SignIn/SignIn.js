@@ -1,37 +1,38 @@
 import React, { useState } from "react"
-import {Navigate} from "react-router-dom";
+import { Navigate } from "react-router-dom";
+
+// API
 import { signIn } from "../../services/api";
+
+// Sass
 import './SignIn.scss'
 
 
 const SignIn = () => {
 
     const [errorMsg, setErrorMsg] = useState("");
-
     const [formData, setFormData] = useState({
         email: "",
         password: ""
-
     })
-
     const [loggedIn, setLoggedIn] = useState(false);
 
 
-    // Fonction pour envoyer les données au back à la validation du formulaire
+    // Fonction pour envoyer les données à l'API à la validation du formulaire
 
     async function handleSignIn(e) {
 
         e.preventDefault();
 
-        try {         
+        try {
             const data = await signIn(formData)
             // On recupère dans la réponse l'objet user et on l'enregistre dans le localStorage
             const user = data.user
             localStorage.setItem("user", JSON.stringify(user))
-            
-            
+
+
             /* Si la réponse contient une erreur alors on enregistre cette erreur dans errorMsg
-            Si aucune erreur on passe loggedIn à true */ 
+            Si aucune erreur on passe loggedIn à true */
             if (data.error) {
                 setErrorMsg(data.error)
             } else {
@@ -43,7 +44,7 @@ const SignIn = () => {
         }
     }
 
-    
+
     /**
      * [Actualiser la valeur des champs à chaque changement ]
      *
@@ -51,8 +52,8 @@ const SignIn = () => {
      *
      * @return  {Object}     [formData : email, password]
      */
-    function handleChange(e) {
-        const {name, value} = e.target
+    const handleChange = (e) => {
+        const { name, value } = e.target
         setFormData(prevFormData => {
             return {
                 ...prevFormData,
@@ -61,13 +62,15 @@ const SignIn = () => {
         })
     }
 
+    // Si l'utilisateur est bien connecté on le redirige vers la page home
+    
     if (loggedIn) return <Navigate to='/home' />
 
     return (
         <div>
             <form onSubmit={handleSignIn} id="form-signin"  >
                 <label htmlFor="email">Email</label>
-                
+
                 <input
                     type="email"
                     id="email"
@@ -78,9 +81,9 @@ const SignIn = () => {
                     className="form-input"
                 />
 
-                
+
                 <label htmlFor="password">Mot de passe</label>
-                
+
                 <input
                     type="password"
                     id="password"
@@ -90,9 +93,11 @@ const SignIn = () => {
                     value={formData.password}
                     className="form-input"
                 />
- 
-                <input type="submit" value="Se connecter" className="btn btn-log"/>
-                <p>{errorMsg}</p>
+
+                <input type="submit" value="Se connecter" className="btn btn-log" />
+
+                {/*Affichage des messages d'erreur ici */}
+                {errorMsg && <p>{errorMsg}</p>}
             </form>
         </div>
     )

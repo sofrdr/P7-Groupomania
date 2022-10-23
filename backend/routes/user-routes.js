@@ -3,6 +3,7 @@ const userCtrl = require('../controllers/user-controller')
 const router = express.Router();
 
 const rateLimit = require('express-rate-limit');
+
 // Limite de 5 tentatives de connexion par fenêtre de 5 minutes
 const limiterLogin = rateLimit({
     windowMs: 5 * 60 * 1000,

@@ -28,7 +28,7 @@ const Header = (props) => {
         }
     }
 
-
+    // Redirection de l'utilisateur vers la page de connexion
     if (redirect) {
         return <Navigate to="/" />
     }
