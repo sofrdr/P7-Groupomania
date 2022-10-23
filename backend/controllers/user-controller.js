@@ -4,11 +4,9 @@ const bcrypt = require('bcrypt');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const {createUser, getUserByEmail} = require('../models/user-model')
-//const { v4: uuidv4} = require('uuid'); 
 
 
-
-
+// -------------- CREER UN COMPTE -----------------------
 
 exports.signup = async (req, res) => {
 
@@ -60,11 +58,16 @@ exports.signup = async (req, res) => {
 }
 
 
+// --------------- SE CONNECTER ---------------------------------
+
 exports.login = async (req, res) => {
 
     const {email, password} = req.body;
 
+
+    // On empêche l'envoi des caractères <, >, &, ', " et /
     const emailSanitized = validator.escape(email)
+
     // On récupère l'utilisateur dans la BDD
     const user = getUserByEmail(emailSanitized)
     console.log(user)
@@ -102,11 +105,3 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.logout = (req, res) => {
-    try{
-       res.redirect('/').status(200).json("Utilisateur déconnecté") 
-    }
-    catch(err){
-        res.status(500).json({err})
-    }
-}

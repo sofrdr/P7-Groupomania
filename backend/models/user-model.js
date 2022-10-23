@@ -3,7 +3,6 @@ const {db} = require('./database');
 
 const structureUser = /*sql*/`
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  uuid TEXT,
   email VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(50) NOT NULL,
   pseudo VARCHAR(50) NOT NULL UNIQUE,

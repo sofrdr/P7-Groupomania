@@ -1,11 +1,12 @@
-const { db } = require('../models/database');
 const { getUser } = require('../models/user-model');
 const { getPost, getAllPosts, createPost, updatePostMessage, updatePostPicture, deletePost, updatePostComments, addLike, removeLike, updateLikers } = require('../models/post-model');
 const { createComment, getComments, getOneComment, editComment, deleteComment } = require('../models/comment-model')
 const fs = require('fs');
 const validator = require('validator')
 
-// Ajouter un post
+
+// --------- AJOUTER UN POST -------------------------
+
 exports.addPost = (req, res) => {
 
   try {
@@ -20,17 +21,20 @@ exports.addPost = (req, res) => {
     // On empêche l'envoi des caractères <, >, &, ', " et /
     const sanitizedMessage = validator.escape(message)
 
+
+
     let newPostDb;
+
+    // Si le message dépasse 60 000 caractères on renvoie une erreur
     if (validator.isLength(message, { max: 60000 }) === false) {
       throw new Error("Message trop long");
     }
+
     if (req.file) {
       const picture = req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
-
-
       newPostDb = createPost(userId, author, sanitizedMessage || "", picture);
-
     } else {
+      // Si la requête ne contient pas de fichier et que le champ message est vide on renvoie une erreur 
       if (validator.isEmpty(message, { ignore_whitespace: true })) {
         throw new Error("Champ message vide")
       } else {
@@ -41,18 +45,21 @@ exports.addPost = (req, res) => {
     }
 
     const newPostId = newPostDb.lastInsertRowid
+    // On récupère le nouveau post créé et l'envoie dans la réponse
     const newPost = getPost(newPostId)
     res.status(201).json({ message: "Le post a bien été créé", newPost })
 
   }
   catch (err) {
-
     console.log(err)
     res.status(400).json({ error: err.message });
   }
 }
 
-// Afficher tous les posts
+
+
+// ----------------- AFFICHER TOUS LES POSTS -----------------------------
+
 exports.getPosts = (req, res) => {
   try {
     const posts = getAllPosts();
@@ -63,7 +70,8 @@ exports.getPosts = (req, res) => {
   }
 }
 
-// Modifier un post
+// ---------------------- MODIFIER UN POST --------------------------------
+
 exports.modifyPost = (req, res) => {
 
   const id = req.params.id;
@@ -73,17 +81,19 @@ exports.modifyPost = (req, res) => {
     // On récupère le bon post dans la BDD avec l'id des params
     const post = getPost(id)
     const currentUser = getUser(userId)
+
     /* Si l'uilisateur qui a créé le post est différent de l'utilisateur authentifié ET qu'il n'est pas admin alors la modification
     n'est pas autorisée */
+
     if (post.user_id !== req.auth.userId && currentUser.role !== 1) {
       res.status(403).json({ message: "Modification non autorisée" })
     } else {
-
       const message = req.body.message;
       // On empêche l'envoi des caractères <, >, &, ', " et /
       const sanitizedMessage = validator.escape(message)
 
-      /* Si la requête contient une image alors on supprime l'image existante du dossier et on actualise l'image du post */
+      /* Si la requête contient une image et que le post contenait déjà une image alors on supprime l'image existante 
+      du dossier. On actualise ensuite l'image du post */
 
       let newPost;
 
@@ -99,7 +109,7 @@ exports.modifyPost = (req, res) => {
         updatePostPicture(picture, id);
       }
 
-
+      // Si le post d'origine ne contient pas d'image et que l'utilisateur saisit un message vide  ou > à 60000 caractères on renvoie une erreur
       if (post.picture === null && message === "") {
         throw new Error("Champ message vide")
       } else if (validator.isLength(message, { max: 60000 }) === false) {
@@ -109,7 +119,7 @@ exports.modifyPost = (req, res) => {
 
       }
 
-
+      // On récupère le post modifié et l'envoie dans la réponse
       newPost = getPost(id)
 
       res.status(200).json({ message: "Le post a bien été modifié", newPost })
@@ -124,7 +134,7 @@ exports.modifyPost = (req, res) => {
 
 }
 
-//Supprimer un post
+// ----------- SUPPRIMER UN POST ----------------------------
 
 
 exports.deletePost = (req, res) => {
@@ -134,11 +144,13 @@ exports.deletePost = (req, res) => {
   try {
     const post = getPost(id)
     const currentUser = getUser(userId)
+
+    // Si l'utilisateur connecté n'est pas l'auteur du post et qu'il n'est pas admin alors la suppression n'est pas autorisée
     if (post.user_id !== req.auth.userId && currentUser.role !== 1) {
       res.status(403).json({ message: "Suppression non autorisée" })
     } else {
 
-
+      // Si le post contient une image on la supprime du dossier /images
       if (post.picture !== null) {
 
         const filename = post.picture.split('/images/')[1];
@@ -163,16 +175,12 @@ exports.deletePost = (req, res) => {
 }
 
 
-// Ajouter ou retirer un like à un post
+// ------------- AJOUTER OU RETIRER UN LIKE -----------------------------------
 
 exports.likePost = (req, res) => {
   const userId = req.auth.userId;
   const id = req.params.id;
   let like = req.body.like
-
-  const user = getUser(userId);
-  //email de l'utilisateur authentifié
-  const userMail = user.email;
 
   const post = getPost(id);
 
@@ -187,7 +195,7 @@ exports.likePost = (req, res) => {
       if (usersLiked.includes(userId)) {
         res.status(401).json({ message: "Vous aimez déjà le post" })
       } else {
-        // Si non le nombre de like est incrémenté de 1 et l'adresse mail de l'utilisateur est ajoutée au tableau des likers
+        // Si non, le nombre de like est incrémenté de 1 et l'adresse mail de l'utilisateur est ajoutée au tableau des likers
         addLike(id)
         usersLiked.push(userId);
         updateLikers(usersLiked, id)
@@ -201,7 +209,7 @@ exports.likePost = (req, res) => {
     if (like === 0) {
       // On vérifie qu'il fait bien partie des likers
       if (usersLiked.includes(userId)) {
-        // si oui, on on décrémente le nombre de likes de 1 et son adresse mail est retirée du tableau des likers
+        // si oui, on on décrémente le nombre de likes de 1 et son id est retiré du tableau des likers
         removeLike(id)
         for (let i = 0; i < usersLiked.length; i++) {
           if (usersLiked[i] === userId) {
@@ -225,7 +233,8 @@ exports.likePost = (req, res) => {
 
 }
 
-// Ajouter un commentaire à un post
+//  ------------ AJOUTER UN COMMENTAIRE ----------------------------
+
 exports.commentPost = (req, res) => {
 
   try {
@@ -238,14 +247,16 @@ exports.commentPost = (req, res) => {
     // On empêche l'envoi des caractères <, >, &, ', " et /
     const sanitizedMessage = validator.escape(message)
 
-    // Un commentaire est ajouté à la table comments
+
     let newCommentDb;
 
+    // Si le commentaire est vide ou dépasse les 8000 caractères on renvoie une erreur
     if (validator.isEmpty(message, { ignore_whitespace: true })) {
       throw new Error("Commentaire vide")
     } else if (validator.isLength(message, { max: 8000 }) === false) {
       throw new Error("Commentaire trop long")
     } else {
+      // Un commentaire est ajouté à la table comments
       newCommentDb = createComment(author, sanitizedMessage, id)
     }
     const newCommentId = newCommentDb.lastInsertRowid;
@@ -255,6 +266,7 @@ exports.commentPost = (req, res) => {
     const comments = getComments(id)
     updatePostComments(comments, id)
 
+    // On récupère le nouveau commentaire pour l'envoyer dans la réponse
     const newComment = getOneComment(newCommentId)
 
     res.status(201).json({ message: "Le commentaire a bien été ajouté", newComment })
@@ -268,7 +280,8 @@ exports.commentPost = (req, res) => {
 
 }
 
-// Afficher tous les commentaires d'un post
+// ---------- AFFICHER TOUS LES COMMENTAIRES D'UN POST ------------------------
+
 exports.getComments = (req, res) => {
 
   try {
@@ -284,7 +297,7 @@ exports.getComments = (req, res) => {
 
 }
 
-// Modifier un commentaire
+// ------------------ MODIFIER UN COMMENTAIRE --------------------------------
 
 exports.editComment = (req, res) => {
 
@@ -305,6 +318,7 @@ exports.editComment = (req, res) => {
     // On vérifie si l'utilisateur est l'auteur du commentaire ou a le rôle administrateur
     if (comment.author !== currentUser.pseudo && currentUser.role !== 1) {
       res.status(403).json({ message: "Modification du commentaire non autorisée" });
+      // Si le champ message est vide ou dépasse les 8000 caractères on renvoie une erreur 
     } else if (validator.isEmpty(message, { ignore_whitespace: true })) {
       throw new Error("Commentaire vide")
     } else if (validator.isLength(message, { max: 8000 }) === false) {
@@ -325,7 +339,7 @@ exports.editComment = (req, res) => {
 }
 
 
-// Supprimer un commentaire
+// ---------------- SUPPRIMER UN COMMENTAIRE --------------------------------------
 
 exports.deleteComment = (req, res) => {
 
