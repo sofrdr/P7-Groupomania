@@ -45,8 +45,12 @@ const Card = (props) => {
     const pseudo = user.pseudo
 
     const usersLike = props.usersLiked
+
+    // L'utilisateur aime ou pas à la base
     const initiallyLiked = usersLike.includes(userId)
-    const [like, updateLike] = useState(initiallyLiked);
+    const [like, updateLike] = useState(initiallyLiked); // true || false
+
+
     const likes = props.likes - (initiallyLiked ? 1 : 0);
     let count = likes + (like ? 1 : 0);
 

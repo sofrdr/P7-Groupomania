@@ -32,19 +32,20 @@ const UpdateComment = (props) => {
     }
 
     // Envoi du formulaire
-    const handleSubmit = async (e) => {
+    async function handleSubmit(e) {
         e.preventDefault();
         try {
-            await updateComment({ message }, id)
+            console.log("test");
+            await updateComment({ message }, id);
             // Si le nouveau commentaire n'est pas vide on actualise la valeur de message
             if (message !== "") {
-                updateMessage(message)
+                updateMessage(message);
             }
-            updateOptions()
+            updateOptions();
 
         } catch (err) {
-            console.log(err)
-            setShowError(err)
+            console.log(err);
+            setShowError(err);
         }
     }
 
@@ -55,7 +56,7 @@ const UpdateComment = (props) => {
             <form onSubmit={handleSubmit}>
                 <div className="comment-header">
                     <p className="comment-header--author"> {author}</p>
-                    <button title="Fermer la fenêtre de modification du commentaire" onClick={closeComponent}><FontAwesomeIcon icon={faXmark} className="icon" /></button>
+                   <button title="Fermer la fenêtre de modification du commentaire" ><FontAwesomeIcon icon={faXmark} className="icon" onClick={closeComponent} /></button>
                 </div>
 
                 <input
